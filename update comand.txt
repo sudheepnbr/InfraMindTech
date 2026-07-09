@@ -1,7 +1,0 @@
-cd E:\Website; git add .; git commit -m "Update website"; git push
-
-Inframindtech@2026!@#
-
-imtspnbr-secret-2026-xyz
-
-https://inframindtech.onrender.com/admin/?

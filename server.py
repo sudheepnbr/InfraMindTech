@@ -35,6 +35,9 @@ def load_env():
             if line and not line.startswith("#") and "=" in line:
                 key, val = line.split("=", 1)
                 env[key.strip()] = val.strip()
+    for key in env:
+        if os.environ.get(key):
+            env[key] = os.environ[key]
     return env
 
 ENV = load_env()
@@ -42,6 +45,7 @@ ENV = load_env()
 app = Flask(__name__, static_folder=str(BASE_DIR), static_url_path="")
 app.secret_key = ENV["SECRET_KEY"]
 app.config["SESSION_COOKIE_HTTPONLY"] = True
+app.config["SESSION_COOKIE_SAMESITE"] = "Lax"
 
 
 def read_content():
@@ -162,10 +166,11 @@ def list_media():
 
 
 if __name__ == "__main__":
+    port = int(os.environ.get("PORT", 8080))
     print("\n  InfraMindTech CMS Server")
     print("  ========================")
-    print("  Website:  http://localhost:8080")
-    print("  Admin:    http://localhost:8080/admin/")
+    print(f"  Website:  http://localhost:{port}")
+    print(f"  Admin:    http://localhost:{port}/admin/")
     print(f"  Login:    {ENV['ADMIN_USERNAME']} / {ENV['ADMIN_PASSWORD']}")
     print("  ========================\n")
-    app.run(host="0.0.0.0", port=8080, debug=True)
+    app.run(host="0.0.0.0", port=port, debug=True)

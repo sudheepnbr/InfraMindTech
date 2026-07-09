@@ -67,9 +67,22 @@
     document.querySelectorAll('[data-cms]').forEach(el => {
       const key = el.getAttribute('data-cms');
       if (key && key.endsWith('.pageTitle')) return;
+      if (key === 'site.companyName') return;
       const val = getNestedValue(content, key);
       if (val !== undefined) el.textContent = val;
     });
+
+    if (content.site && content.site.companyName) {
+      const name = content.site.companyName;
+      document.querySelectorAll('[data-cms="site.companyName"]').forEach(el => {
+        if (name.includes('Mind')) {
+          const parts = name.split('Mind');
+          el.innerHTML = `${parts[0]}<span class="brand-highlight">Mind</span>${parts[1] || ''}`;
+        } else {
+          el.textContent = name;
+        }
+      });
+    }
 
     document.querySelectorAll('[data-cms-html]').forEach(el => {
       const val = getNestedValue(content, el.getAttribute('data-cms-html'));
@@ -118,6 +131,17 @@
       const desc = card.querySelector('[data-cms-service-desc]');
       if (title) title.textContent = svc.title;
       if (desc) desc.textContent = svc.description;
+    });
+
+    document.querySelectorAll('[data-cms-product]').forEach((card, i) => {
+      const p = content.products_list?.[i];
+      if (!p) return;
+      const badge = card.querySelector('[data-cms-product-badge]');
+      const title = card.querySelector('[data-cms-product-title]');
+      const desc = card.querySelector('[data-cms-product-desc]');
+      if (badge) badge.textContent = p.badge;
+      if (title) title.textContent = p.title;
+      if (desc) desc.textContent = p.description;
     });
 
     document.querySelectorAll('[data-cms-testimonial]').forEach((card, i) => {

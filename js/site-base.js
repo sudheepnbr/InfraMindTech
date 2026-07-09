@@ -16,4 +16,17 @@
     base.href = root;
     document.head.insertBefore(base, document.head.firstChild);
   }
+
+  /* Load visual editor when previewed inside admin iframe */
+  if (window.self !== window.top || /[?&]cms-edit=1/.test(window.location.search)) {
+    window.CMS_EDIT_MODE = true;
+    var editSrc = root.replace(/\/?$/, '/') + 'admin/edit-inject.js?v=6';
+    document.addEventListener('DOMContentLoaded', function () {
+      if (document.getElementById('cms-edit-inject')) return;
+      var s = document.createElement('script');
+      s.id = 'cms-edit-inject';
+      s.src = editSrc;
+      document.body.appendChild(s);
+    });
+  }
 })();

@@ -4,18 +4,21 @@
 (function () {
   'use strict';
 
-  const PAGE_MAP = {
-    'index.html': 'home',
-    '': 'home',
-    'services.html': 'services',
-    'products.html': 'products',
-    'about.html': 'about',
-    'contact.html': 'contact'
-  };
+  const PAGE_NAMES = ['about', 'services', 'products', 'contact'];
 
   function getCurrentPage() {
-    const file = window.location.pathname.split('/').pop() || 'index.html';
-    return document.body.dataset.page || PAGE_MAP[file] || '';
+    if (document.body.dataset.page) return document.body.dataset.page;
+
+    const segments = window.location.pathname.split('/').filter(Boolean);
+    const last = segments[segments.length - 1] || '';
+
+    if (!last || last === 'index.html' || last === 'InfraMindTech') return 'home';
+    if (PAGE_NAMES.includes(last)) return last;
+    if (last === 'index.html' && segments.length >= 2 && PAGE_NAMES.includes(segments[segments.length - 2])) {
+      return segments[segments.length - 2];
+    }
+
+    return '';
   }
 
   function setActiveNav() {
@@ -36,15 +39,12 @@
     }
   }
 
-  function getBasePath() {
-    const path = window.location.pathname;
-    if (path.endsWith('/')) return path;
-    const lastSlash = path.lastIndexOf('/');
-    return lastSlash >= 0 ? path.substring(0, lastSlash + 1) : '/';
+  function getSiteRoot() {
+    return window.SITE_ROOT || '/';
   }
 
   async function loadPartial(url) {
-    const res = await fetch(getBasePath() + url);
+    const res = await fetch(getSiteRoot() + url);
     if (!res.ok) throw new Error('Failed to load ' + url);
     return res.text();
   }

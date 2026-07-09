@@ -67,6 +67,20 @@ def login_required(f):
     return decorated
 
 
+PAGE_DIRS = {"about", "services", "products", "contact"}
+
+
+def _page_view(page_name):
+    def view():
+        return send_from_directory(BASE_DIR / page_name, "index.html")
+    return view
+
+
+for _page in PAGE_DIRS:
+    app.add_url_rule(f"/{_page}/", endpoint=f"page_{_page}_slash", view_func=_page_view(_page))
+    app.add_url_rule(f"/{_page}", endpoint=f"page_{_page}", view_func=_page_view(_page))
+
+
 @app.route("/")
 def index():
     return send_from_directory(BASE_DIR, "index.html")
@@ -80,9 +94,21 @@ def admin_panel():
 
 @app.route("/<path:filepath>")
 def static_files(filepath):
+    clean = filepath.rstrip("/")
+    if clean in PAGE_DIRS:
+        index_file = BASE_DIR / clean / "index.html"
+        if index_file.is_file():
+            return send_from_directory(BASE_DIR / clean, "index.html")
+
     full = BASE_DIR / filepath
     if full.is_file():
         return send_from_directory(BASE_DIR, filepath)
+
+    if not filepath.endswith(".html"):
+        index_in_dir = BASE_DIR / clean / "index.html"
+        if index_in_dir.is_file():
+            return send_from_directory(BASE_DIR / clean, "index.html")
+
     return "Not Found", 404
 
 

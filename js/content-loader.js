@@ -99,14 +99,14 @@
     if (content.header) {
       const h = content.header;
       const navMap = [
-        ['a[href="index.html"]', 'navHome'],
-        ['a[href="index.html#solutions"]', 'navSolutions'],
-        ['a[href="services.html"]', 'navServices'],
-        ['a[href="products.html"]', 'navProducts'],
-        ['a[href="index.html#industries"]', 'navIndustries'],
-        ['a[href="index.html#faq"]', 'navResources'],
-        ['a[href="about.html"]', 'navAbout'],
-        ['a[href="contact.html"]', 'navContact']
+        ['a[href="./"]', 'navHome'],
+        ['a[href="./#solutions"]', 'navSolutions'],
+        ['a[href="services/"]', 'navServices'],
+        ['a[href="products/"]', 'navProducts'],
+        ['a[href="./#industries"]', 'navIndustries'],
+        ['a[href="./#faq"]', 'navResources'],
+        ['a[href="about/"]', 'navAbout'],
+        ['a[href="contact/"]', 'navContact']
       ];
       document.querySelectorAll('.nav-links-imt a, .mobile-nav-links a').forEach(link => {
         const href = link.getAttribute('href');

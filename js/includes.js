@@ -125,9 +125,11 @@
       setActiveNav();
       initNavbarState();
       document.dispatchEvent(new CustomEvent('includesLoaded'));
+      if (window.loadCmsContent) window.loadCmsContent();
     } catch (err) {
       console.warn('Includes load failed:', err);
       document.dispatchEvent(new CustomEvent('includesLoaded'));
+      if (window.loadCmsContent) window.loadCmsContent();
     }
   }
 

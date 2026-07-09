@@ -36,6 +36,8 @@
     "ctaText": "Partner with InfraMindTech to build intelligent, secure, and scalable technology solutions for your enterprise."
   },
   "about": {
+    "pageTitleBefore": "About ",
+    "pageTitleHighlight": "InfraMindTech",
     "pageTitle": "About InfraMindTech",
     "pageSubtitle": "Pioneering intelligent infrastructure solutions that empower enterprises to thrive in the digital age.",
     "storyTitle": "Building the Future of Enterprise IT",
@@ -45,16 +47,22 @@
     "vision": "To be the most trusted technology partner for enterprises seeking to harness the full potential of cloud, AI, and cybersecurity."
   },
   "services": {
+    "pageTitleBefore": "Our ",
+    "pageTitleHighlight": "Services",
     "pageTitle": "Our Services",
     "pageSubtitle": "Comprehensive IT services designed to power your digital transformation from strategy to execution.",
     "aiTitle": "AI Solutions",
     "aiDescription": "Harness the power of artificial intelligence to automate processes, gain insights, and stay ahead of the competition. Our AI practice delivers practical, ROI-driven solutions."
   },
   "products": {
+    "pageTitleBefore": "InfraMind ",
+    "pageTitleHighlight": "Platform Suite",
     "pageTitle": "InfraMind Platform Suite",
     "pageSubtitle": "Purpose-built enterprise software designed to streamline operations, boost productivity, and drive growth."
   },
   "contact": {
+    "pageTitleBefore": "Get in ",
+    "pageTitleHighlight": "Touch",
     "pageTitle": "Get in Touch",
     "pageSubtitle": "Ready to transform your IT infrastructure? Reach out and our team will respond within 24 hours.",
     "formTitle": "Send Us a Message"

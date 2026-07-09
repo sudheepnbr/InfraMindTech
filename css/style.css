@@ -1084,7 +1084,7 @@ body.page-inner .navbar-imt {
 
 /* ---- Page Header (inner pages) ---- */
 .page-header {
-  padding: calc(var(--navbar-height) + 60px) 0 60px;
+  padding: 40px 0 48px;
   background: var(--gradient-hero);
   position: relative;
   overflow: hidden;

@@ -19,6 +19,18 @@
       if (val !== undefined) el.textContent = val;
     });
 
+    document.querySelectorAll('[data-cms-page-title]').forEach(el => {
+      const section = el.getAttribute('data-cms-page-title');
+      const data = getNestedValue(content, section);
+      if (!data) return;
+      if (data.pageTitleHighlight !== undefined) {
+        el.innerHTML =
+          `${data.pageTitleBefore || ''}<span class="text-gradient">${data.pageTitleHighlight || ''}</span>${data.pageTitleAfter || ''}`;
+      } else if (data.pageTitle) {
+        el.textContent = data.pageTitle;
+      }
+    });
+
     document.querySelectorAll('[data-cms-html]').forEach(el => {
       const val = getNestedValue(content, el.getAttribute('data-cms-html'));
       if (val !== undefined) el.innerHTML = val;

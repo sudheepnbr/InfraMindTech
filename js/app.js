@@ -178,7 +178,7 @@
   function revealHeroContent() {
     if (!heroSection) return;
     gsap.set(
-      '.hero-badge, .hero-title, .hero-subtitle, .hero-tags .hero-tag, .hero-cta .btn-imt, .hero-stats .hero-stat, .hero-main-card, .hero-float-card',
+      '.hero-title, .hero-subtitle, .hero-tags .hero-tag, .hero-cta .btn-imt, .hero-stats .hero-stat, .hero-main-card, .hero-float-card',
       { clearProps: 'all' }
     );
   }
@@ -193,8 +193,7 @@
     const fadeIn = { opacity: 1, y: 0 };
 
     heroTl
-      .fromTo('.hero-badge', fadeUp, { ...fadeIn, duration: 0.5 })
-      .fromTo('.hero-title', { opacity: 0, y: 30 }, { ...fadeIn, duration: 0.7 }, '-=0.25')
+      .fromTo('.hero-title', { opacity: 0, y: 30 }, { ...fadeIn, duration: 0.7 })
       .fromTo('.hero-subtitle', fadeUp, fadeIn, '-=0.45')
       .fromTo('.hero-tags .hero-tag', fadeUp, fadeIn, { stagger: 0.08, duration: 0.45 }, '-=0.35')
       .fromTo('.hero-cta .btn-imt', fadeUp, fadeIn, { stagger: 0.1, duration: 0.45 }, '-=0.25')

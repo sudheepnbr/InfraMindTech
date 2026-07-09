@@ -6,6 +6,68 @@
 
   const PAGE_NAMES = ['about', 'services', 'products', 'contact'];
 
+  const NAV_ROUTES = {
+    home: '',
+    solutions: '#solutions',
+    services: 'services/',
+    products: 'products/',
+    industries: '#industries',
+    resources: '#faq',
+    about: 'about/',
+    contact: 'contact/'
+  };
+
+  function getSiteRoot() {
+    return window.SITE_ROOT || '/';
+  }
+
+  function resolveSiteUrl(path) {
+    const root = getSiteRoot();
+    if (!path) return root;
+    if (path.startsWith('#')) return root + path;
+    return root + path.replace(/^\//, '');
+  }
+
+  function fixSiteLinks() {
+    document.querySelectorAll('[data-nav]').forEach(link => {
+      const route = NAV_ROUTES[link.dataset.nav];
+      if (route !== undefined) link.href = resolveSiteUrl(route);
+    });
+
+    document.querySelectorAll('.navbar-brand-imt, .footer-brand-link').forEach(link => {
+      link.href = getSiteRoot();
+    });
+
+    document.querySelectorAll('.footer-links a').forEach(link => {
+      const href = link.getAttribute('href');
+      if (href === 'services/' || href === 'products/') {
+        link.href = resolveSiteUrl(href);
+      }
+    });
+
+    document.querySelectorAll('.nav-actions-imt .btn-imt-primary, .mobile-nav-cta .btn-imt-primary').forEach(btn => {
+      const link = btn.getAttribute('href');
+      if (link && !link.startsWith('http') && !link.startsWith('#')) {
+        btn.href = resolveSiteUrl(link);
+      }
+    });
+
+    document.querySelectorAll('a[href]').forEach(link => {
+      const href = link.getAttribute('href');
+      if (!href || href.startsWith('http') || href.startsWith('mailto:') || href.startsWith('tel:') || href.startsWith('javascript:') || href.startsWith('#')) return;
+      if (href === './' || href === '../' || href === 'index.html') {
+        link.href = getSiteRoot();
+        return;
+      }
+      if (/^(services|products|about|contact)\/?$/.test(href)) {
+        link.href = resolveSiteUrl(href.endsWith('/') ? href : href + '/');
+      }
+    });
+  }
+
+  window.fixSiteLinks = fixSiteLinks;
+  window.resolveSiteUrl = resolveSiteUrl;
+
   function getCurrentPage() {
     if (document.body.dataset.page) return document.body.dataset.page;
 
@@ -39,10 +101,6 @@
     }
   }
 
-  function getSiteRoot() {
-    return window.SITE_ROOT || '/';
-  }
-
   async function loadPartial(url) {
     const res = await fetch(getSiteRoot() + url);
     if (!res.ok) throw new Error('Failed to load ' + url);
@@ -61,6 +119,7 @@
       ]);
       headerEl.innerHTML = header;
       footerEl.innerHTML = footer;
+      fixSiteLinks();
       setActiveNav();
       initNavbarState();
       document.dispatchEvent(new CustomEvent('includesLoaded'));

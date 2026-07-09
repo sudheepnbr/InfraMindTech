@@ -147,24 +147,23 @@
 
     if (content.header) {
       const h = content.header;
-      const navMap = [
-        ['a[href="./"]', 'navHome'],
-        ['a[href="./#solutions"]', 'navSolutions'],
-        ['a[href="services/"]', 'navServices'],
-        ['a[href="products/"]', 'navProducts'],
-        ['a[href="./#industries"]', 'navIndustries'],
-        ['a[href="./#faq"]', 'navResources'],
-        ['a[href="about/"]', 'navAbout'],
-        ['a[href="contact/"]', 'navContact']
-      ];
-      document.querySelectorAll('.nav-links-imt a, .mobile-nav-links a').forEach(link => {
-        const href = link.getAttribute('href');
-        const match = navMap.find(([sel]) => sel.includes(href));
-        if (match && h[match[1]]) link.textContent = h[match[1]];
+      const navLabelMap = {
+        home: 'navHome',
+        solutions: 'navSolutions',
+        services: 'navServices',
+        products: 'navProducts',
+        industries: 'navIndustries',
+        resources: 'navResources',
+        about: 'navAbout',
+        contact: 'navContact'
+      };
+      document.querySelectorAll('[data-nav]').forEach(link => {
+        const labelKey = navLabelMap[link.dataset.nav];
+        if (labelKey && h[labelKey]) link.textContent = h[labelKey];
       });
       document.querySelectorAll('.nav-actions-imt .btn-imt-primary, .mobile-nav-cta .btn-imt-primary').forEach(btn => {
         if (h.ctaButton) btn.textContent = h.ctaButton;
-        if (h.ctaLink) btn.href = h.ctaLink;
+        if (h.ctaLink && window.resolveSiteUrl) btn.href = window.resolveSiteUrl(h.ctaLink);
       });
       document.querySelectorAll('.brand-icon i').forEach(icon => {
         if (!h.logoIcon) return;
@@ -215,6 +214,8 @@
         document.querySelectorAll('[data-cms-hero-video]').forEach(v => { v.src = m.heroVideo; v.style.display = 'block'; });
       }
     }
+
+    if (window.fixSiteLinks) window.fixSiteLinks();
   }
 
   function getContentApiUrl() {

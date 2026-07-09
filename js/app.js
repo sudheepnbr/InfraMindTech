@@ -210,7 +210,35 @@
     });
   }
 
-  /* ---- Smooth anchor scroll for same-page links ---- */
+  /* ---- Smooth anchor scroll on home page ---- */
+  function handleNavClick(e) {
+    const href = this.getAttribute('href');
+    if (!href || !href.includes('#')) return;
+
+    const hash = href.substring(href.indexOf('#'));
+    if (hash === '#') return;
+
+    const isHome = document.body.dataset.page === 'home';
+    const target = document.querySelector(hash);
+
+    if (isHome && target) {
+      e.preventDefault();
+      target.scrollIntoView({ behavior: 'smooth' });
+      history.pushState(null, '', hash);
+    }
+  }
+
+  document.querySelectorAll('.nav-links-imt a, .mobile-nav-links a').forEach(anchor => {
+    anchor.addEventListener('click', handleNavClick);
+  });
+
+  if (document.body.dataset.page === 'home' && window.location.hash) {
+    const hashTarget = document.querySelector(window.location.hash);
+    if (hashTarget) {
+      setTimeout(() => hashTarget.scrollIntoView({ behavior: 'smooth' }), 150);
+    }
+  }
+
   document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     anchor.addEventListener('click', (e) => {
       const targetId = anchor.getAttribute('href');

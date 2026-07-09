@@ -17,8 +17,8 @@ jobs:
         run: |
           mkdir -p _site
           cp index.html _site/
-          cp about.html services.html products.html contact.html _site/
-          cp -r about services products contact css js data partials images _site/
+          cp about.html services.html products.html contact.html solutions.html industries.html resources.html _site/
+          cp -r about services products contact solutions industries resources css js data partials images _site/
           if [ -d assets ]; then cp -r assets _site/; fi
           touch _site/.nojekyll
 

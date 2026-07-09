@@ -46,6 +46,12 @@
     "mission": "To deliver intelligent, secure, and scalable IT infrastructure that enables organizations to innovate fearlessly and operate with confidence.",
     "vision": "To be the most trusted technology partner for enterprises seeking to harness the full potential of cloud, AI, and cybersecurity."
   },
+  "solutions": {
+    "pageTitleBefore": "Tailored ",
+    "pageTitleHighlight": "Solutions",
+    "pageTitle": "Tailored Solutions",
+    "pageSubtitle": "Industry-specific solutions that address your unique challenges with proven technology frameworks."
+  },
   "services": {
     "pageTitleBefore": "Our ",
     "pageTitleHighlight": "Services",
@@ -60,6 +66,12 @@
     "pageTitle": "InfraMind Platform Suite",
     "pageSubtitle": "Purpose-built enterprise software designed to streamline operations, boost productivity, and drive growth."
   },
+  "industries": {
+    "pageTitleBefore": "Serving Diverse ",
+    "pageTitleHighlight": "Industries",
+    "pageTitle": "Serving Diverse Industries",
+    "pageSubtitle": "Deep industry expertise delivering technology solutions that meet sector-specific regulatory and operational requirements."
+  },
   "contact": {
     "pageTitleBefore": "Get in ",
     "pageTitleHighlight": "Touch",
@@ -67,10 +79,16 @@
     "pageSubtitle": "Ready to transform your IT infrastructure? Reach out and our team will respond within 24 hours.",
     "formTitle": "Send Us a Message"
   },
+  "resources": {
+    "pageTitleBefore": "Help & ",
+    "pageTitleHighlight": "Resources",
+    "pageTitle": "Help & Resources",
+    "pageSubtitle": "Find answers to common questions about our services, products, and engagement process."
+  },
   "header": {
     "logoIcon": "fa-brain",
     "ctaButton": "Request Quote",
-    "ctaLink": "#contact",
+    "ctaLink": "contact/",
     "navHome": "Home",
     "navSolutions": "Solutions",
     "navServices": "Services",

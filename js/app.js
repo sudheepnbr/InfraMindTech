@@ -210,125 +210,24 @@
     });
   }
 
-  /* ---- Smooth scroll navigation ---- */
-  const NAV_SECTIONS = window.NAV_ROUTES || {
-    home: '#home',
-    solutions: '#solutions',
-    services: '#services',
-    products: '#products',
-    industries: '#industries',
-    resources: '#faq',
-    about: '#about',
-    contact: '#contact'
-  };
-
-  function getNavOffset() {
-    const value = getComputedStyle(document.documentElement).getPropertyValue('--navbar-height');
-    return parseInt(value, 10) || 64;
-  }
-
-  function scrollToSection(selector, smooth) {
-    const el = document.querySelector(selector);
-    if (!el) return false;
-    const top = el.getBoundingClientRect().top + window.scrollY - getNavOffset();
-    window.scrollTo({ top: Math.max(0, top), behavior: smooth === false ? 'auto' : 'smooth' });
-    return true;
-  }
-
+  /* ---- Page navigation & transitions ---- */
   function isHomePage() {
     return document.body.dataset.page === 'home';
   }
 
-  function setActiveNavItem(navKey) {
-    document.querySelectorAll('[data-nav]').forEach(link => {
-      link.classList.toggle('active', link.dataset.nav === navKey);
-    });
-  }
-
-  function goToHomeSection(section, smooth) {
-    const root = window.SITE_ROOT || '/';
-    if (isHomePage()) {
-      scrollToSection(section, smooth);
-      history.pushState(null, '', section);
-      const navKey = Object.keys(NAV_SECTIONS).find(key => NAV_SECTIONS[key] === section) || 'home';
-      setActiveNavItem(navKey);
-      return;
-    }
-    window.location.href = window.resolveSiteUrl
-      ? window.resolveSiteUrl(section)
-      : root + (section.startsWith('#') ? section : '#' + section);
-  }
-
-  function handleNavClick(e) {
-    const navKey = this.dataset.nav;
-    if (!navKey || !NAV_SECTIONS[navKey]) return;
-
-    e.preventDefault();
-    closeMobileNav();
-    goToHomeSection(NAV_SECTIONS[navKey], true);
-  }
-
-  document.querySelectorAll('[data-nav]').forEach(link => {
-    link.addEventListener('click', handleNavClick);
+  document.querySelectorAll('[data-nav], .navbar-brand-imt').forEach(link => {
+    link.addEventListener('click', () => closeMobileNav());
   });
 
-  document.querySelectorAll('.nav-actions-imt .btn-imt-primary, .mobile-nav-cta .btn-imt-primary').forEach(btn => {
-    btn.addEventListener('click', (e) => {
-      const href = btn.getAttribute('href') || '';
-      if (!href.includes('#contact')) return;
-      e.preventDefault();
-      closeMobileNav();
-      goToHomeSection('#contact', true);
-    });
-  });
-
-  document.querySelectorAll('.navbar-brand-imt').forEach(link => {
-    link.addEventListener('click', (e) => {
-      e.preventDefault();
-      closeMobileNav();
-      goToHomeSection('#home', true);
-    });
-  });
-
-  if (isHomePage()) {
-    if (window.location.hash) {
-      setTimeout(() => scrollToSection(window.location.hash, true), 150);
-    }
-
-    const spySections = Object.entries(NAV_SECTIONS)
-      .map(([nav, selector]) => ({ nav, el: document.querySelector(selector) }))
-      .filter(item => item.el);
-
-    if (spySections.length) {
-      const spyObserver = new IntersectionObserver((entries) => {
-        const visible = entries
-          .filter(entry => entry.isIntersecting)
-          .sort((a, b) => b.intersectionRatio - a.intersectionRatio);
-        if (!visible.length) return;
-        const match = spySections.find(item => item.el === visible[0].target);
-        if (match) setActiveNavItem(match.nav);
-      }, {
-        rootMargin: `-${getNavOffset() + 8}px 0px -55% 0px`,
-        threshold: [0.1, 0.35, 0.6]
-      });
-
-      spySections.forEach(item => spyObserver.observe(item.el));
-    }
+  if (!isHomePage()) {
+    window.scrollTo({ top: 0, behavior: 'auto' });
+    document.body.classList.add('page-enter');
   }
 
-  document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-    if (anchor.dataset.nav || anchor.classList.contains('navbar-brand-imt')) return;
-    anchor.addEventListener('click', (e) => {
-      const targetId = anchor.getAttribute('href');
-      if (!targetId || targetId === '#') return;
-      if (!isHomePage()) return;
-      const target = document.querySelector(targetId);
-      if (!target) return;
-      e.preventDefault();
-      scrollToSection(targetId, true);
-      history.pushState(null, '', targetId);
-    });
-  });
+  if (isHomePage() && window.location.hash) {
+    history.replaceState(null, '', window.location.pathname + window.location.search);
+    window.scrollTo({ top: 0, behavior: 'auto' });
+  }
 
   } /* end initApp */
 

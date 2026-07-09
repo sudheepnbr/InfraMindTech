@@ -4,17 +4,17 @@
 (function () {
   'use strict';
 
-  const PAGE_NAMES = ['about', 'services', 'products', 'contact'];
+  const PAGE_NAMES = ['about', 'services', 'products', 'contact', 'solutions', 'industries', 'resources'];
 
   const NAV_ROUTES = {
-    home: '#home',
-    solutions: '#solutions',
-    services: '#services',
-    products: '#products',
-    industries: '#industries',
-    resources: '#faq',
-    about: '#about',
-    contact: '#contact'
+    home: '',
+    solutions: 'solutions/',
+    services: 'services/',
+    products: 'products/',
+    industries: 'industries/',
+    resources: 'resources/',
+    about: 'about/',
+    contact: 'contact/'
   };
 
   function getSiteRoot() {
@@ -35,7 +35,7 @@
     });
 
     document.querySelectorAll('.navbar-brand-imt, .footer-brand-link').forEach(link => {
-      link.href = resolveSiteUrl('#home');
+      link.href = getSiteRoot();
     });
 
     document.querySelectorAll('.footer-links a').forEach(link => {
@@ -60,7 +60,7 @@
         link.href = getSiteRoot();
         return;
       }
-      if (/^(services|products|about|contact)\/?$/.test(href)) {
+      if (/^(solutions|services|products|industries|resources|about|contact)\/?$/.test(href)) {
         link.href = resolveSiteUrl(href.endsWith('/') ? href : href + '/');
       }
     });
@@ -87,7 +87,6 @@
 
   function setActiveNav() {
     const page = getCurrentPage();
-    if (page === 'home') return;
     document.querySelectorAll('[data-nav]').forEach(link => {
       link.classList.toggle('active', link.dataset.nav === page);
     });

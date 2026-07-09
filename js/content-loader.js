@@ -17,6 +17,9 @@
     about: 'About ',
     services: 'Our ',
     products: 'InfraMind ',
+    solutions: 'Tailored ',
+    industries: 'Serving Diverse ',
+    resources: 'Help & ',
     contact: 'Get in '
   };
 
@@ -40,7 +43,7 @@
   }
 
   function applyPageTitles(content) {
-    ['about', 'services', 'products', 'contact'].forEach(section => {
+    ['about', 'services', 'products', 'solutions', 'industries', 'resources', 'contact'].forEach(section => {
       const data = content[section];
       if (!data) return;
 

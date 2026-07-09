@@ -147,76 +147,12 @@
         <h2 class="section-title" data-cms="home.servicesTitle">Comprehensive IT Solutions</h2>
         <p class="section-subtitle" data-cms="home.servicesSubtitle">End-to-end technology services designed to power your digital transformation and secure your enterprise future.</p>
       </div>
-      <div class="row g-4">
-        <div class="col-md-6 col-lg-4" data-aos="fade-up" data-aos-delay="0" data-cms-service>
+      <div class="row g-4" data-cms-list="services_list">
+        <div class="col-md-6 col-lg-4" data-cms-template data-aos="fade-up" style="display:none" data-cms-service>
           <div class="card-imt">
             <div class="card-icon"><i class="fa-solid fa-cloud"></i></div>
-            <h3 data-cms-service-title>Cloud Infrastructure</h3>
-            <p data-cms-service-desc>Scalable, resilient cloud architectures on Azure, AWS, and hybrid environments tailored to your workload demands.</p>
-            <a href="services/" class="card-link">Learn more <i class="fa-solid fa-arrow-right"></i></a>
-          </div>
-        </div>
-        <div class="col-md-6 col-lg-4" data-aos="fade-up" data-aos-delay="100" data-cms-service>
-          <div class="card-imt">
-            <div class="card-icon"><i class="fa-brands fa-microsoft"></i></div>
-            <h3 data-cms-service-title>Microsoft 365</h3>
-            <p data-cms-service-desc>Complete M365 deployment, migration, and management with security hardening and user adoption programs.</p>
-            <a href="services/" class="card-link">Learn more <i class="fa-solid fa-arrow-right"></i></a>
-          </div>
-        </div>
-        <div class="col-md-6 col-lg-4" data-aos="fade-up" data-aos-delay="200" data-cms-service>
-          <div class="card-imt">
-            <div class="card-icon"><i class="fa-solid fa-cloud-arrow-up"></i></div>
-            <h3 data-cms-service-title>Azure</h3>
-            <p data-cms-service-desc>Expert Azure consulting, migration, and managed services with cost optimization and governance frameworks.</p>
-            <a href="services/" class="card-link">Learn more <i class="fa-solid fa-arrow-right"></i></a>
-          </div>
-        </div>
-        <div class="col-md-6 col-lg-4" data-aos="fade-up" data-aos-delay="0" data-cms-service>
-          <div class="card-imt">
-            <div class="card-icon"><i class="fa-brands fa-aws"></i></div>
-            <h3 data-cms-service-title>AWS</h3>
-            <p data-cms-service-desc>Full-lifecycle AWS solutions from architecture design to DevOps automation and 24/7 cloud operations.</p>
-            <a href="services/" class="card-link">Learn more <i class="fa-solid fa-arrow-right"></i></a>
-          </div>
-        </div>
-        <div class="col-md-6 col-lg-4" data-aos="fade-up" data-aos-delay="100" data-cms-service>
-          <div class="card-imt">
-            <div class="card-icon"><i class="fa-solid fa-shield-halved"></i></div>
-            <h3 data-cms-service-title>Cyber Security</h3>
-            <p data-cms-service-desc>Advanced threat detection, SOC services, compliance management, and zero-trust security architectures.</p>
-            <a href="services/" class="card-link">Learn more <i class="fa-solid fa-arrow-right"></i></a>
-          </div>
-        </div>
-        <div class="col-md-6 col-lg-4" data-aos="fade-up" data-aos-delay="200" data-cms-service>
-          <div class="card-imt">
-            <div class="card-icon"><i class="fa-solid fa-network-wired"></i></div>
-            <h3 data-cms-service-title>Networking</h3>
-            <p data-cms-service-desc>Enterprise-grade network design, SD-WAN, firewall management, and performance monitoring solutions.</p>
-            <a href="services/" class="card-link">Learn more <i class="fa-solid fa-arrow-right"></i></a>
-          </div>
-        </div>
-        <div class="col-md-6 col-lg-4" data-aos="fade-up" data-aos-delay="0" data-cms-service>
-          <div class="card-imt">
-            <div class="card-icon"><i class="fa-solid fa-server"></i></div>
-            <h3 data-cms-service-title>Virtualization</h3>
-            <p data-cms-service-desc>VMware, Hyper-V, and container orchestration to maximize resource efficiency and reduce hardware costs.</p>
-            <a href="services/" class="card-link">Learn more <i class="fa-solid fa-arrow-right"></i></a>
-          </div>
-        </div>
-        <div class="col-md-6 col-lg-4" data-aos="fade-up" data-aos-delay="100" data-cms-service>
-          <div class="card-imt">
-            <div class="card-icon"><i class="fa-solid fa-headset"></i></div>
-            <h3 data-cms-service-title>Managed IT Services</h3>
-            <p data-cms-service-desc>Proactive monitoring, helpdesk support, and strategic IT planning to keep your business running smoothly.</p>
-            <a href="services/" class="card-link">Learn more <i class="fa-solid fa-arrow-right"></i></a>
-          </div>
-        </div>
-        <div class="col-md-6 col-lg-4" data-aos="fade-up" data-aos-delay="200" data-cms-service>
-          <div class="card-imt">
-            <div class="card-icon"><i class="fa-solid fa-database"></i></div>
-            <h3 data-cms-service-title>Backup &amp; Disaster Recovery</h3>
-            <p data-cms-service-desc>Automated backup solutions and business continuity planning to protect your critical data and operations.</p>
+            <h3 data-cms-item="title" data-cms-service-title>Service</h3>
+            <p data-cms-item="description" data-cms-service-desc>Description</p>
             <a href="services/" class="card-link">Learn more <i class="fa-solid fa-arrow-right"></i></a>
           </div>
         </div>
@@ -233,26 +169,26 @@
       <div class="row g-4">
         <div class="col-6 col-md-3" data-aos="fade-up">
           <div class="stat-item">
-            <div class="stat-number" data-count="500" data-suffix="+">0</div>
-            <div class="stat-label">Enterprise Clients</div>
+            <div class="stat-number" data-cms="home.statsBand1Value" data-cms-label="Stat: Enterprise Clients">500+</div>
+            <div class="stat-label" data-cms="home.statsBand1Label" data-cms-label="Stat label: Enterprise Clients">Enterprise Clients</div>
           </div>
         </div>
         <div class="col-6 col-md-3" data-aos="fade-up" data-aos-delay="100">
           <div class="stat-item">
-            <div class="stat-number" data-count="15" data-suffix="+">0</div>
-            <div class="stat-label">Years of Excellence</div>
+            <div class="stat-number" data-cms="home.statsBand2Value" data-cms-label="Stat: Years of Excellence">15+</div>
+            <div class="stat-label" data-cms="home.statsBand2Label" data-cms-label="Stat label: Years of Excellence">Years of Excellence</div>
           </div>
         </div>
         <div class="col-6 col-md-3" data-aos="fade-up" data-aos-delay="200">
           <div class="stat-item">
-            <div class="stat-number" data-count="99" data-suffix=".9%">0</div>
-            <div class="stat-label">Uptime Guarantee</div>
+            <div class="stat-number" data-cms="home.statsBand3Value" data-cms-label="Stat: Uptime Guarantee">99.9%</div>
+            <div class="stat-label" data-cms="home.statsBand3Label" data-cms-label="Stat label: Uptime Guarantee">Uptime Guarantee</div>
           </div>
         </div>
         <div class="col-6 col-md-3" data-aos="fade-up" data-aos-delay="300">
           <div class="stat-item">
-            <div class="stat-number" data-count="50" data-suffix="+">0</div>
-            <div class="stat-label">Certified Experts</div>
+            <div class="stat-number" data-cms="home.statsBand4Value" data-cms-label="Stat: Certified Experts">50+</div>
+            <div class="stat-label" data-cms="home.statsBand4Label" data-cms-label="Stat label: Certified Experts">Certified Experts</div>
           </div>
         </div>
       </div>
@@ -326,87 +262,19 @@
         <h2 class="section-title" data-cms="home.productsTitle">InfraMind Platform Suite</h2>
         <p class="section-subtitle" data-cms="home.productsSubtitle">Purpose-built enterprise software designed to streamline operations and accelerate growth.</p>
       </div>
-      <div class="row g-4">
-        <div class="col-md-6 col-lg-4" data-aos="fade-up" data-cms-product>
+      <div class="row g-4" data-cms-list="products_list">
+        <div class="col-md-6 col-lg-4" data-cms-template data-aos="fade-up" style="display:none" data-cms-product>
           <div class="product-card">
             <div class="product-card-header">
-              <span class="product-badge" data-cms-product-badge>Asset Management</span>
-              <h3 data-cms-product-title>InfraMind EAMS</h3>
-              <p data-cms-product-desc>Enterprise Asset Management System for complete lifecycle tracking.</p>
+              <span class="product-badge" data-cms-item="badge" data-cms-product-badge>Category</span>
+              <h3 data-cms-item="title" data-cms-product-title>Product Name</h3>
+              <p data-cms-item="description" data-cms-product-desc>Product description.</p>
             </div>
             <div class="product-card-body">
               <ul class="product-features">
-                <li><i class="fa-solid fa-check"></i> Asset tracking &amp; depreciation</li>
-                <li><i class="fa-solid fa-check"></i> Maintenance scheduling</li>
-                <li><i class="fa-solid fa-check"></i> Compliance reporting</li>
-              </ul>
-              <a href="products/" class="card-link">View product <i class="fa-solid fa-arrow-right"></i></a>
-            </div>
-          </div>
-        </div>
-        <div class="col-md-6 col-lg-4" data-aos="fade-up" data-aos-delay="100" data-cms-product>
-          <div class="product-card">
-            <div class="product-card-header">
-              <span class="product-badge" data-cms-product-badge>Transport</span>
-              <h3 data-cms-product-title>InfraMind TMS</h3>
-              <p data-cms-product-desc>Transport Management System for logistics optimization.</p>
-            </div>
-            <div class="product-card-body">
-              <ul class="product-features">
-                <li><i class="fa-solid fa-check"></i> Route optimization</li>
-                <li><i class="fa-solid fa-check"></i> Fleet management</li>
-                <li><i class="fa-solid fa-check"></i> Real-time tracking</li>
-              </ul>
-              <a href="products/" class="card-link">View product <i class="fa-solid fa-arrow-right"></i></a>
-            </div>
-          </div>
-        </div>
-        <div class="col-md-6 col-lg-4" data-aos="fade-up" data-aos-delay="200" data-cms-product>
-          <div class="product-card">
-            <div class="product-card-header">
-              <span class="product-badge" data-cms-product-badge>Support</span>
-              <h3 data-cms-product-title>InfraMind ServiceDesk</h3>
-              <p data-cms-product-desc>IT service management platform for helpdesk operations.</p>
-            </div>
-            <div class="product-card-body">
-              <ul class="product-features">
-                <li><i class="fa-solid fa-check"></i> Ticket management</li>
-                <li><i class="fa-solid fa-check"></i> SLA monitoring</li>
-                <li><i class="fa-solid fa-check"></i> Knowledge base</li>
-              </ul>
-              <a href="products/" class="card-link">View product <i class="fa-solid fa-arrow-right"></i></a>
-            </div>
-          </div>
-        </div>
-        <div class="col-md-6 col-lg-6" data-aos="fade-up" data-cms-product>
-          <div class="product-card">
-            <div class="product-card-header">
-              <span class="product-badge" data-cms-product-badge>Healthcare</span>
-              <h3 data-cms-product-title>InfraMind PACS</h3>
-              <p data-cms-product-desc>Picture Archiving and Communication System for medical imaging.</p>
-            </div>
-            <div class="product-card-body">
-              <ul class="product-features">
-                <li><i class="fa-solid fa-check"></i> DICOM compliance</li>
-                <li><i class="fa-solid fa-check"></i> Secure image storage</li>
-                <li><i class="fa-solid fa-check"></i> Multi-site access</li>
-              </ul>
-              <a href="products/" class="card-link">View product <i class="fa-solid fa-arrow-right"></i></a>
-            </div>
-          </div>
-        </div>
-        <div class="col-md-6 col-lg-6" data-aos="fade-up" data-aos-delay="100" data-cms-product>
-          <div class="product-card">
-            <div class="product-card-header">
-              <span class="product-badge" data-cms-product-badge>Enterprise</span>
-              <h3 data-cms-product-title>InfraMind ERP</h3>
-              <p data-cms-product-desc>Comprehensive ERP solution for finance, HR, supply chain, and operations.</p>
-            </div>
-            <div class="product-card-body">
-              <ul class="product-features">
-                <li><i class="fa-solid fa-check"></i> Financial management</li>
-                <li><i class="fa-solid fa-check"></i> HR &amp; payroll</li>
-                <li><i class="fa-solid fa-check"></i> Supply chain integration</li>
+                <li><i class="fa-solid fa-check"></i> Feature one</li>
+                <li><i class="fa-solid fa-check"></i> Feature two</li>
+                <li><i class="fa-solid fa-check"></i> Feature three</li>
               </ul>
               <a href="products/" class="card-link">View product <i class="fa-solid fa-arrow-right"></i></a>
             </div>

@@ -219,6 +219,7 @@
     }
 
     if (window.fixSiteLinks) window.fixSiteLinks();
+    document.dispatchEvent(new CustomEvent('cmsContentApplied'));
   }
 
   function getContentApiUrl() {

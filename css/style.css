@@ -315,10 +315,26 @@ body.page-inner .navbar-imt {
 
 .footer-brand-link .brand-name {
   font-size: 1.15rem;
+  background: linear-gradient(135deg, #93C5FD 0%, #3B82F6 45%, #06B6D4 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+}
+
+.footer-brand-link .brand-name span,
+.footer-brand-link .brand-name .brand-highlight {
+  background: inherit;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
 }
 
 .footer-brand-link .brand-tagline {
   font-size: 0.58rem;
+  color: #93C5FD;
+  letter-spacing: 0.1em;
 }
 
 .navbar-brand-imt .brand-icon {

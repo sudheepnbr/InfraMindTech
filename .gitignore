@@ -10,3 +10,20 @@ Thumbs.db
 *.log
 update comand.txt
 Capture.PNG
+
+# Backend — runs on Render only, not published to GitHub
+backend-local/
+server.py
+requirements.txt
+render.yaml
+start-cms.bat
+admin/
+
+# Duplicate / unused logo assets (site uses images/logo-nobg-icon.png)
+logo.png
+logo-nobg.png
+images/logo.png
+images/logo-nobg.png
+images/logo-cropped.png
+images/logo-full.png
+images/logo-header.png

@@ -48,14 +48,6 @@
     display: none;
   }
 
-  .navbar-imt > .navbar-inner .navbar-brand-imt .brand-tagline {
-    display: none;
-  }
-
-  .mobile-nav-header .brand-tagline {
-    display: block;
-  }
-
   .nav-toggle {
     display: flex;
     align-items: center;

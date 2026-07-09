@@ -1,0 +1,102 @@
+{\rtf1\ansi\deff0
+{\fonttbl{\f0 Calibri;}}
+\fs22
+\pard\qc\b InfraMindTech Website\par
+\pard\qc Structure & Technology Stack Documentation\par
+\pard\qc Generated: July 10, 2026\par
+\pard\par
+
+\pard\b\fs28 1. Live URLs\par
+\pard\fs22\b0
+Public website: https://sudheepnbr.github.io/InfraMindTech/\par
+Backend + CMS API: https://inframindtech.onrender.com/\par
+Admin panel: https://inframindtech.onrender.com/admin/\par
+GitHub repository: https://github.com/sudheepnbr/InfraMindTech\par
+\pard\par
+
+\pard\b\fs28 2. Architecture Overview\par
+\pard\fs22\b0
+- GitHub (main branch) stores the full codebase.\par
+- GitHub Actions deploys frontend-only files to gh-pages branch.\par
+- Render auto-deploys Flask backend, CMS admin, and content API.\par
+- GitHub Pages serves the static public website.\par
+\pard\par
+
+\pard\b\fs28 3. Frontend Stack\par
+\pard\fs22\b0
+Markup: HTML5 (static pages)\par
+CSS: Custom CSS + Bootstrap 5.3.3\par
+JavaScript: Vanilla JS\par
+Icons: Font Awesome 6.5.1\par
+Fonts: Google Fonts (Inter)\par
+Animations: AOS 2.3.4 + GSAP 3.12.5\par
+Layout: Shared partials via includes.js\par
+\pard\par
+
+\pard\b\fs28 4. Backend Stack (Render Only)\par
+\pard\fs22\b0
+Language: Python 3.11\par
+Framework: Flask 3.x\par
+Server: Gunicorn\par
+Config: render.yaml\par
+Entry point: server.py\par
+Content storage: data/content.json\par
+Dependencies: flask>=3.0.0, gunicorn>=21.0.0\par
+\pard\par
+
+\pard\b\fs28 5. CMS / Admin Panel\par
+\pard\fs22\b0
+Admin UI: admin/index.html, admin.js, admin.css\par
+Content store: data/content.json\par
+Local dev: python server.py -> http://localhost:8080\par
+Local admin: http://localhost:8080/admin/\par
+Environment: .env (not in git)\par
+\pard\par
+
+\pard\b\fs28 6. Deployment\par
+\pard\fs22\b0
+GitHub Pages: .github/workflows/deploy-pages.yml -> gh-pages branch\par
+Render build: pip install -r requirements.txt\par
+Render start: gunicorn server:app --bind 0.0.0.0:$PORT\par
+\pard\par
+
+\pard\b\fs28 7. Website Page Structure\par
+\pard\fs22\b0
+Home -> /\par
+Solutions -> /solutions/ (Home > Solutions)\par
+Services -> /services/ (Home > Services)\par
+Products -> /products/ (Home > Products)\par
+Industries -> /industries/ (Home > Industries)\par
+Resources -> /resources/ (Home > Resources)\par
+About -> /about/ (Home > About)\par
+Contact -> /contact/ (Home > Contact)\par
+\pard\par
+
+\pard\b\fs28 8. Project Folder Structure\par
+\pard\fs22\b0
+E:\\Website\\\par
+  index.html, solutions/, services/, products/\par
+  industries/, resources/, about/, contact/\par
+  partials/, css/, js/, images/, data/\par
+  admin/, server.py, requirements.txt, render.yaml\par
+  .github/workflows/\par
+\pard\par
+
+\pard\b\fs28 9. Navigation & Branding\par
+\pard\fs22\b0
+- Header links go to dedicated pages with breadcrumbs.\par
+- Logo: iMT icon + InfraMindTech + INNOVATE • INTEGRATE • INSPIRE\par
+- Inner pages use page-header, AOS animations, page transitions.\par
+- GitHub Pages loads CMS content from Render API.\par
+\pard\par
+
+\pard\b\fs28 10. Stack Summary\par
+\pard\fs22\b0
+Project type: Static frontend + JSON-backed CMS backend\par
+Frontend: HTML / CSS / Vanilla JavaScript\par
+Backend: Python Flask\par
+Hosting: GitHub Pages + Render\par
+Database: None (JSON file)\par
+Build tools: None (no npm/Webpack)\par
+Version control: Git + GitHub\par
+}

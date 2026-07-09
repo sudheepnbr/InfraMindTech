@@ -21,7 +21,7 @@
   --radius: 12px;
   --radius-lg: 20px;
   --transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  --navbar-height: 64px;
+  --navbar-height: 72px;
   --gradient-primary: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
   --gradient-hero: linear-gradient(135deg, #EFF6FF 0%, #F0FDFA 50%, #F8FAFC 100%);
 }
@@ -260,9 +260,9 @@ body.page-inner .navbar-imt {
 }
 
 .brand-tagline {
-  font-size: 0.52rem;
+  font-size: 0.62rem;
   font-weight: 600;
-  letter-spacing: 0.1em;
+  letter-spacing: 0.08em;
   color: var(--muted);
   text-transform: uppercase;
   white-space: nowrap;

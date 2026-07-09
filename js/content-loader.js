@@ -233,34 +233,43 @@
     return 'https://inframindtech.onrender.com/api/content';
   }
 
+  function isRemoteApi() {
+    return getContentApiUrl().indexOf('http') === 0;
+  }
+
   function fetchContent() {
     var url = getContentApiUrl() + '?v=' + Date.now();
     var attempts = 0;
-    var maxAttempts = 3;
+    var maxAttempts = isRemoteApi() ? 5 : 2;
 
     function tryApi() {
       attempts += 1;
       var controller = new AbortController();
-      var timeout = setTimeout(function () { controller.abort(); }, 20000);
+      var timeout = setTimeout(function () { controller.abort(); }, isRemoteApi() ? 45000 : 20000);
+      var opts = { cache: 'no-store', signal: controller.signal };
+      if (isRemoteApi()) opts.mode = 'cors';
 
-      return fetch(url, { cache: 'no-store', signal: controller.signal })
+      return fetch(url, opts)
         .then(function (r) {
           clearTimeout(timeout);
           if (!r.ok) throw new Error('API ' + r.status);
           return r.json();
         })
-        .catch(function (err) {
+        .catch(function () {
           clearTimeout(timeout);
           if (attempts < maxAttempts) {
             return new Promise(function (resolve) {
-              setTimeout(resolve, 2500);
+              setTimeout(resolve, 3000);
             }).then(tryApi);
           }
-          throw err;
+          throw new Error('API unavailable');
         });
     }
 
     return tryApi().catch(function () {
+      if (isRemoteApi()) {
+        console.warn('CMS API unavailable — showing cached site content. Refresh again in a moment.');
+      }
       return fetch('data/content.json?v=' + Date.now(), { cache: 'no-store' })
         .then(function (r) {
           if (!r.ok) throw new Error('Static content unavailable');
@@ -274,6 +283,8 @@
       .then(applyContent)
       .catch(function () {});
   }
+
+  window.loadCmsContent = loadContent;
 
   function bootContent() {
     if (document.getElementById('site-header')) {

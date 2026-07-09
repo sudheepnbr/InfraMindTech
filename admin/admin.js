@@ -45,6 +45,7 @@
     site: [
       { key: 'companyName', label: 'Company Name', type: 'text' },
       { key: 'tagline', label: 'Tagline', type: 'text' },
+      { key: 'logoTagline', label: 'Logo Tagline (under brand name)', type: 'text', full: true },
       { key: 'metaDescription', label: 'SEO Description', type: 'textarea', full: true },
       { key: 'phone', label: 'Phone', type: 'text' },
       { key: 'phone2', label: 'Phone 2', type: 'text' },

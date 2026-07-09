@@ -50,6 +50,11 @@ html {
   scroll-padding-top: var(--navbar-height);
 }
 
+section[id],
+.hero[id] {
+  scroll-margin-top: var(--navbar-height);
+}
+
 body {
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   background-color: var(--bg);
@@ -1084,7 +1089,7 @@ body.page-inner .navbar-imt {
 
 /* ---- Page Header (inner pages) ---- */
 .page-header {
-  padding: calc(var(--navbar-height) + 60px) 0 60px;
+  padding: 40px 0 48px;
   background: var(--gradient-hero);
   position: relative;
   overflow: hidden;

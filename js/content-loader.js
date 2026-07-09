@@ -13,9 +13,58 @@
     }, obj);
   }
 
+  const PAGE_TITLE_PREFIXES = {
+    about: 'About ',
+    services: 'Our ',
+    products: 'InfraMind ',
+    contact: 'Get in '
+  };
+
+  function renderPageTitle(h1, section, data) {
+    if (!h1 || !data) return;
+
+    if (data.pageTitleHighlight) {
+      h1.innerHTML =
+        `${data.pageTitleBefore || ''}<span class="text-gradient">${data.pageTitleHighlight}</span>${data.pageTitleAfter || ''}`;
+      return;
+    }
+
+    const title = data.pageTitle || '';
+    const prefix = data.pageTitleBefore || PAGE_TITLE_PREFIXES[section] || '';
+    if (prefix && title.startsWith(prefix)) {
+      h1.innerHTML = `${prefix}<span class="text-gradient">${title.slice(prefix.length)}</span>`;
+      return;
+    }
+
+    if (title) h1.textContent = title;
+  }
+
+  function applyPageTitles(content) {
+    ['about', 'services', 'products', 'contact'].forEach(section => {
+      const data = content[section];
+      if (!data) return;
+
+      const titled = document.querySelector(`[data-cms-page-title="${section}"]`);
+      if (titled) {
+        renderPageTitle(titled, section, data);
+        return;
+      }
+
+      const legacy = document.querySelector(`[data-cms="${section}.pageTitle"]`);
+      if (legacy) {
+        const h1 = legacy.closest('h1');
+        if (h1) renderPageTitle(h1, section, data);
+      }
+    });
+  }
+
   function applyContent(content) {
+    applyPageTitles(content);
+
     document.querySelectorAll('[data-cms]').forEach(el => {
-      const val = getNestedValue(content, el.getAttribute('data-cms'));
+      const key = el.getAttribute('data-cms');
+      if (key && key.endsWith('.pageTitle')) return;
+      const val = getNestedValue(content, key);
       if (val !== undefined) el.textContent = val;
     });
 
@@ -98,24 +147,23 @@
 
     if (content.header) {
       const h = content.header;
-      const navMap = [
-        ['a[href="./"]', 'navHome'],
-        ['a[href="./#solutions"]', 'navSolutions'],
-        ['a[href="services/"]', 'navServices'],
-        ['a[href="products/"]', 'navProducts'],
-        ['a[href="./#industries"]', 'navIndustries'],
-        ['a[href="./#faq"]', 'navResources'],
-        ['a[href="about/"]', 'navAbout'],
-        ['a[href="contact/"]', 'navContact']
-      ];
-      document.querySelectorAll('.nav-links-imt a, .mobile-nav-links a').forEach(link => {
-        const href = link.getAttribute('href');
-        const match = navMap.find(([sel]) => sel.includes(href));
-        if (match && h[match[1]]) link.textContent = h[match[1]];
+      const navLabelMap = {
+        home: 'navHome',
+        solutions: 'navSolutions',
+        services: 'navServices',
+        products: 'navProducts',
+        industries: 'navIndustries',
+        resources: 'navResources',
+        about: 'navAbout',
+        contact: 'navContact'
+      };
+      document.querySelectorAll('[data-nav]').forEach(link => {
+        const labelKey = navLabelMap[link.dataset.nav];
+        if (labelKey && h[labelKey]) link.textContent = h[labelKey];
       });
       document.querySelectorAll('.nav-actions-imt .btn-imt-primary, .mobile-nav-cta .btn-imt-primary').forEach(btn => {
         if (h.ctaButton) btn.textContent = h.ctaButton;
-        if (h.ctaLink) btn.href = h.ctaLink;
+        if (h.ctaLink && window.resolveSiteUrl) btn.href = window.resolveSiteUrl(h.ctaLink);
       });
       document.querySelectorAll('.brand-icon i').forEach(icon => {
         if (!h.logoIcon) return;
@@ -166,6 +214,8 @@
         document.querySelectorAll('[data-cms-hero-video]').forEach(v => { v.src = m.heroVideo; v.style.display = 'block'; });
       }
     }
+
+    if (window.fixSiteLinks) window.fixSiteLinks();
   }
 
   function getContentApiUrl() {

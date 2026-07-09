@@ -19,7 +19,16 @@
 @media (max-width: 575.98px) {
   .navbar-brand-imt .brand-mark {
     height: calc(var(--navbar-height) - 12px);
-    max-width: 105px;
+    max-width: 44px;
+  }
+
+  .navbar-brand-imt .brand-name {
+    font-size: 0.9rem;
+  }
+
+  .navbar-brand-imt .brand-tagline {
+    font-size: 0.45rem;
+    letter-spacing: 0.06em;
   }
 
   .navbar-brand-imt .brand-logo {

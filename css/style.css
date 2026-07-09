@@ -21,7 +21,7 @@
   --radius: 12px;
   --radius-lg: 20px;
   --transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  --navbar-height: 64px;
+  --navbar-height: 72px;
   --gradient-primary: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
   --gradient-hero: linear-gradient(135deg, #EFF6FF 0%, #F0FDFA 50%, #F8FAFC 100%);
 }
@@ -229,18 +229,50 @@ body.page-inner .navbar-imt {
 .navbar-brand-imt {
   display: inline-flex;
   align-items: center;
+  gap: 10px;
   height: 100%;
   flex-shrink: 0;
-  line-height: 0;
+  line-height: 1.1;
   font-size: 1.375rem;
   font-weight: 800;
   color: var(--text);
+  text-decoration: none;
+}
+
+.brand-copy {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.brand-name {
+  font-size: 1.05rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  white-space: nowrap;
+  color: var(--text);
+  line-height: 1.1;
+}
+
+.brand-name .brand-highlight {
+  color: var(--primary);
+}
+
+.brand-tagline {
+  font-size: 0.62rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  color: var(--muted);
+  text-transform: uppercase;
+  white-space: nowrap;
+  line-height: 1.2;
 }
 
 .navbar-brand-imt .brand-mark {
   height: calc(var(--navbar-height) - 10px);
   width: auto;
-  max-width: 125px;
+  max-width: 52px;
   object-fit: contain;
   object-position: left center;
   display: block;
@@ -261,20 +293,32 @@ body.page-inner .navbar-imt {
   max-width: 180px;
 }
 
-.brand-logo-footer {
+.brand-logo-footer,
+.footer-brand-link .brand-mark {
   height: 48px;
   width: auto;
-  max-width: 130px;
+  max-width: 52px;
   object-fit: contain;
   object-position: left center;
   display: block;
+  flex-shrink: 0;
 }
 
 .footer-brand-link {
   display: inline-flex;
   align-items: center;
+  gap: 12px;
   margin-bottom: 16px;
-  line-height: 0;
+  line-height: 1.1;
+  text-decoration: none;
+}
+
+.footer-brand-link .brand-name {
+  font-size: 1.15rem;
+}
+
+.footer-brand-link .brand-tagline {
+  font-size: 0.58rem;
 }
 
 .navbar-brand-imt .brand-icon {
@@ -295,6 +339,10 @@ body.page-inner .navbar-imt {
   color: var(--muted);
   display: block;
   letter-spacing: 0.02em;
+}
+
+.mobile-nav-header .brand-copy {
+  display: flex;
 }
 
 .nav-links-imt {

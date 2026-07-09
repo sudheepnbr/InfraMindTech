@@ -147,6 +147,7 @@
       '[data-cms]', '[data-cms-html]', '[data-cms-href]', '[data-cms-hero-title]',
       '[data-cms-page-title]', '[data-nav]', '[data-cms-service]', '[data-cms-service-title]',
       '[data-cms-service-desc]', '[data-cms-testimonial]', '[data-cms-faq]', '[data-cms-product]',
+      '.stats-section .stat-number', '.stats-section .stat-label',
       'img[data-cms-logo-icon]', 'img[data-cms-logo]', 'img[data-cms-hero-image]',
       '.nav-actions-imt .btn-imt-primary', '.mobile-nav-cta .btn-imt-primary'
     ].join(',');

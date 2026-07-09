@@ -13,22 +13,59 @@
     }, obj);
   }
 
-  function applyContent(content) {
-    document.querySelectorAll('[data-cms]').forEach(el => {
-      const val = getNestedValue(content, el.getAttribute('data-cms'));
-      if (val !== undefined) el.textContent = val;
-    });
+  const PAGE_TITLE_PREFIXES = {
+    about: 'About ',
+    services: 'Our ',
+    products: 'InfraMind ',
+    contact: 'Get in '
+  };
 
-    document.querySelectorAll('[data-cms-page-title]').forEach(el => {
-      const section = el.getAttribute('data-cms-page-title');
-      const data = getNestedValue(content, section);
+  function renderPageTitle(h1, section, data) {
+    if (!h1 || !data) return;
+
+    if (data.pageTitleHighlight) {
+      h1.innerHTML =
+        `${data.pageTitleBefore || ''}<span class="text-gradient">${data.pageTitleHighlight}</span>${data.pageTitleAfter || ''}`;
+      return;
+    }
+
+    const title = data.pageTitle || '';
+    const prefix = data.pageTitleBefore || PAGE_TITLE_PREFIXES[section] || '';
+    if (prefix && title.startsWith(prefix)) {
+      h1.innerHTML = `${prefix}<span class="text-gradient">${title.slice(prefix.length)}</span>`;
+      return;
+    }
+
+    if (title) h1.textContent = title;
+  }
+
+  function applyPageTitles(content) {
+    ['about', 'services', 'products', 'contact'].forEach(section => {
+      const data = content[section];
       if (!data) return;
-      if (data.pageTitleHighlight !== undefined) {
-        el.innerHTML =
-          `${data.pageTitleBefore || ''}<span class="text-gradient">${data.pageTitleHighlight || ''}</span>${data.pageTitleAfter || ''}`;
-      } else if (data.pageTitle) {
-        el.textContent = data.pageTitle;
+
+      const titled = document.querySelector(`[data-cms-page-title="${section}"]`);
+      if (titled) {
+        renderPageTitle(titled, section, data);
+        return;
       }
+
+      const legacy = document.querySelector(`[data-cms="${section}.pageTitle"]`);
+      if (legacy) {
+        const h1 = legacy.closest('h1');
+        if (h1) renderPageTitle(h1, section, data);
+      }
+    });
+  }
+
+  function applyContent(content) {
+    applyPageTitles(content);
+
+    document.querySelectorAll('[data-cms]').forEach(el => {
+      const key = el.getAttribute('data-cms');
+      if (key && key.endsWith('.pageTitle')) return;
+      const val = getNestedValue(content, key);
+      if (val !== undefined) el.textContent = val;
     });
 
     document.querySelectorAll('[data-cms-html]').forEach(el => {

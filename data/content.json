@@ -70,7 +70,7 @@
   "header": {
     "logoIcon": "fa-brain",
     "ctaButton": "Request Quote",
-    "ctaLink": "contact/",
+    "ctaLink": "#contact",
     "navHome": "Home",
     "navSolutions": "Solutions",
     "navServices": "Services",

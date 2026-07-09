@@ -7,14 +7,14 @@
   const PAGE_NAMES = ['about', 'services', 'products', 'contact'];
 
   const NAV_ROUTES = {
-    home: '',
+    home: '#home',
     solutions: '#solutions',
-    services: 'services/',
-    products: 'products/',
+    services: '#services',
+    products: '#products',
     industries: '#industries',
     resources: '#faq',
-    about: 'about/',
-    contact: 'contact/'
+    about: '#about',
+    contact: '#contact'
   };
 
   function getSiteRoot() {
@@ -35,7 +35,7 @@
     });
 
     document.querySelectorAll('.navbar-brand-imt, .footer-brand-link').forEach(link => {
-      link.href = getSiteRoot();
+      link.href = resolveSiteUrl('#home');
     });
 
     document.querySelectorAll('.footer-links a').forEach(link => {
@@ -47,8 +47,9 @@
 
     document.querySelectorAll('.nav-actions-imt .btn-imt-primary, .mobile-nav-cta .btn-imt-primary').forEach(btn => {
       const link = btn.getAttribute('href');
-      if (link && !link.startsWith('http') && !link.startsWith('#')) {
-        btn.href = resolveSiteUrl(link);
+      if (!link || link.startsWith('http')) return;
+      if (link.startsWith('#') || !link.includes('://')) {
+        btn.href = link.startsWith('#') ? resolveSiteUrl(link) : resolveSiteUrl(link);
       }
     });
 
@@ -67,6 +68,7 @@
 
   window.fixSiteLinks = fixSiteLinks;
   window.resolveSiteUrl = resolveSiteUrl;
+  window.NAV_ROUTES = NAV_ROUTES;
 
   function getCurrentPage() {
     if (document.body.dataset.page) return document.body.dataset.page;
@@ -85,6 +87,7 @@
 
   function setActiveNav() {
     const page = getCurrentPage();
+    if (page === 'home') return;
     document.querySelectorAll('[data-nav]').forEach(link => {
       link.classList.toggle('active', link.dataset.nav === page);
     });

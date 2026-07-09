@@ -11,13 +11,8 @@ Thumbs.db
 update comand.txt
 Capture.PNG
 
-# Backend — runs on Render only, not published to GitHub
+# Local-only backup copy (not needed in repo)
 backend-local/
-server.py
-requirements.txt
-render.yaml
-start-cms.bat
-admin/
 
 # Duplicate / unused logo assets (site uses images/logo-nobg-icon.png)
 logo.png

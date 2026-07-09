@@ -50,6 +50,11 @@ html {
   scroll-padding-top: var(--navbar-height);
 }
 
+section[id],
+.hero[id] {
+  scroll-margin-top: var(--navbar-height);
+}
+
 body {
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   background-color: var(--bg);

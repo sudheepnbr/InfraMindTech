@@ -242,6 +242,10 @@
 
   window.addEventListener('message', function (e) {
     if (e.data && e.data.type === 'cms-update-dom') applyDomUpdates(e.data.updates || []);
+    if (e.data && e.data.type === 'cms-reload-content' && e.data.content) {
+      if (window.applyCmsContent) window.applyCmsContent(e.data.content);
+      else bindEditMode();
+    }
   });
 
   function applyDomUpdates(updates) {

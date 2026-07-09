@@ -57,8 +57,37 @@
   var mediaBtn = document.getElementById('mediaBtn');
   var mediaModal = document.getElementById('mediaModal');
   var mediaModalBody = document.getElementById('mediaModalBody');
+  var listModal = document.getElementById('listModal');
+  var listModalBody = document.getElementById('listModalBody');
+  var listModalTitle = document.getElementById('listModalTitle');
+  var deleteEditBtn = document.getElementById('deleteEdit');
 
   var currentPage = PAGES[0];
+  var currentListKey = null;
+
+  var LIST_CONFIG = {
+    services_list: {
+      label: 'Services',
+      editType: 'service',
+      previewPage: 'home',
+      fields: [
+        { key: 'title', label: 'Title' },
+        { key: 'description', label: 'Description', textarea: true }
+      ],
+      defaultItem: { title: 'New Service', description: 'Service description here.' }
+    },
+    products_list: {
+      label: 'Products',
+      editType: 'product',
+      previewPage: 'products',
+      fields: [
+        { key: 'title', label: 'Product Name' },
+        { key: 'badge', label: 'Badge' },
+        { key: 'description', label: 'Description', textarea: true }
+      ],
+      defaultItem: { title: 'New Product', badge: 'Category', description: 'Product description here.' }
+    }
+  };
 
   function getNested(obj, path) {
     return path.split('.').reduce(function (acc, key) {
@@ -160,7 +189,7 @@
       if (doc.getElementById('cms-edit-inject')) return;
       var script = doc.createElement('script');
       script.id = 'cms-edit-inject';
-      script.src = '/admin/edit-inject.js?v=4';
+      script.src = '/admin/edit-inject.js?v=6';
       doc.body.appendChild(script);
     } catch (err) {
       console.warn('Cannot inject edit script:', err);
@@ -169,7 +198,7 @@
 
   function loadPreviewPage(page) {
     previewReady = false;
-    sitePreview.src = page.url;
+    sitePreview.src = page.url + (page.url.indexOf('?') >= 0 ? '&' : '?') + 'cms-edit=1';
   }
 
   sitePreview.addEventListener('load', function () {
@@ -212,6 +241,11 @@
 
     if (data.editType === 'text' || data.editType === 'html') {
       html = fieldHtml('editVal', humanLabel(data.key), data.value, data.editType === 'html' ? 5 : 2);
+    } else if (data.editType === 'image') {
+      html = fieldHtml('editVal', humanLabel(data.key), data.value, 1);
+      html += '<img id="imgPreview" class="media-preview" alt="Preview" src="' + (data.value || '').replace(/"/g, '&quot;') + '">';
+      html += '<button type="button" class="btn-secondary" id="uploadImgBtn" style="width:100%;margin-top:12px"><i class="fa-solid fa-upload"></i> Upload new image</button>';
+      html += '<input type="file" id="imgFile" accept="image/*" hidden>';
     } else if (data.editType === 'hero') {
       var h = content.home || {};
       html = fieldHtml('heroBefore', 'Before highlight', h.heroTitleBefore || '', 1) +
@@ -249,6 +283,40 @@
 
     editDrawerBody.innerHTML = html;
     editDrawer.classList.remove('is-hidden');
+
+    var canDelete = data.editType === 'service' || data.editType === 'product' || data.editType === 'testimonial' || data.editType === 'faq';
+    deleteEditBtn.classList.toggle('is-hidden', !canDelete || data.index === undefined);
+
+    if (data.editType === 'image') {
+      var urlInput = document.getElementById('editVal');
+      var preview = document.getElementById('imgPreview');
+      var fileInput = document.getElementById('imgFile');
+      var uploadBtn = document.getElementById('uploadImgBtn');
+      if (urlInput && preview) {
+        urlInput.addEventListener('input', function () { preview.src = urlInput.value; });
+      }
+      if (uploadBtn && fileInput) {
+        uploadBtn.addEventListener('click', function () { fileInput.click(); });
+        fileInput.addEventListener('change', async function () {
+          if (!fileInput.files || !fileInput.files[0]) return;
+          var form = new FormData();
+          form.append('file', fileInput.files[0]);
+          uploadBtn.disabled = true;
+          uploadBtn.textContent = 'Uploading…';
+          try {
+            var res = await fetch('/api/upload', { method: 'POST', body: form, credentials: 'same-origin' });
+            var up = await res.json();
+            if (!res.ok) throw new Error(up.error || 'Upload failed');
+            if (urlInput) urlInput.value = up.url;
+            if (preview) preview.src = up.url;
+          } catch (err) {
+            alert('Upload failed: ' + err.message);
+          }
+          uploadBtn.disabled = false;
+          uploadBtn.innerHTML = '<i class="fa-solid fa-upload"></i> Upload new image';
+        });
+      }
+    }
   }
 
   function closeDrawer() {
@@ -271,10 +339,10 @@
     if (!currentEdit) return;
     var updates = [];
 
-    if (currentEdit.editType === 'text' || currentEdit.editType === 'html') {
+    if (currentEdit.editType === 'text' || currentEdit.editType === 'html' || currentEdit.editType === 'image') {
       var v = val('editVal');
       setNested(content, currentEdit.key, v);
-      updates.push({ key: currentEdit.key, value: v, editType: currentEdit.editType });
+      updates.push({ key: currentEdit.key, value: v, editType: currentEdit.editType === 'image' ? 'image' : currentEdit.editType });
     } else if (currentEdit.editType === 'hero') {
       if (!content.home) content.home = {};
       content.home.heroTitleBefore = val('heroBefore');
@@ -337,6 +405,120 @@
     setDirty(true);
     closeDrawer();
     showToast('Updated — click Save All to publish');
+  }
+
+  function deleteCurrentEdit() {
+    if (!currentEdit || currentEdit.index === undefined) return;
+    var keyMap = { service: 'services_list', product: 'products_list', testimonial: 'testimonials', faq: 'faq' };
+    var listKey = keyMap[currentEdit.editType];
+    if (!listKey || !content[listKey]) return;
+    var name = (content[listKey][currentEdit.index] || {}).title || (content[listKey][currentEdit.index] || {}).question || 'this item';
+    if (!confirm('Delete "' + name + '"? This cannot be undone until you Save All.')) return;
+    content[listKey].splice(currentEdit.index, 1);
+    setDirty(true);
+    closeDrawer();
+    reloadPreviewContent();
+    showToast('Deleted — click Save All to publish');
+    if (currentListKey === listKey) openListManager(listKey);
+  }
+
+  function reloadPreviewContent() {
+    if (sitePreview.contentWindow) {
+      sitePreview.contentWindow.postMessage({ type: 'cms-reload-content', content: content }, '*');
+    }
+  }
+
+  function openListManager(listKey) {
+    currentListKey = listKey;
+    var cfg = LIST_CONFIG[listKey];
+    if (!cfg) return;
+    listModalTitle.innerHTML = '<i class="fa-solid fa-list"></i> Manage ' + cfg.label;
+    listModal.classList.remove('is-hidden');
+    renderListManager(listKey);
+    var preview = PAGES.find(function (p) { return p.id === cfg.previewPage; });
+    if (preview && currentPage.id !== preview.id) switchPage(preview);
+  }
+
+  function renderListManager(listKey) {
+    var cfg = LIST_CONFIG[listKey];
+    if (!content[listKey]) content[listKey] = [];
+    var items = content[listKey];
+    var html = '<p class="list-modal-tip">Add, edit, or remove items. Click <strong>Save All</strong> after changes to publish live.</p>';
+    html += '<button type="button" class="btn-add-list" id="addListItemBtn"><i class="fa-solid fa-plus"></i> Add New ' + cfg.label.slice(0, -1) + '</button>';
+
+    items.forEach(function (item, i) {
+      html += '<div class="list-manage-card" data-list-index="' + i + '">';
+      html += '<div class="list-manage-header"><strong>' + (item.title || item.question || ('Item ' + (i + 1))) + '</strong>';
+      html += '<div class="list-manage-actions">';
+      html += '<button type="button" class="btn-icon-edit" data-edit-index="' + i + '" title="Edit"><i class="fa-solid fa-pen"></i></button>';
+      html += '<button type="button" class="btn-icon-delete" data-delete-index="' + i + '" title="Delete"><i class="fa-solid fa-trash"></i></button>';
+      html += '</div></div>';
+      cfg.fields.forEach(function (field) {
+        var val = (item[field.key] || '').replace(/"/g, '&quot;');
+        if (field.textarea) {
+          html += '<div class="form-field"><label>' + field.label + '</label><textarea data-field="' + field.key + '" rows="2">' + (item[field.key] || '') + '</textarea></div>';
+        } else {
+          html += '<div class="form-field"><label>' + field.label + '</label><input type="text" data-field="' + field.key + '" value="' + val + '"></div>';
+        }
+      });
+      html += '</div>';
+    });
+
+    if (!items.length) {
+      html += '<p class="text-muted" style="text-align:center;padding:20px">No items yet. Click Add New above.</p>';
+    }
+
+    listModalBody.innerHTML = html;
+
+    document.getElementById('addListItemBtn').addEventListener('click', function () {
+      if (!content[listKey]) content[listKey] = [];
+      content[listKey].push(JSON.parse(JSON.stringify(cfg.defaultItem)));
+      setDirty(true);
+      renderListManager(listKey);
+      reloadPreviewContent();
+      showToast('Added — edit fields and Save All');
+    });
+
+    listModalBody.querySelectorAll('[data-delete-index]').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        var idx = parseInt(btn.dataset.deleteIndex, 10);
+        var item = content[listKey][idx];
+        var name = (item && item.title) || (item && item.question) || 'this item';
+        if (!confirm('Delete "' + name + '"?')) return;
+        content[listKey].splice(idx, 1);
+        setDirty(true);
+        renderListManager(listKey);
+        reloadPreviewContent();
+        showToast('Deleted — click Save All to publish');
+      });
+    });
+
+    listModalBody.querySelectorAll('[data-edit-index]').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        saveListFieldsFromDom(listKey);
+        openEditDrawer({ editType: cfg.editType, index: parseInt(btn.dataset.editIndex, 10), label: cfg.label.slice(0, -1) + ' ' + (parseInt(btn.dataset.editIndex, 10) + 1) });
+      });
+    });
+
+    listModalBody.querySelectorAll('.list-manage-card input, .list-manage-card textarea').forEach(function (input) {
+      input.addEventListener('change', function () {
+        saveListFieldsFromDom(listKey);
+        setDirty(true);
+        reloadPreviewContent();
+      });
+    });
+  }
+
+  function saveListFieldsFromDom(listKey) {
+    var cfg = LIST_CONFIG[listKey];
+    if (!content[listKey]) content[listKey] = [];
+    listModalBody.querySelectorAll('.list-manage-card').forEach(function (card) {
+      var idx = parseInt(card.dataset.listIndex, 10);
+      if (!content[listKey][idx]) content[listKey][idx] = JSON.parse(JSON.stringify(cfg.defaultItem));
+      card.querySelectorAll('[data-field]').forEach(function (input) {
+        content[listKey][idx][input.dataset.field] = input.value;
+      });
+    });
   }
 
   async function saveContent() {
@@ -482,7 +664,12 @@
   document.getElementById('closeDrawer').addEventListener('click', closeDrawer);
   document.getElementById('cancelEdit').addEventListener('click', closeDrawer);
   document.getElementById('applyEdit').addEventListener('click', applyCurrentEdit);
+  deleteEditBtn.addEventListener('click', deleteCurrentEdit);
+  document.getElementById('manageServicesBtn').addEventListener('click', function () { openListManager('services_list'); });
+  document.getElementById('manageProductsBtn').addEventListener('click', function () { openListManager('products_list'); });
   mediaBtn.addEventListener('click', openMediaModal);
+  document.getElementById('closeListModal').addEventListener('click', function () { listModal.classList.add('is-hidden'); currentListKey = null; });
+  document.getElementById('listModalBackdrop').addEventListener('click', function () { listModal.classList.add('is-hidden'); currentListKey = null; });
   document.getElementById('closeMediaModal').addEventListener('click', function () { mediaModal.classList.add('is-hidden'); });
   document.getElementById('mediaModalBackdrop').addEventListener('click', function () { mediaModal.classList.add('is-hidden'); });
 

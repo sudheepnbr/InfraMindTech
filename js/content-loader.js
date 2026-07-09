@@ -310,6 +310,7 @@
   }
 
   window.loadCmsContent = loadContent;
+  window.applyCmsContent = applyContent;
 
   function bootContent() {
     if (document.getElementById('site-header')) {

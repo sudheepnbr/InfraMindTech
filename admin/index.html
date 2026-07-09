@@ -36,9 +36,11 @@
         <i class="fa-solid fa-wand-magic-sparkles"></i>
         <span>Visual Editor</span>
       </div>
-      <p class="sidebar-tip"><i class="fa-solid fa-hand-pointer"></i> Click any highlighted text on the page to edit it.</p>
+      <p class="sidebar-tip"><i class="fa-solid fa-hand-pointer"></i> Hover text or logo — click to edit. Use Save All to publish.</p>
       <nav class="sidebar-nav" id="pageNav"></nav>
       <div class="sidebar-footer">
+        <button type="button" id="manageServicesBtn" class="btn-preview"><i class="fa-solid fa-list"></i> Manage Services</button>
+        <button type="button" id="manageProductsBtn" class="btn-preview"><i class="fa-solid fa-cubes"></i> Manage Products</button>
         <button type="button" id="mediaBtn" class="btn-preview"><i class="fa-solid fa-photo-film"></i> Media Library</button>
         <a href="/" target="_blank" class="btn-preview"><i class="fa-solid fa-external-link"></i> View Live Site</a>
         <button id="logoutBtn" class="btn-logout"><i class="fa-solid fa-right-from-bracket"></i> Logout</button>
@@ -69,10 +71,22 @@
       </div>
       <div id="editDrawerBody" class="edit-drawer-body"></div>
       <div class="edit-drawer-footer">
+        <button type="button" id="deleteEdit" class="btn-danger is-hidden"><i class="fa-solid fa-trash"></i> Delete</button>
         <button type="button" id="cancelEdit" class="btn-secondary">Cancel</button>
         <button type="button" id="applyEdit" class="btn-save">Apply</button>
       </div>
     </aside>
+  </div>
+
+  <div id="listModal" class="media-modal is-hidden">
+    <div class="media-modal-backdrop" id="listModalBackdrop"></div>
+    <div class="media-modal-panel list-modal-panel">
+      <div class="edit-drawer-header">
+        <h3 id="listModalTitle"><i class="fa-solid fa-list"></i> Manage Items</h3>
+        <button type="button" id="closeListModal" class="drawer-close" aria-label="Close"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <div id="listModalBody" class="media-modal-body"></div>
+    </div>
   </div>
 
   <div id="mediaModal" class="media-modal is-hidden">
@@ -88,6 +102,6 @@
 
   <div id="saveToast" class="toast is-hidden"></div>
 
-  <script src="admin.js?v=4"></script>
+  <script src="admin.js?v=6"></script>
 </body>
 </html>

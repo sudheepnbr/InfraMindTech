@@ -1,0 +1,128 @@
+{
+  "site": {
+    "companyName": "InfraMindTech",
+    "tagline": "Intelligent Infrastructure. Secure Future.",
+    "metaDescription": "InfraMindTech — Intelligent Infrastructure. Secure Future. Enterprise IT solutions including Cloud, AI, Cyber Security, Networking, and Managed Services.",
+    "phone": "+971 4 123 4567",
+    "phone2": "+971 50 987 6543",
+    "email": "info@inframindtech.com",
+    "salesEmail": "sales@inframindtech.com",
+    "address": "Building 12, Dubai Internet City",
+    "city": "Dubai, United Arab Emirates",
+    "hours": "Monday – Friday: 8:00 AM – 6:00 PM",
+    "hoursSat": "Saturday: 9:00 AM – 1:00 PM",
+    "copyright": "© 2026 InfraMindTech. All rights reserved."
+  },
+  "home": {
+    "heroTitleBefore": "Building ",
+    "heroTitleHighlight": "Intelligent IT Infrastructure",
+    "heroTitleAfter": " for the Future",
+    "heroSubtitle": "Cloud • AI • Cyber Security • Networking • Enterprise Solutions",
+    "stat1Value": "15+",
+    "stat1Label": "Years Experience",
+    "stat2Value": "500+",
+    "stat2Label": "Clients Served",
+    "stat3Value": "99.9%",
+    "stat3Label": "Uptime SLA",
+    "servicesTitle": "Comprehensive IT Solutions",
+    "servicesSubtitle": "End-to-end technology services designed to power your digital transformation and secure your enterprise future.",
+    "solutionsTitle": "Tailored for Your Business",
+    "solutionsSubtitle": "Industry-specific solutions that address your unique challenges with proven technology frameworks.",
+    "productsTitle": "InfraMind Platform Suite",
+    "productsSubtitle": "Purpose-built enterprise software designed to streamline operations and accelerate growth.",
+    "testimonialsTitle": "What Our Clients Say",
+    "testimonialsSubtitle": "Hear from organizations that have transformed their IT infrastructure with InfraMindTech.",
+    "ctaTitle": "Ready to Transform Your IT Infrastructure?",
+    "ctaText": "Partner with InfraMindTech to build intelligent, secure, and scalable technology solutions for your enterprise."
+  },
+  "about": {
+    "pageTitle": "About InfraMindTech",
+    "pageSubtitle": "Pioneering intelligent infrastructure solutions that empower enterprises to thrive in the digital age.",
+    "storyTitle": "Building the Future of Enterprise IT",
+    "storyP1": "Founded in 2011, InfraMindTech emerged from a vision to bridge the gap between complex enterprise technology and practical business outcomes. What started as a small IT consultancy has grown into a trusted partner for over 500 organizations across the Middle East and beyond.",
+    "storyP2": "Our name reflects our core philosophy: Infrastructure forms the backbone of every digital enterprise, and Mind represents the intelligence we embed into every solution — from AI-driven automation to predictive security analytics.",
+    "mission": "To deliver intelligent, secure, and scalable IT infrastructure that enables organizations to innovate fearlessly and operate with confidence.",
+    "vision": "To be the most trusted technology partner for enterprises seeking to harness the full potential of cloud, AI, and cybersecurity."
+  },
+  "services": {
+    "pageTitle": "Our Services",
+    "pageSubtitle": "Comprehensive IT services designed to power your digital transformation from strategy to execution.",
+    "aiTitle": "AI Solutions",
+    "aiDescription": "Harness the power of artificial intelligence to automate processes, gain insights, and stay ahead of the competition. Our AI practice delivers practical, ROI-driven solutions."
+  },
+  "products": {
+    "pageTitle": "InfraMind Platform Suite",
+    "pageSubtitle": "Purpose-built enterprise software designed to streamline operations, boost productivity, and drive growth."
+  },
+  "contact": {
+    "pageTitle": "Get in Touch",
+    "pageSubtitle": "Ready to transform your IT infrastructure? Reach out and our team will respond within 24 hours.",
+    "formTitle": "Send Us a Message"
+  },
+  "header": {
+    "logoIcon": "fa-brain",
+    "ctaButton": "Request Quote",
+    "ctaLink": "contact/",
+    "navHome": "Home",
+    "navSolutions": "Solutions",
+    "navServices": "Services",
+    "navProducts": "Products",
+    "navIndustries": "Industries",
+    "navResources": "Resources",
+    "navAbout": "About",
+    "navContact": "Contact"
+  },
+  "footer": {
+    "description": "Intelligent Infrastructure. Secure Future. Empowering enterprises with cutting-edge cloud, AI, and cybersecurity solutions.",
+    "linkedin": "#",
+    "twitter": "#",
+    "facebook": "#",
+    "youtube": "#",
+    "privacyLink": "#",
+    "termsLink": "#",
+    "cookieLink": "#"
+  },
+  "media": {
+    "logo": "images/logo-nobg-icon.png?v=2",
+    "logoIcon": "images/logo-nobg-icon.png?v=2",
+    "heroImage": "",
+    "heroVideo": "",
+    "aboutImage": "",
+    "favicon": ""
+  },
+  "pricing": [
+    { "name": "Essential", "price": "$999", "period": "/month", "description": "For small businesses starting their IT journey.", "featured": false, "features": ["24/7 Helpdesk Support", "Network Monitoring", "Basic Security Suite", "Monthly Reports"] },
+    { "name": "Professional", "price": "$2,499", "period": "/month", "description": "For growing enterprises needing comprehensive IT.", "featured": true, "features": ["Everything in Essential", "Cloud Infrastructure Mgmt", "Advanced Cyber Security", "Backup & DR Services", "Quarterly Strategy Reviews"] },
+    { "name": "Enterprise", "price": "Custom", "period": "", "description": "For large organizations with complex requirements.", "featured": false, "features": ["Everything in Professional", "Dedicated Account Manager", "On-site Support Team", "Custom SLA Agreements", "AI & Analytics Platform"] }
+  ],
+  "services_list": [
+    { "title": "Cloud Infrastructure", "description": "Scalable, resilient cloud architectures on Azure, AWS, and hybrid environments tailored to your workload demands." },
+    { "title": "Microsoft 365", "description": "Complete M365 deployment, migration, and management with security hardening and user adoption programs." },
+    { "title": "Azure", "description": "Expert Azure consulting, migration, and managed services with cost optimization and governance frameworks." },
+    { "title": "AWS", "description": "Full-lifecycle AWS solutions from architecture design to DevOps automation and 24/7 cloud operations." },
+    { "title": "Cyber Security", "description": "Advanced threat detection, SOC services, compliance management, and zero-trust security architectures." },
+    { "title": "Networking", "description": "Enterprise-grade network design, SD-WAN, firewall management, and performance monitoring solutions." },
+    { "title": "Virtualization", "description": "VMware, Hyper-V, and container orchestration to maximize resource efficiency and reduce hardware costs." },
+    { "title": "Managed IT Services", "description": "Proactive monitoring, helpdesk support, and strategic IT planning to keep your business running smoothly." },
+    { "title": "Backup & Disaster Recovery", "description": "Automated backup solutions and business continuity planning to protect your critical data and operations." }
+  ],
+  "products_list": [
+    { "title": "InfraMind EAMS", "badge": "Asset Management", "description": "Enterprise Asset Management System for complete lifecycle tracking." },
+    { "title": "InfraMind TMS", "badge": "Transport", "description": "Transport Management System for logistics optimization." },
+    { "title": "InfraMind ServiceDesk", "badge": "Support", "description": "IT service management platform for helpdesk operations." },
+    { "title": "InfraMind PACS", "badge": "Healthcare", "description": "Picture Archiving and Communication System for medical imaging." },
+    { "title": "InfraMind ERP", "badge": "Enterprise", "description": "Comprehensive ERP solution for finance, HR, supply chain, and operations." }
+  ],
+  "testimonials": [
+    { "text": "InfraMindTech transformed our cloud infrastructure, reducing costs by 40% while improving performance. Their team's expertise is unmatched.", "name": "Rajesh Kumar", "role": "CTO, Apex Financial Services", "initials": "RK" },
+    { "text": "Their cyber security solutions gave us complete peace of mind. We achieved ISO 27001 compliance within 6 months of engagement.", "name": "Sarah Al-Mansouri", "role": "CISO, Gulf Healthcare Group", "initials": "SA" },
+    { "text": "The InfraMind ERP implementation streamlined our entire operation. ROI was realized within the first year of deployment.", "name": "Michael Torres", "role": "COO, Pacific Logistics Corp", "initials": "MT" }
+  ],
+  "faq": [
+    { "question": "What industries does InfraMindTech serve?", "answer": "We serve healthcare, finance, education, manufacturing, logistics, retail, energy, and government sectors with tailored IT solutions that meet industry-specific compliance and operational requirements." },
+    { "question": "How quickly can you migrate our infrastructure to the cloud?", "answer": "Migration timelines vary based on complexity, but most mid-size organizations complete migration within 8–16 weeks. We follow a phased approach to minimize disruption to your operations." },
+    { "question": "Do you offer 24/7 support?", "answer": "Yes, all our service plans include 24/7 helpdesk support. Professional and Enterprise plans include dedicated support teams with guaranteed response times defined in your SLA." },
+    { "question": "Can InfraMind products integrate with our existing systems?", "answer": "Absolutely. Our InfraMind platform suite is built with open APIs and supports integration with major ERP, CRM, and productivity platforms including SAP, Salesforce, and Microsoft Dynamics." },
+    { "question": "What security certifications does InfraMindTech hold?", "answer": "We maintain ISO 27001, SOC 2 Type II, and are partners with Microsoft, AWS, and Cisco. Our security team holds CISSP, CEH, and cloud security certifications." }
+  ]
+}

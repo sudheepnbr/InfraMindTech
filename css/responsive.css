@@ -1,0 +1,175 @@
+/* ============================================
+   InfraMindTech — Responsive Styles
+   ============================================ */
+
+@media (max-width: 1199.98px) {
+  .pricing-card.featured {
+    transform: none;
+  }
+
+  .hero-float-card-1 {
+    right: 0;
+  }
+
+  .hero-float-card-2 {
+    left: 0;
+  }
+}
+
+@media (max-width: 991.98px) {
+  .nav-links-imt,
+  .nav-actions-imt .btn-imt-primary {
+    display: none;
+  }
+
+  .nav-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .hero {
+    min-height: auto;
+    padding-bottom: 60px;
+  }
+
+  .hero-visual {
+    margin-top: 48px;
+  }
+
+  .hero-float-card {
+    display: none;
+  }
+
+  .section {
+    padding: 70px 0;
+  }
+
+  .section-header {
+    margin-bottom: 40px;
+  }
+
+  .stats-section {
+    padding: 60px 0;
+  }
+
+  .cta-banner {
+    padding: 48px 28px;
+  }
+
+  .footer {
+    padding-top: 60px;
+  }
+
+  .footer-bottom {
+    flex-direction: column;
+    text-align: center;
+  }
+}
+
+@media (max-width: 767.98px) {
+  :root {
+    --navbar-height: 64px;
+  }
+
+  .hero-title {
+    font-size: 2rem;
+  }
+
+  .hero-cta {
+    flex-direction: column;
+  }
+
+  .hero-cta .btn-imt {
+    width: 100%;
+  }
+
+  .hero-stats {
+    gap: 20px;
+  }
+
+  .hero-stat strong {
+    font-size: 1.5rem;
+  }
+
+  .card-imt {
+    padding: 24px;
+  }
+
+  .testimonial-card {
+    padding: 28px;
+  }
+
+  .pricing-card {
+    padding: 32px 24px;
+  }
+
+  .page-header {
+    padding: calc(var(--navbar-height) + 40px) 0 40px;
+  }
+
+  .contact-info-card {
+    padding: 20px;
+  }
+
+  .back-to-top {
+    bottom: 20px;
+    right: 20px;
+    width: 44px;
+    height: 44px;
+  }
+
+  .trust-logos {
+    gap: 24px;
+  }
+
+  .trust-logo {
+    font-size: 1rem;
+  }
+}
+
+@media (max-width: 575.98px) {
+  .container-imt {
+    padding: 0 16px;
+  }
+
+  .navbar-imt .navbar-inner {
+    padding: 0 16px;
+  }
+
+  .hero-badge {
+    font-size: 0.75rem;
+    padding: 6px 12px;
+  }
+
+  .hero-tags {
+    gap: 6px;
+  }
+
+  .hero-tag {
+    font-size: 0.75rem;
+    padding: 4px 10px;
+  }
+
+  .section {
+    padding: 56px 0;
+  }
+
+  .stat-item {
+    margin-bottom: 24px;
+  }
+
+  .footer-bottom-links {
+    flex-direction: column;
+    gap: 12px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

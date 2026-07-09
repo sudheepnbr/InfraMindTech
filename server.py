@@ -47,6 +47,28 @@ app.secret_key = ENV["SECRET_KEY"]
 app.config["SESSION_COOKIE_HTTPONLY"] = True
 app.config["SESSION_COOKIE_SAMESITE"] = "Lax"
 
+ALLOWED_CORS_ORIGINS = (
+    "https://sudheepnbr.github.io",
+)
+
+
+@app.after_request
+def add_cors_headers(response):
+    origin = request.headers.get("Origin")
+    if origin and (
+        origin in ALLOWED_CORS_ORIGINS
+        or origin.startswith("https://sudheepnbr.github.io/")
+    ):
+        response.headers["Access-Control-Allow-Origin"] = origin
+        response.headers["Access-Control-Allow-Methods"] = "GET, OPTIONS"
+        response.headers["Vary"] = "Origin"
+    return response
+
+
+@app.route("/api/content", methods=["OPTIONS"])
+def content_options():
+    return "", 204
+
 
 def read_content():
     with open(CONTENT_FILE, encoding="utf-8") as f:

@@ -168,8 +168,20 @@
     }
   }
 
+  function getContentApiUrl() {
+    var host = window.location.hostname;
+    if (
+      host === 'localhost' ||
+      host === '127.0.0.1' ||
+      host === 'inframindtech.onrender.com'
+    ) {
+      return '/api/content';
+    }
+    return 'https://inframindtech.onrender.com/api/content';
+  }
+
   function loadContent() {
-    fetch('/api/content')
+    fetch(getContentApiUrl())
       .then(r => r.json())
       .then(applyContent)
       .catch(() => {

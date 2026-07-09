@@ -2,15 +2,16 @@ services:
   - type: web
     name: inframindtech
     runtime: python
-    plan: free
     buildCommand: pip install -r requirements.txt
     startCommand: gunicorn server:app --bind 0.0.0.0:$PORT
     envVars:
       - key: PYTHON_VERSION
-        value: "3.11.0"
-      - key: ADMIN_USERNAME
-        value: admin
-      - key: ADMIN_PASSWORD
-        sync: false
-      - key: SECRET_KEY
-        generateValue: true
+        value: "3.12.0"
+      - key: DATABASE_URL
+        fromDatabase:
+          name: inframindtech-db
+          property: connectionString
+
+databases:
+  - name: inframindtech-db
+    plan: free

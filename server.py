@@ -13,6 +13,8 @@ from pathlib import Path
 from flask import Flask, jsonify, request, send_from_directory, session
 from werkzeug.utils import secure_filename
 
+import db
+
 BASE_DIR = Path(__file__).parent
 CONTENT_FILE = BASE_DIR / "data" / "content.json"
 ENV_FILE = BASE_DIR / ".env"
@@ -41,6 +43,8 @@ def load_env():
     return env
 
 ENV = load_env()
+
+db.init_db()
 
 app = Flask(__name__, static_folder=str(BASE_DIR), static_url_path="")
 app.secret_key = ENV["SECRET_KEY"]
@@ -71,13 +75,11 @@ def content_options():
 
 
 def read_content():
-    with open(CONTENT_FILE, encoding="utf-8") as f:
-        return json.load(f)
+    return db.read_content()
 
 
 def write_content(data):
-    with open(CONTENT_FILE, "w", encoding="utf-8") as f:
-        json.dump(data, f, indent=2, ensure_ascii=False)
+    db.write_content(data)
 
 
 def login_required(f):
@@ -132,6 +134,14 @@ def static_files(filepath):
             return send_from_directory(BASE_DIR / clean, "index.html")
 
     return "Not Found", 404
+
+
+@app.route("/api/health", methods=["GET"])
+def health():
+    return jsonify({
+        "ok": True,
+        "storage": db.get_backend(),
+    })
 
 
 @app.route("/api/content", methods=["GET"])

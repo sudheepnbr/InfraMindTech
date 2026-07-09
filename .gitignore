@@ -1,4 +1,6 @@
 .env
+data/cms.db
+*.db
 __pycache__/
 *.pyc
 *.pyo

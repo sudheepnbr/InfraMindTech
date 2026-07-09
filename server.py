@@ -136,7 +136,10 @@ def static_files(filepath):
 
 @app.route("/api/content", methods=["GET"])
 def get_content():
-    return jsonify(read_content())
+    response = jsonify(read_content())
+    response.headers["Cache-Control"] = "no-store, no-cache, must-revalidate"
+    response.headers["Pragma"] = "no-cache"
+    return response
 
 
 @app.route("/api/content", methods=["PUT"])

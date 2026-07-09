@@ -440,7 +440,7 @@
     saveBtn.disabled = true;
     try {
       await api('/api/content', { method: 'PUT', body: JSON.stringify(content) });
-      showToast('Content saved successfully!');
+      showToast('Saved! Switch to your website tab or refresh to see changes.');
     } catch (err) {
       if (err.message === 'Unauthorized') {
         showLogin();

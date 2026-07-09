@@ -233,16 +233,46 @@
     return 'https://inframindtech.onrender.com/api/content';
   }
 
+  function fetchContent() {
+    var url = getContentApiUrl() + '?v=' + Date.now();
+    var attempts = 0;
+    var maxAttempts = 3;
+
+    function tryApi() {
+      attempts += 1;
+      var controller = new AbortController();
+      var timeout = setTimeout(function () { controller.abort(); }, 20000);
+
+      return fetch(url, { cache: 'no-store', signal: controller.signal })
+        .then(function (r) {
+          clearTimeout(timeout);
+          if (!r.ok) throw new Error('API ' + r.status);
+          return r.json();
+        })
+        .catch(function (err) {
+          clearTimeout(timeout);
+          if (attempts < maxAttempts) {
+            return new Promise(function (resolve) {
+              setTimeout(resolve, 2500);
+            }).then(tryApi);
+          }
+          throw err;
+        });
+    }
+
+    return tryApi().catch(function () {
+      return fetch('data/content.json?v=' + Date.now(), { cache: 'no-store' })
+        .then(function (r) {
+          if (!r.ok) throw new Error('Static content unavailable');
+          return r.json();
+        });
+    });
+  }
+
   function loadContent() {
-    fetch(getContentApiUrl())
-      .then(r => r.json())
+    fetchContent()
       .then(applyContent)
-      .catch(() => {
-        fetch('data/content.json')
-          .then(r => r.json())
-          .then(applyContent)
-          .catch(() => {});
-      });
+      .catch(function () {});
   }
 
   function bootContent() {
@@ -251,6 +281,10 @@
     } else {
       loadContent();
     }
+
+    document.addEventListener('visibilitychange', function () {
+      if (!document.hidden) loadContent();
+    });
   }
 
   bootContent();

@@ -160,7 +160,7 @@
       if (doc.getElementById('cms-edit-inject')) return;
       var script = doc.createElement('script');
       script.id = 'cms-edit-inject';
-      script.src = '/admin/edit-inject.js?v=3';
+      script.src = '/admin/edit-inject.js?v=4';
       doc.body.appendChild(script);
     } catch (err) {
       console.warn('Cannot inject edit script:', err);
@@ -184,11 +184,13 @@
     });
   }
 
+  window.openCmsEdit = openEditDrawer;
+
   window.addEventListener('message', function (e) {
     var data = e.data || {};
     if (data.source !== 'cms-preview') return;
     if (data.type === 'cms-ready') previewReady = true;
-    if (data.type === 'cms-select') openEditDrawer(data);
+    if (data.type === 'cms-select' || data.editType) openEditDrawer(data);
     if (data.type === 'cms-navigate') {
       var page = resolvePageFromHref(data.href);
       if (page) switchPage(page);

@@ -127,6 +127,26 @@
       return { el: product, payload: { editType: 'product', index: pi, label: 'Product ' + (pi + 1) } };
     }
 
+    var statVal = el.closest('[data-cms-stat-value]');
+    if (statVal) {
+      var statCard = statVal.closest('[data-cms-stat]');
+      var sti = statCard ? Array.prototype.indexOf.call(document.querySelectorAll('[data-cms-stat]'), statCard) : 0;
+      return { el: statVal, payload: { editType: 'stat', index: sti, label: 'Stat value' } };
+    }
+
+    var statLabel = el.closest('[data-cms-stat-label]');
+    if (statLabel) {
+      var statCard2 = statLabel.closest('[data-cms-stat]');
+      var sti2 = statCard2 ? Array.prototype.indexOf.call(document.querySelectorAll('[data-cms-stat]'), statCard2) : 0;
+      return { el: statLabel, payload: { editType: 'stat', index: sti2, label: 'Stat label' } };
+    }
+
+    var stat = el.closest('[data-cms-stat]');
+    if (stat) {
+      var stidx = Array.prototype.indexOf.call(document.querySelectorAll('[data-cms-stat]'), stat);
+      return { el: stat, payload: { editType: 'stat', index: stidx, label: 'Stat ' + (stidx + 1) } };
+    }
+
     var cta = el.closest('.nav-actions-imt .btn-imt-primary, .mobile-nav-cta .btn-imt-primary');
     if (cta) return { el: cta, payload: { editType: 'cta', label: 'Header CTA Button' } };
 
@@ -147,6 +167,7 @@
       '[data-cms]', '[data-cms-html]', '[data-cms-href]', '[data-cms-hero-title]',
       '[data-cms-page-title]', '[data-nav]', '[data-cms-service]', '[data-cms-service-title]',
       '[data-cms-service-desc]', '[data-cms-testimonial]', '[data-cms-faq]', '[data-cms-product]',
+      '[data-cms-stat]', '[data-cms-stat-value]', '[data-cms-stat-label]',
       '.stats-section .stat-number', '.stats-section .stat-label',
       'img[data-cms-logo-icon]', 'img[data-cms-logo]', 'img[data-cms-hero-image]',
       '.nav-actions-imt .btn-imt-primary', '.mobile-nav-cta .btn-imt-primary'
@@ -316,6 +337,15 @@
           if (badge) badge.textContent = u.item.badge || '';
           if (title) title.textContent = u.item.title || '';
           if (desc) desc.textContent = u.item.description || '';
+        }
+      }
+      if (u.editType === 'stat' && u.item) {
+        var sc = document.querySelectorAll('[data-cms-stat]')[u.index];
+        if (sc) {
+          var sval = sc.querySelector('[data-cms-stat-value]');
+          var slbl = sc.querySelector('[data-cms-stat-label]');
+          if (sval) sval.textContent = u.item.value || '';
+          if (slbl) slbl.textContent = u.item.label || '';
         }
       }
       if (u.editType === 'cta' && u.fields) {

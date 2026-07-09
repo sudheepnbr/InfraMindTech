@@ -6,7 +6,7 @@
   <title>Visual Editor — InfraMindTech CMS</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
-  <link href="admin.css?v=3" rel="stylesheet">
+  <link href="admin.css?v=4" rel="stylesheet">
 </head>
 <body class="admin-login">
 
@@ -38,9 +38,15 @@
       </div>
       <p class="sidebar-tip"><i class="fa-solid fa-hand-pointer"></i> Hover text or logo — click to edit. Use Save All to publish.</p>
       <nav class="sidebar-nav" id="pageNav"></nav>
+      <div class="sidebar-content-actions">
+        <p class="nav-label">Add / Remove</p>
+        <button type="button" id="addServiceBtn" class="btn-content-action"><i class="fa-solid fa-plus"></i> Add Service</button>
+        <button type="button" id="addProductBtn" class="btn-content-action"><i class="fa-solid fa-plus"></i> Add Product</button>
+        <button type="button" id="manageStatsBtn" class="btn-content-action"><i class="fa-solid fa-chart-simple"></i> Manage Stats</button>
+      </div>
       <div class="sidebar-footer">
-        <button type="button" id="manageServicesBtn" class="btn-preview"><i class="fa-solid fa-list"></i> Manage Services</button>
-        <button type="button" id="manageProductsBtn" class="btn-preview"><i class="fa-solid fa-cubes"></i> Manage Products</button>
+        <button type="button" id="manageServicesBtn" class="btn-preview"><i class="fa-solid fa-list"></i> All Services</button>
+        <button type="button" id="manageProductsBtn" class="btn-preview"><i class="fa-solid fa-cubes"></i> All Products</button>
         <button type="button" id="mediaBtn" class="btn-preview"><i class="fa-solid fa-photo-film"></i> Media Library</button>
         <a href="/" target="_blank" class="btn-preview"><i class="fa-solid fa-external-link"></i> View Live Site</a>
         <button id="logoutBtn" class="btn-logout"><i class="fa-solid fa-right-from-bracket"></i> Logout</button>
@@ -55,6 +61,11 @@
         </div>
         <div class="visual-topbar-actions">
           <span id="unsavedBadge" class="unsaved-badge is-hidden">Unsaved changes</span>
+          <div class="topbar-manage-group">
+            <button type="button" id="topAddServiceBtn" class="btn-toolbar" title="Add a new service"><i class="fa-solid fa-plus"></i> Service</button>
+            <button type="button" id="topAddProductBtn" class="btn-toolbar" title="Add a new product"><i class="fa-solid fa-plus"></i> Product</button>
+            <button type="button" id="topManageStatsBtn" class="btn-toolbar" title="Add or remove stats"><i class="fa-solid fa-chart-simple"></i> Stats</button>
+          </div>
           <button id="saveBtn" class="btn-save"><i class="fa-solid fa-floppy-disk"></i> Save All</button>
         </div>
       </header>
@@ -102,6 +113,6 @@
 
   <div id="saveToast" class="toast is-hidden"></div>
 
-  <script src="admin.js?v=6"></script>
+  <script src="admin.js?v=7"></script>
 </body>
 </html>

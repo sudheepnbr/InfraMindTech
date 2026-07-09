@@ -393,8 +393,57 @@ body.admin-login {
 }
 .visual-topbar-left { display: flex; align-items: center; gap: 12px; }
 .visual-topbar-left h2 { font-size: 1.1rem; margin: 0; }
-.visual-topbar-actions { display: flex; align-items: center; gap: 12px; }
+.visual-topbar-actions { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
 .visual-topbar .btn-save { width: auto; padding: 10px 20px; }
+
+.topbar-manage-group {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.btn-toolbar {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 14px;
+  background: #EFF6FF;
+  border: 1px solid #BFDBFE;
+  color: var(--primary);
+  border-radius: 8px;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: inherit;
+  white-space: nowrap;
+}
+.btn-toolbar:hover { background: #DBEAFE; }
+
+.sidebar-content-actions {
+  padding: 12px;
+  border-top: 1px solid rgba(255,255,255,0.08);
+}
+.sidebar-content-actions .nav-label {
+  padding: 0 4px 8px;
+}
+.btn-content-action {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  padding: 10px 12px;
+  margin-bottom: 6px;
+  background: rgba(34,197,94,0.12);
+  border: 1px solid rgba(34,197,94,0.25);
+  color: #86EFAC;
+  border-radius: 8px;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: inherit;
+  text-align: left;
+}
+.btn-content-action:hover { background: rgba(34,197,94,0.2); color: #BBF7D0; }
 
 .edit-mode-badge {
   font-size: 0.75rem;

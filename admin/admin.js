@@ -69,7 +69,7 @@
     services_list: {
       label: 'Services',
       editType: 'service',
-      previewPage: 'home',
+      previewPage: 'services',
       fields: [
         { key: 'title', label: 'Title' },
         { key: 'description', label: 'Description', textarea: true }
@@ -86,6 +86,16 @@
         { key: 'description', label: 'Description', textarea: true }
       ],
       defaultItem: { title: 'New Product', badge: 'Category', description: 'Product description here.' }
+    },
+    stats_band: {
+      label: 'Stats',
+      editType: 'stat',
+      previewPage: 'home',
+      fields: [
+        { key: 'value', label: 'Number (e.g. 500+)' },
+        { key: 'label', label: 'Label' }
+      ],
+      defaultItem: { value: '100+', label: 'New Stat' }
     }
   };
 
@@ -189,7 +199,7 @@
       if (doc.getElementById('cms-edit-inject')) return;
       var script = doc.createElement('script');
       script.id = 'cms-edit-inject';
-      script.src = '/admin/edit-inject.js?v=6';
+      script.src = '/admin/edit-inject.js?v=7';
       doc.body.appendChild(script);
     } catch (err) {
       console.warn('Cannot inject edit script:', err);
@@ -275,6 +285,10 @@
       html = fieldHtml('prodTitle', 'Product Name', p.title || '', 1) +
         fieldHtml('prodBadge', 'Badge', p.badge || '', 1) +
         fieldHtml('prodDesc', 'Description', p.description || '', 3);
+    } else if (data.editType === 'stat') {
+      var st = (content.stats_band || [])[data.index] || {};
+      html = fieldHtml('statVal', 'Number', st.value || '', 1) +
+        fieldHtml('statLabel', 'Label', st.label || '', 1);
     } else if (data.editType === 'cta') {
       var hdr = content.header || {};
       html = fieldHtml('ctaText', 'Button text', hdr.ctaButton || '', 1) +
@@ -284,7 +298,7 @@
     editDrawerBody.innerHTML = html;
     editDrawer.classList.remove('is-hidden');
 
-    var canDelete = data.editType === 'service' || data.editType === 'product' || data.editType === 'testimonial' || data.editType === 'faq';
+    var canDelete = data.editType === 'service' || data.editType === 'product' || data.editType === 'testimonial' || data.editType === 'faq' || data.editType === 'stat';
     deleteEditBtn.classList.toggle('is-hidden', !canDelete || data.index === undefined);
 
     if (data.editType === 'image') {
@@ -392,6 +406,12 @@
       content.products_list[currentEdit.index].badge = val('prodBadge');
       content.products_list[currentEdit.index].description = val('prodDesc');
       updates.push({ editType: 'product', index: currentEdit.index, item: content.products_list[currentEdit.index] });
+    } else if (currentEdit.editType === 'stat') {
+      if (!content.stats_band) content.stats_band = [];
+      if (!content.stats_band[currentEdit.index]) content.stats_band[currentEdit.index] = {};
+      content.stats_band[currentEdit.index].value = val('statVal');
+      content.stats_band[currentEdit.index].label = val('statLabel');
+      updates.push({ editType: 'stat', index: currentEdit.index, item: content.stats_band[currentEdit.index] });
     } else if (currentEdit.editType === 'cta') {
       if (!content.header) content.header = {};
       content.header.ctaButton = val('ctaText');
@@ -409,10 +429,11 @@
 
   function deleteCurrentEdit() {
     if (!currentEdit || currentEdit.index === undefined) return;
-    var keyMap = { service: 'services_list', product: 'products_list', testimonial: 'testimonials', faq: 'faq' };
+    var keyMap = { service: 'services_list', product: 'products_list', testimonial: 'testimonials', faq: 'faq', stat: 'stats_band' };
     var listKey = keyMap[currentEdit.editType];
     if (!listKey || !content[listKey]) return;
-    var name = (content[listKey][currentEdit.index] || {}).title || (content[listKey][currentEdit.index] || {}).question || 'this item';
+    var item = content[listKey][currentEdit.index] || {};
+    var name = item.title || item.value || item.question || 'this item';
     if (!confirm('Delete "' + name + '"? This cannot be undone until you Save All.')) return;
     content[listKey].splice(currentEdit.index, 1);
     setDirty(true);
@@ -426,6 +447,17 @@
     if (sitePreview.contentWindow) {
       sitePreview.contentWindow.postMessage({ type: 'cms-reload-content', content: content }, '*');
     }
+  }
+
+  function addListItem(listKey) {
+    var cfg = LIST_CONFIG[listKey];
+    if (!cfg) return;
+    if (!content[listKey]) content[listKey] = [];
+    content[listKey].push(JSON.parse(JSON.stringify(cfg.defaultItem)));
+    setDirty(true);
+    openListManager(listKey);
+    reloadPreviewContent();
+    showToast('Added — click Save All to publish');
   }
 
   function openListManager(listKey) {
@@ -448,7 +480,7 @@
 
     items.forEach(function (item, i) {
       html += '<div class="list-manage-card" data-list-index="' + i + '">';
-      html += '<div class="list-manage-header"><strong>' + (item.title || item.question || ('Item ' + (i + 1))) + '</strong>';
+      html += '<div class="list-manage-header"><strong>' + (item.title || item.value || item.question || ('Item ' + (i + 1))) + '</strong>';
       html += '<div class="list-manage-actions">';
       html += '<button type="button" class="btn-icon-edit" data-edit-index="' + i + '" title="Edit"><i class="fa-solid fa-pen"></i></button>';
       html += '<button type="button" class="btn-icon-delete" data-delete-index="' + i + '" title="Delete"><i class="fa-solid fa-trash"></i></button>';
@@ -483,7 +515,7 @@
       btn.addEventListener('click', function () {
         var idx = parseInt(btn.dataset.deleteIndex, 10);
         var item = content[listKey][idx];
-        var name = (item && item.title) || (item && item.question) || 'this item';
+        var name = (item && item.title) || (item && item.value) || (item && item.question) || 'this item';
         if (!confirm('Delete "' + name + '"?')) return;
         content[listKey].splice(idx, 1);
         setDirty(true);
@@ -667,6 +699,12 @@
   deleteEditBtn.addEventListener('click', deleteCurrentEdit);
   document.getElementById('manageServicesBtn').addEventListener('click', function () { openListManager('services_list'); });
   document.getElementById('manageProductsBtn').addEventListener('click', function () { openListManager('products_list'); });
+  document.getElementById('addServiceBtn').addEventListener('click', function () { addListItem('services_list'); });
+  document.getElementById('addProductBtn').addEventListener('click', function () { addListItem('products_list'); });
+  document.getElementById('manageStatsBtn').addEventListener('click', function () { openListManager('stats_band'); });
+  document.getElementById('topAddServiceBtn').addEventListener('click', function () { addListItem('services_list'); });
+  document.getElementById('topAddProductBtn').addEventListener('click', function () { addListItem('products_list'); });
+  document.getElementById('topManageStatsBtn').addEventListener('click', function () { openListManager('stats_band'); });
   mediaBtn.addEventListener('click', openMediaModal);
   document.getElementById('closeListModal').addEventListener('click', function () { listModal.classList.add('is-hidden'); currentListKey = null; });
   document.getElementById('listModalBackdrop').addEventListener('click', function () { listModal.classList.add('is-hidden'); currentListKey = null; });

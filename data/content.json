@@ -25,14 +25,6 @@
     "stat2Label": "Clients Served",
     "stat3Value": "99.9%",
     "stat3Label": "Uptime SLA",
-    "statsBand1Value": "500+",
-    "statsBand1Label": "Enterprise Clients",
-    "statsBand2Value": "15+",
-    "statsBand2Label": "Years of Excellence",
-    "statsBand3Value": "99.9%",
-    "statsBand3Label": "Uptime Guarantee",
-    "statsBand4Value": "50+",
-    "statsBand4Label": "Certified Experts",
     "heroFloat1Title": "Threat Blocked",
     "heroFloat1Text": "Real-time protection active",
     "heroDashboardTitle": "Infrastructure Dashboard",
@@ -134,6 +126,12 @@
     { "name": "Essential", "price": "$999", "period": "/month", "description": "For small businesses starting their IT journey.", "featured": false, "features": ["24/7 Helpdesk Support", "Network Monitoring", "Basic Security Suite", "Monthly Reports"] },
     { "name": "Professional", "price": "$2,499", "period": "/month", "description": "For growing enterprises needing comprehensive IT.", "featured": true, "features": ["Everything in Essential", "Cloud Infrastructure Mgmt", "Advanced Cyber Security", "Backup & DR Services", "Quarterly Strategy Reviews"] },
     { "name": "Enterprise", "price": "Custom", "period": "", "description": "For large organizations with complex requirements.", "featured": false, "features": ["Everything in Professional", "Dedicated Account Manager", "On-site Support Team", "Custom SLA Agreements", "AI & Analytics Platform"] }
+  ],
+  "stats_band": [
+    { "value": "500+", "label": "Enterprise Clients" },
+    { "value": "15+", "label": "Years of Excellence" },
+    { "value": "99.9%", "label": "Uptime Guarantee" },
+    { "value": "50+", "label": "Certified Experts" }
   ],
   "services_list": [
     { "title": "Cloud Infrastructure", "description": "Scalable, resilient cloud architectures on Azure, AWS, and hybrid environments tailored to your workload demands." },

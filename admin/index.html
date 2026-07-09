@@ -3,19 +3,18 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Admin — InfraMindTech CMS</title>
+  <title>Visual Editor — InfraMindTech CMS</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
-  <link href="admin.css?v=2" rel="stylesheet">
+  <link href="admin.css?v=3" rel="stylesheet">
 </head>
 <body class="admin-login">
 
-  <!-- LOGIN ONLY (shown before auth) -->
   <div id="loginScreen" class="login-screen">
     <div class="login-card">
       <div class="login-logo"><i class="fa-solid fa-brain"></i></div>
       <h1>InfraMindTech CMS</h1>
-      <p>Sign in to manage your website</p>
+      <p>Visual editor — click any text on the site to edit</p>
       <form id="loginForm">
         <div class="form-field">
           <label for="username">Username</label>
@@ -31,59 +30,64 @@
     </div>
   </div>
 
-  <!-- ADMIN PANEL (shown after login) -->
-  <div id="dashboard" class="dashboard is-hidden">
-    <aside class="sidebar">
+  <div id="dashboard" class="dashboard visual-dashboard is-hidden">
+    <aside class="sidebar visual-sidebar">
       <div class="sidebar-brand">
-        <i class="fa-solid fa-brain"></i>
-        <span>InfraMind CMS</span>
+        <i class="fa-solid fa-wand-magic-sparkles"></i>
+        <span>Visual Editor</span>
       </div>
-      <nav class="sidebar-nav">
-        <div class="nav-label">Global</div>
-        <button class="nav-item active" data-section="site"><i class="fa-solid fa-gear"></i> Site Settings</button>
-        <button class="nav-item" data-section="header"><i class="fa-solid fa-bars"></i> Header / Navbar</button>
-        <button class="nav-item" data-section="footer"><i class="fa-solid fa-shoe-prints"></i> Footer</button>
-        <button class="nav-item" data-section="media"><i class="fa-solid fa-photo-film"></i> Photos &amp; Videos</button>
-
-        <div class="nav-divider"></div>
-        <div class="nav-label">Pages</div>
-        <button class="nav-item" data-section="home"><i class="fa-solid fa-house"></i> Home Page</button>
-        <button class="nav-item" data-section="about"><i class="fa-solid fa-building"></i> About Page</button>
-        <button class="nav-item" data-section="services"><i class="fa-solid fa-cloud"></i> Services Page</button>
-        <button class="nav-item" data-section="products"><i class="fa-solid fa-box"></i> Products Page</button>
-        <button class="nav-item" data-section="contact"><i class="fa-solid fa-envelope"></i> Contact Page</button>
-
-        <div class="nav-divider"></div>
-        <div class="nav-label">Content Blocks</div>
-        <button class="nav-item" data-section="services_list"><i class="fa-solid fa-list"></i> Services</button>
-        <button class="nav-item" data-section="products_list"><i class="fa-solid fa-cubes"></i> Products</button>
-        <button class="nav-item" data-section="testimonials"><i class="fa-solid fa-quote-left"></i> Testimonials</button>
-        <button class="nav-item" data-section="faq"><i class="fa-solid fa-circle-question"></i> FAQ</button>
-        <button class="nav-item" data-section="pricing"><i class="fa-solid fa-tags"></i> Pricing Plans</button>
-      </nav>
+      <p class="sidebar-tip"><i class="fa-solid fa-hand-pointer"></i> Click any highlighted text on the page to edit it.</p>
+      <nav class="sidebar-nav" id="pageNav"></nav>
       <div class="sidebar-footer">
-        <a href="/" target="_blank" class="btn-preview"><i class="fa-solid fa-external-link"></i> View Website</a>
+        <button type="button" id="mediaBtn" class="btn-preview"><i class="fa-solid fa-photo-film"></i> Media Library</button>
+        <a href="/" target="_blank" class="btn-preview"><i class="fa-solid fa-external-link"></i> View Live Site</a>
         <button id="logoutBtn" class="btn-logout"><i class="fa-solid fa-right-from-bracket"></i> Logout</button>
       </div>
     </aside>
 
-    <main class="main-content">
-      <header class="topbar">
-        <div>
-          <h2 id="sectionTitle">Site Settings</h2>
-          <p id="sectionHint" class="section-hint" style="margin:0"></p>
+    <main class="visual-main">
+      <header class="visual-topbar">
+        <div class="visual-topbar-left">
+          <h2 id="currentPageLabel">Home</h2>
+          <span class="edit-mode-badge"><i class="fa-solid fa-pen"></i> Edit mode</span>
         </div>
-        <button id="saveBtn" class="btn-save"><i class="fa-solid fa-floppy-disk"></i> Save Changes</button>
+        <div class="visual-topbar-actions">
+          <span id="unsavedBadge" class="unsaved-badge is-hidden">Unsaved changes</span>
+          <button id="saveBtn" class="btn-save"><i class="fa-solid fa-floppy-disk"></i> Save All</button>
+        </div>
       </header>
 
-      <div id="saveToast" class="toast is-hidden">
-        <i class="fa-solid fa-check-circle"></i> Content saved successfully!
+      <div class="preview-wrap">
+        <iframe id="sitePreview" title="Site preview" class="site-preview"></iframe>
       </div>
-
-      <div id="editorPanel" class="editor-panel"></div>
     </main>
+
+    <aside id="editDrawer" class="edit-drawer is-hidden">
+      <div class="edit-drawer-header">
+        <h3 id="editDrawerTitle">Edit content</h3>
+        <button type="button" id="closeDrawer" class="drawer-close" aria-label="Close"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <div id="editDrawerBody" class="edit-drawer-body"></div>
+      <div class="edit-drawer-footer">
+        <button type="button" id="cancelEdit" class="btn-secondary">Cancel</button>
+        <button type="button" id="applyEdit" class="btn-save">Apply</button>
+      </div>
+    </aside>
   </div>
 
-  <script src="admin.js?v=2"></script>
+  <div id="mediaModal" class="media-modal is-hidden">
+    <div class="media-modal-backdrop" id="mediaModalBackdrop"></div>
+    <div class="media-modal-panel">
+      <div class="edit-drawer-header">
+        <h3><i class="fa-solid fa-photo-film"></i> Media Library</h3>
+        <button type="button" id="closeMediaModal" class="drawer-close" aria-label="Close"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <div id="mediaModalBody" class="media-modal-body"></div>
+    </div>
+  </div>
+
+  <div id="saveToast" class="toast is-hidden"></div>
+
+  <script src="admin.js?v=3"></script>
 </body>
 </html>

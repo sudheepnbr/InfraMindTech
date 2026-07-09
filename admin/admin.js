@@ -1,205 +1,95 @@
 /**
- * InfraMindTech — Admin CMS Panel
+ * InfraMindTech — Visual CMS (click-to-edit live site preview)
  */
 (function () {
   'use strict';
 
-  let content = {};
-  let currentSection = 'site';
+  var content = {};
+  var dirty = false;
+  var currentEdit = null;
+  var previewReady = false;
 
-  const SECTION_LABELS = {
-    site: 'Site Settings',
-    header: 'Header / Navbar',
-    footer: 'Footer',
-    media: 'Photos & Videos',
-    home: 'Home Page',
-    about: 'About Page',
-    services: 'Services Page',
-    products: 'Products Page',
-    contact: 'Contact Page',
-    services_list: 'Services',
-    products_list: 'Products',
-    testimonials: 'Testimonials',
-    faq: 'FAQ',
-    pricing: 'Pricing Plans'
-  };
-
-  const SECTION_HINTS = {
-    site: 'Company info, contact details, and SEO settings used across the site.',
-    header: 'Edit navigation menu labels, logo icon, and header call-to-action button.',
-    footer: 'Edit footer description, social media links, and legal page links.',
-    media: 'Upload photos and videos. Assign URLs to logo, hero image, hero video, etc.',
-    home: 'Edit homepage hero, section titles, stats, and call-to-action text.',
-    about: 'Edit about page story, mission, and vision content.',
-    services: 'Edit services page titles and AI solutions section.',
-    products: 'Edit products page titles and descriptions.',
-    contact: 'Edit contact page text and form title.',
-    services_list: 'Manage all service cards shown on Home and Services pages.',
-    products_list: 'Manage all product cards shown on Home and Products pages.',
-    testimonials: 'Manage client testimonial quotes.',
-    faq: 'Manage frequently asked questions.',
-    pricing: 'Manage pricing plan names, prices, and features.'
-  };
-
-  const FIELD_SCHEMAS = {
-    site: [
-      { key: 'companyName', label: 'Company Name', type: 'text' },
-      { key: 'tagline', label: 'Tagline', type: 'text' },
-      { key: 'logoTagline', label: 'Logo Tagline (under brand name)', type: 'text', full: true },
-      { key: 'metaDescription', label: 'SEO Description', type: 'textarea', full: true },
-      { key: 'phone', label: 'Phone', type: 'text' },
-      { key: 'phone2', label: 'Phone 2', type: 'text' },
-      { key: 'email', label: 'Email', type: 'text' },
-      { key: 'salesEmail', label: 'Sales Email', type: 'text' },
-      { key: 'address', label: 'Address', type: 'text' },
-      { key: 'city', label: 'City / Country', type: 'text' },
-      { key: 'hours', label: 'Business Hours (Weekdays)', type: 'text' },
-      { key: 'hoursSat', label: 'Business Hours (Saturday)', type: 'text' },
-      { key: 'copyright', label: 'Copyright Text', type: 'text', full: true }
-    ],
-    header: [
-      { key: 'logoIcon', label: 'Logo Icon (Font Awesome class, e.g. fa-brain)', type: 'text' },
-      { key: 'ctaButton', label: 'CTA Button Text', type: 'text' },
-      { key: 'ctaLink', label: 'CTA Button Link', type: 'text' },
-      { key: 'navHome', label: 'Nav: Home', type: 'text' },
-      { key: 'navSolutions', label: 'Nav: Solutions', type: 'text' },
-      { key: 'navServices', label: 'Nav: Services', type: 'text' },
-      { key: 'navProducts', label: 'Nav: Products', type: 'text' },
-      { key: 'navIndustries', label: 'Nav: Industries', type: 'text' },
-      { key: 'navResources', label: 'Nav: Resources', type: 'text' },
-      { key: 'navAbout', label: 'Nav: About', type: 'text' },
-      { key: 'navContact', label: 'Nav: Contact', type: 'text' }
-    ],
-    footer: [
-      { key: 'description', label: 'Footer Description', type: 'textarea', full: true },
-      { key: 'linkedin', label: 'LinkedIn URL', type: 'text' },
-      { key: 'twitter', label: 'Twitter / X URL', type: 'text' },
-      { key: 'facebook', label: 'Facebook URL', type: 'text' },
-      { key: 'youtube', label: 'YouTube URL', type: 'text' },
-      { key: 'privacyLink', label: 'Privacy Policy Link', type: 'text' },
-      { key: 'termsLink', label: 'Terms of Service Link', type: 'text' },
-      { key: 'cookieLink', label: 'Cookie Policy Link', type: 'text' }
-    ],
-    home: [
-      { key: 'heroBadge', label: 'Hero Badge Text', type: 'text', full: true },
-      { key: 'heroTitleBefore', label: 'Hero Title (before highlight)', type: 'text' },
-      { key: 'heroTitleHighlight', label: 'Hero Title (highlighted part)', type: 'text' },
-      { key: 'heroTitleAfter', label: 'Hero Title (after highlight)', type: 'text' },
-      { key: 'heroSubtitle', label: 'Hero Subtitle', type: 'text', full: true },
-      { key: 'stat1Value', label: 'Stat 1 Value', type: 'text' },
-      { key: 'stat1Label', label: 'Stat 1 Label', type: 'text' },
-      { key: 'stat2Value', label: 'Stat 2 Value', type: 'text' },
-      { key: 'stat2Label', label: 'Stat 2 Label', type: 'text' },
-      { key: 'stat3Value', label: 'Stat 3 Value', type: 'text' },
-      { key: 'stat3Label', label: 'Stat 3 Label', type: 'text' },
-      { key: 'servicesTitle', label: 'Services Section Title', type: 'text', full: true },
-      { key: 'servicesSubtitle', label: 'Services Section Subtitle', type: 'textarea', full: true },
-      { key: 'solutionsTitle', label: 'Solutions Section Title', type: 'text', full: true },
-      { key: 'solutionsSubtitle', label: 'Solutions Section Subtitle', type: 'textarea', full: true },
-      { key: 'productsTitle', label: 'Products Section Title', type: 'text', full: true },
-      { key: 'productsSubtitle', label: 'Products Section Subtitle', type: 'textarea', full: true },
-      { key: 'testimonialsTitle', label: 'Testimonials Title', type: 'text', full: true },
-      { key: 'testimonialsSubtitle', label: 'Testimonials Subtitle', type: 'textarea', full: true },
-      { key: 'ctaTitle', label: 'CTA Banner Title', type: 'text', full: true },
-      { key: 'ctaText', label: 'CTA Banner Text', type: 'textarea', full: true }
-    ],
-    about: [
-      { key: 'pageTitle', label: 'Page Title', type: 'text', full: true },
-      { key: 'pageSubtitle', label: 'Page Subtitle', type: 'textarea', full: true },
-      { key: 'storyTitle', label: 'Story Section Title', type: 'text', full: true },
-      { key: 'storyP1', label: 'Story Paragraph 1', type: 'textarea', full: true },
-      { key: 'storyP2', label: 'Story Paragraph 2', type: 'textarea', full: true },
-      { key: 'mission', label: 'Mission', type: 'textarea', full: true },
-      { key: 'vision', label: 'Vision', type: 'textarea', full: true }
-    ],
-    services: [
-      { key: 'pageTitle', label: 'Page Title', type: 'text', full: true },
-      { key: 'pageSubtitle', label: 'Page Subtitle', type: 'textarea', full: true },
-      { key: 'aiTitle', label: 'AI Solutions Title', type: 'text', full: true },
-      { key: 'aiDescription', label: 'AI Solutions Description', type: 'textarea', full: true }
-    ],
-    products: [
-      { key: 'pageTitle', label: 'Page Title', type: 'text', full: true },
-      { key: 'pageSubtitle', label: 'Page Subtitle', type: 'textarea', full: true }
-    ],
-    contact: [
-      { key: 'pageTitle', label: 'Page Title', type: 'text', full: true },
-      { key: 'pageSubtitle', label: 'Page Subtitle', type: 'textarea', full: true },
-      { key: 'formTitle', label: 'Form Title', type: 'text', full: true }
-    ]
-  };
-
-  const LIST_SCHEMAS = {
-    services_list: {
-      fields: [
-        { key: 'title', label: 'Service Title', type: 'text' },
-        { key: 'description', label: 'Description', type: 'textarea', full: true }
-      ],
-      defaultItem: { title: 'New Service', description: 'Service description here.' }
-    },
-    products_list: {
-      fields: [
-        { key: 'title', label: 'Product Name', type: 'text' },
-        { key: 'badge', label: 'Badge Label', type: 'text' },
-        { key: 'description', label: 'Description', type: 'textarea', full: true }
-      ],
-      defaultItem: { title: 'New Product', badge: 'Category', description: 'Product description here.' }
-    },
-    testimonials: {
-      fields: [
-        { key: 'text', label: 'Quote', type: 'textarea', full: true },
-        { key: 'name', label: 'Person Name', type: 'text' },
-        { key: 'role', label: 'Role / Company', type: 'text' },
-        { key: 'initials', label: 'Avatar Initials', type: 'text' }
-      ],
-      defaultItem: { text: 'Great service!', name: 'John Doe', role: 'CEO, Company', initials: 'JD' }
-    },
-    faq: {
-      fields: [
-        { key: 'question', label: 'Question', type: 'text', full: true },
-        { key: 'answer', label: 'Answer', type: 'textarea', full: true }
-      ],
-      defaultItem: { question: 'New question?', answer: 'Answer here.' }
-    },
-    pricing: {
-      fields: [
-        { key: 'name', label: 'Plan Name', type: 'text' },
-        { key: 'price', label: 'Price', type: 'text' },
-        { key: 'period', label: 'Period (e.g. /month)', type: 'text' },
-        { key: 'description', label: 'Description', type: 'textarea', full: true },
-        { key: 'featured', label: 'Featured Plan (true/false)', type: 'text' },
-        { key: 'features', label: 'Features (one per line)', type: 'textarea', full: true, isArray: true }
-      ],
-      defaultItem: { name: 'New Plan', price: '$0', period: '/month', description: 'Plan description', featured: 'false', features: ['Feature 1', 'Feature 2'] }
-    }
-  };
-
-  const MEDIA_FIELDS = [
-    { key: 'logo', label: 'Site Logo Image URL' },
-    { key: 'heroImage', label: 'Hero Section Image URL' },
-    { key: 'heroVideo', label: 'Hero Section Video URL' },
-    { key: 'aboutImage', label: 'About Page Image URL' },
-    { key: 'favicon', label: 'Favicon URL' }
+  var PAGES = [
+    { id: 'home', label: 'Home', url: '/', icon: 'fa-house' },
+    { id: 'about', label: 'About', url: '/about/', icon: 'fa-building' },
+    { id: 'services', label: 'Services', url: '/services/', icon: 'fa-cloud' },
+    { id: 'products', label: 'Products', url: '/products/', icon: 'fa-box' },
+    { id: 'solutions', label: 'Solutions', url: '/solutions/', icon: 'fa-lightbulb' },
+    { id: 'industries', label: 'Industries', url: '/industries/', icon: 'fa-industry' },
+    { id: 'resources', label: 'Resources', url: '/resources/', icon: 'fa-book' },
+    { id: 'contact', label: 'Contact', url: '/contact/', icon: 'fa-envelope' }
   ];
 
-  const loginScreen = document.getElementById('loginScreen');
-  const dashboard = document.getElementById('dashboard');
-  const loginForm = document.getElementById('loginForm');
-  const loginError = document.getElementById('loginError');
-  const editorPanel = document.getElementById('editorPanel');
-  const sectionTitle = document.getElementById('sectionTitle');
-  const sectionHint = document.getElementById('sectionHint');
-  const saveBtn = document.getElementById('saveBtn');
-  const saveToast = document.getElementById('saveToast');
-  const logoutBtn = document.getElementById('logoutBtn');
+  var FIELD_LABELS = {
+    'site.companyName': 'Company Name',
+    'site.tagline': 'Tagline',
+    'site.logoTagline': 'Logo Tagline',
+    'site.metaDescription': 'SEO Description',
+    'site.phone': 'Phone',
+    'site.phone2': 'Phone 2',
+    'site.email': 'Email',
+    'site.salesEmail': 'Sales Email',
+    'site.address': 'Address',
+    'site.city': 'City / Country',
+    'site.hours': 'Business Hours (Weekdays)',
+    'site.hoursSat': 'Business Hours (Saturday)',
+    'site.copyright': 'Copyright',
+    'footer.description': 'Footer Description',
+    'home.heroSubtitle': 'Hero Subtitle',
+    'home.ctaTitle': 'CTA Title',
+    'home.ctaText': 'CTA Text'
+  };
 
-  async function api(url, options = {}) {
-    const res = await fetch(url, {
+  var loginScreen = document.getElementById('loginScreen');
+  var dashboard = document.getElementById('dashboard');
+  var loginForm = document.getElementById('loginForm');
+  var loginError = document.getElementById('loginError');
+  var saveBtn = document.getElementById('saveBtn');
+  var saveToast = document.getElementById('saveToast');
+  var logoutBtn = document.getElementById('logoutBtn');
+  var sitePreview = document.getElementById('sitePreview');
+  var pageNav = document.getElementById('pageNav');
+  var currentPageLabel = document.getElementById('currentPageLabel');
+  var editDrawer = document.getElementById('editDrawer');
+  var editDrawerTitle = document.getElementById('editDrawerTitle');
+  var editDrawerBody = document.getElementById('editDrawerBody');
+  var unsavedBadge = document.getElementById('unsavedBadge');
+  var mediaBtn = document.getElementById('mediaBtn');
+  var mediaModal = document.getElementById('mediaModal');
+  var mediaModalBody = document.getElementById('mediaModalBody');
+
+  var currentPage = PAGES[0];
+
+  function getNested(obj, path) {
+    return path.split('.').reduce(function (acc, key) {
+      if (acc == null) return undefined;
+      if (/^\d+$/.test(key)) return acc[parseInt(key, 10)];
+      return acc[key];
+    }, obj);
+  }
+
+  function setNested(obj, path, value) {
+    var keys = path.split('.');
+    var cur = obj;
+    for (var i = 0; i < keys.length - 1; i++) {
+      var k = keys[i];
+      if (cur[k] == null) cur[k] = /^\d+$/.test(keys[i + 1]) ? [] : {};
+      cur = cur[k];
+    }
+    cur[keys[keys.length - 1]] = value;
+  }
+
+  function humanLabel(key) {
+    return FIELD_LABELS[key] || key.replace(/\./g, ' › ').replace(/_/g, ' ');
+  }
+
+  async function api(url, options) {
+    options = options || {};
+    var res = await fetch(url, Object.assign({
       headers: { 'Content-Type': 'application/json' },
-      credentials: 'same-origin',
-      ...options
-    });
-    const data = await res.json().catch(() => ({}));
+      credentials: 'same-origin'
+    }, options));
+    var data = await res.json().catch(function () { return {}; });
     if (!res.ok) throw new Error(data.error || 'Request failed');
     return data;
   }
@@ -216,232 +106,243 @@
     dashboard.classList.remove('is-hidden');
     document.body.classList.add('admin-logged-in');
     document.body.classList.remove('admin-login');
-    loadContent();
+    loadContent().then(function () {
+      buildPageNav();
+      loadPreviewPage(currentPage);
+    });
   }
 
-  async function checkAuth() {
-    try {
-      const data = await api('/api/auth/check');
-      if (data.logged_in) showDashboard();
-      else showLogin();
-    } catch {
-      showLogin();
-    }
+  function setDirty(val) {
+    dirty = val;
+    unsavedBadge.classList.toggle('is-hidden', !dirty);
+    saveBtn.classList.toggle('btn-save-pulse', dirty);
+  }
+
+  function showToast(msg) {
+    saveToast.innerHTML = '<i class="fa-solid fa-check-circle"></i> ' + msg;
+    saveToast.classList.remove('is-hidden');
+    setTimeout(function () { saveToast.classList.add('is-hidden'); }, 3500);
   }
 
   async function loadContent() {
     content = await api('/api/content');
-    renderSection(currentSection);
+    setDirty(false);
   }
 
-  function renderSection(section) {
-    currentSection = section;
-    sectionTitle.textContent = SECTION_LABELS[section] || section;
-    sectionHint.textContent = SECTION_HINTS[section] || '';
+  function buildPageNav() {
+    pageNav.innerHTML = PAGES.map(function (p) {
+      return '<button type="button" class="nav-item' + (p.id === currentPage.id ? ' active' : '') + '" data-page="' + p.id + '">' +
+        '<i class="fa-solid ' + p.icon + '"></i> ' + p.label + '</button>';
+    }).join('');
 
-    document.querySelectorAll('.nav-item').forEach(btn => {
-      btn.classList.toggle('active', btn.dataset.section === section);
-    });
-
-    if (section === 'media') renderMediaEditor();
-    else if (LIST_SCHEMAS[section]) renderListEditor(section);
-    else if (FIELD_SCHEMAS[section]) renderFieldEditor(section);
-  }
-
-  function renderFieldEditor(section) {
-    const schema = FIELD_SCHEMAS[section];
-    const data = content[section] || {};
-    let html = `<div class="editor-card"><h3>${SECTION_LABELS[section]}</h3><div class="editor-grid">`;
-
-    schema.forEach(field => {
-      const val = (data[field.key] || '').replace(/"/g, '&quot;');
-      const cls = field.full ? 'form-field full' : 'form-field';
-      const input = field.type === 'textarea'
-        ? `<textarea data-field="${field.key}" rows="3">${data[field.key] || ''}</textarea>`
-        : `<input type="text" data-field="${field.key}" value="${val}">`;
-      html += `<div class="${cls}"><label>${field.label}</label>${input}</div>`;
-    });
-
-    html += '</div></div>';
-    editorPanel.innerHTML = html;
-  }
-
-  function renderListEditor(section) {
-    const schema = LIST_SCHEMAS[section];
-    const items = content[section] || [];
-    let html = `<div class="editor-card"><h3>${SECTION_LABELS[section]}</h3>`;
-
-    items.forEach((item, i) => {
-      html += `<div class="list-item-card" data-index="${i}">`;
-      html += `<div class="item-header"><span class="item-num">Item ${i + 1}</span>`;
-      html += `<button class="btn-remove" data-remove="${i}"><i class="fa-solid fa-trash"></i> Remove</button></div>`;
-      html += '<div class="editor-grid">';
-
-      schema.fields.forEach(field => {
-        const cls = field.full ? 'form-field full' : 'form-field';
-        let input;
-        if (field.isArray) {
-          const arrVal = Array.isArray(item[field.key]) ? item[field.key].join('\n') : (item[field.key] || '');
-          input = `<textarea data-field="${field.key}" data-is-array="true" rows="4">${arrVal}</textarea>`;
-        } else if (field.type === 'textarea') {
-          input = `<textarea data-field="${field.key}" rows="2">${item[field.key] || ''}</textarea>`;
-        } else {
-          const val = (item[field.key] || '').replace(/"/g, '&quot;');
-          input = `<input type="text" data-field="${field.key}" value="${val}">`;
-        }
-        html += `<div class="${cls}"><label>${field.label}</label>${input}</div>`;
-      });
-
-      html += '</div></div>';
-    });
-
-    html += `<button class="btn-add" id="addItemBtn"><i class="fa-solid fa-plus"></i> Add Item</button></div>`;
-    editorPanel.innerHTML = html;
-
-    document.getElementById('addItemBtn')?.addEventListener('click', () => {
-      if (!content[section]) content[section] = [];
-      content[section].push(JSON.parse(JSON.stringify(schema.defaultItem)));
-      renderSection(section);
-    });
-
-    editorPanel.querySelectorAll('[data-remove]').forEach(btn => {
-      btn.addEventListener('click', () => {
-        content[section].splice(parseInt(btn.dataset.remove, 10), 1);
-        renderSection(section);
+    pageNav.querySelectorAll('[data-page]').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        var page = PAGES.find(function (p) { return p.id === btn.dataset.page; });
+        if (page) switchPage(page);
       });
     });
   }
 
-  async function renderMediaEditor() {
-    editorPanel.innerHTML = '<div class="editor-card"><p>Loading media...</p></div>';
+  function switchPage(page) {
+    currentPage = page;
+    currentPageLabel.textContent = page.label;
+    pageNav.querySelectorAll('.nav-item').forEach(function (btn) {
+      btn.classList.toggle('active', btn.dataset.page === page.id);
+    });
+    closeDrawer();
+    loadPreviewPage(page);
+  }
 
-    let uploaded = [];
+  function injectEditScript() {
     try {
-      uploaded = await api('/api/media');
-    } catch {}
-
-    if (!content.media) content.media = {};
-
-    let html = `<div class="editor-card"><h3>Upload Photos &amp; Videos</h3>`;
-    html += `<div class="upload-zone" id="uploadZone">
-      <i class="fa-solid fa-cloud-arrow-up"></i>
-      <strong>Click or drag files here to upload</strong>
-      <p style="margin-top:8px;font-size:0.8125rem">Images: PNG, JPG, GIF, WebP, SVG &nbsp;|&nbsp; Videos: MP4, WebM</p>
-      <input type="file" id="fileInput" accept="image/*,video/*" multiple hidden>
-    </div>`;
-
-    if (uploaded.length) {
-      html += '<h4 style="margin-bottom:8px;font-size:0.875rem">Uploaded Files (click to copy URL)</h4><div class="media-grid">';
-      uploaded.forEach(f => {
-        const preview = f.type === 'video'
-          ? `<video src="${f.url}" muted></video>`
-          : `<img src="${f.url}" alt="${f.name}">`;
-        html += `<div class="media-thumb" data-url="${f.url}" style="cursor:pointer" title="Click to copy URL">${preview}<div class="media-name">${f.name}</div></div>`;
-      });
-      html += '</div>';
-    }
-
-    html += '</div><div class="editor-card"><h3>Assign Media to Site Sections</h3><div class="editor-grid">';
-    MEDIA_FIELDS.forEach(field => {
-      const val = (content.media[field.key] || '').replace(/"/g, '&quot;');
-      html += `<div class="form-field full"><label>${field.label}</label>`;
-      html += `<input type="text" data-media-field="${field.key}" value="${val}" placeholder="/images/uploads/your-file.jpg">`;
-      if (content.media[field.key]) {
-        const isVideo = /\.(mp4|webm|ogg)$/i.test(content.media[field.key]);
-        html += isVideo
-          ? `<video class="media-preview" src="${content.media[field.key]}" controls muted></video>`
-          : `<img class="media-preview" src="${content.media[field.key]}" alt="preview">`;
-      }
-      html += '</div>';
-    });
-    html += '</div></div>';
-
-    editorPanel.innerHTML = html;
-
-    const uploadZone = document.getElementById('uploadZone');
-    const fileInput = document.getElementById('fileInput');
-
-    uploadZone.addEventListener('click', () => fileInput.click());
-    uploadZone.addEventListener('dragover', e => { e.preventDefault(); uploadZone.classList.add('dragover'); });
-    uploadZone.addEventListener('dragleave', () => uploadZone.classList.remove('dragover'));
-    uploadZone.addEventListener('drop', e => {
-      e.preventDefault();
-      uploadZone.classList.remove('dragover');
-      uploadFiles(e.dataTransfer.files);
-    });
-    fileInput.addEventListener('change', () => uploadFiles(fileInput.files));
-
-    editorPanel.querySelectorAll('.media-thumb').forEach(thumb => {
-      thumb.addEventListener('click', () => {
-        navigator.clipboard.writeText(thumb.dataset.url);
-        showToast('URL copied! Paste into a media field below.');
-      });
-    });
-  }
-
-  async function uploadFiles(files) {
-    for (const file of files) {
-      const form = new FormData();
-      form.append('file', file);
-      try {
-        const res = await fetch('/api/upload', { method: 'POST', body: form, credentials: 'same-origin' });
-        const data = await res.json();
-        if (!res.ok) throw new Error(data.error);
-      } catch (err) {
-        alert('Upload failed: ' + err.message);
-      }
-    }
-    showToast('Upload complete!');
-    renderSection('media');
-  }
-
-  function collectFormData() {
-    if (currentSection === 'media') {
-      if (!content.media) content.media = {};
-      editorPanel.querySelectorAll('[data-media-field]').forEach(input => {
-        content.media[input.dataset.mediaField] = input.value;
-      });
-      return;
-    }
-
-    if (LIST_SCHEMAS[currentSection]) {
-      const schema = LIST_SCHEMAS[currentSection];
-      const cards = editorPanel.querySelectorAll('.list-item-card');
-      content[currentSection] = [];
-
-      cards.forEach(card => {
-        const item = {};
-        card.querySelectorAll('[data-field]').forEach(input => {
-          if (input.dataset.isArray) {
-            item[input.dataset.field] = input.value.split('\n').map(s => s.trim()).filter(Boolean);
-          } else if (input.dataset.field === 'featured') {
-            item[input.dataset.field] = input.value === 'true';
-          } else {
-            item[input.dataset.field] = input.value;
-          }
-        });
-        content[currentSection].push(item);
-      });
-    } else if (FIELD_SCHEMAS[currentSection]) {
-      if (!content[currentSection]) content[currentSection] = {};
-      editorPanel.querySelectorAll('[data-field]').forEach(input => {
-        content[currentSection][input.dataset.field] = input.value;
-      });
+      var doc = sitePreview.contentDocument;
+      if (!doc || !doc.body) return;
+      if (doc.getElementById('cms-edit-inject')) return;
+      var script = doc.createElement('script');
+      script.id = 'cms-edit-inject';
+      script.src = '/admin/edit-inject.js?v=3';
+      doc.body.appendChild(script);
+    } catch (err) {
+      console.warn('Cannot inject edit script:', err);
     }
   }
 
-  function showToast(msg) {
-    saveToast.innerHTML = `<i class="fa-solid fa-check-circle"></i> ${msg}`;
-    saveToast.classList.remove('is-hidden');
-    setTimeout(() => saveToast.classList.add('is-hidden'), 3000);
+  function loadPreviewPage(page) {
+    previewReady = false;
+    sitePreview.src = page.url;
+  }
+
+  sitePreview.addEventListener('load', function () {
+    injectEditScript();
+  });
+
+  function resolvePageFromHref(href) {
+    var path = (href || '').replace(/^\.\/?/, '/').split('?')[0].split('#')[0];
+    if (path === '/' || path === '/index.html') return PAGES[0];
+    return PAGES.find(function (p) {
+      return p.url === path || p.url === path + '/' || path === p.url.replace(/\/$/, '');
+    });
+  }
+
+  window.addEventListener('message', function (e) {
+    var data = e.data || {};
+    if (data.source !== 'cms-preview') return;
+    if (data.type === 'cms-ready') previewReady = true;
+    if (data.type === 'cms-select') openEditDrawer(data);
+    if (data.type === 'cms-navigate') {
+      var page = resolvePageFromHref(data.href);
+      if (page) switchPage(page);
+    }
+  });
+
+  function fieldHtml(id, label, value, rows) {
+    var val = (value == null ? '' : String(value)).replace(/"/g, '&quot;');
+    if (rows) {
+      return '<div class="form-field"><label for="' + id + '">' + label + '</label><textarea id="' + id + '" rows="' + rows + '">' + (value == null ? '' : value) + '</textarea></div>';
+    }
+    return '<div class="form-field"><label for="' + id + '">' + label + '</label><input type="text" id="' + id + '" value="' + val + '"></div>';
+  }
+
+  function openEditDrawer(data) {
+    currentEdit = data;
+    editDrawerTitle.textContent = data.label || 'Edit content';
+    var html = '';
+
+    if (data.editType === 'text' || data.editType === 'html') {
+      html = fieldHtml('editVal', humanLabel(data.key), data.value, data.editType === 'html' ? 5 : 2);
+    } else if (data.editType === 'hero') {
+      var h = content.home || {};
+      html = fieldHtml('heroBefore', 'Before highlight', h.heroTitleBefore || '', 1) +
+        fieldHtml('heroHighlight', 'Highlighted text', h.heroTitleHighlight || '', 1) +
+        fieldHtml('heroAfter', 'After highlight', h.heroTitleAfter || '', 1);
+    } else if (data.editType === 'pageTitle') {
+      var sec = content[data.section] || {};
+      html = fieldHtml('ptBefore', 'Before highlight', sec.pageTitleBefore || '', 1) +
+        fieldHtml('ptHighlight', 'Highlighted text', sec.pageTitleHighlight || '', 1) +
+        fieldHtml('ptAfter', 'After highlight', sec.pageTitleAfter || '', 1);
+    } else if (data.editType === 'service') {
+      var svc = (content.services_list || [])[data.index] || {};
+      html = fieldHtml('svcTitle', 'Title', svc.title || '', 1) +
+        fieldHtml('svcDesc', 'Description', svc.description || '', 4);
+    } else if (data.editType === 'testimonial') {
+      var t = (content.testimonials || [])[data.index] || {};
+      html = fieldHtml('tText', 'Quote', t.text || '', 4) +
+        fieldHtml('tName', 'Name', t.name || '', 1) +
+        fieldHtml('tRole', 'Role / Company', t.role || '', 1) +
+        fieldHtml('tInit', 'Initials', t.initials || '', 1);
+    } else if (data.editType === 'faq') {
+      var f = (content.faq || [])[data.index] || {};
+      html = fieldHtml('fQ', 'Question', f.question || '', 2) +
+        fieldHtml('fA', 'Answer', f.answer || '', 4);
+    } else if (data.editType === 'product') {
+      var p = (content.products_list || [])[data.index] || {};
+      html = fieldHtml('prodTitle', 'Product Name', p.title || '', 1) +
+        fieldHtml('prodBadge', 'Badge', p.badge || '', 1) +
+        fieldHtml('prodDesc', 'Description', p.description || '', 3);
+    } else if (data.editType === 'cta') {
+      var hdr = content.header || {};
+      html = fieldHtml('ctaText', 'Button text', hdr.ctaButton || '', 1) +
+        fieldHtml('ctaLink', 'Button link', hdr.ctaLink || '', 1);
+    }
+
+    editDrawerBody.innerHTML = html;
+    editDrawer.classList.remove('is-hidden');
+  }
+
+  function closeDrawer() {
+    editDrawer.classList.add('is-hidden');
+    currentEdit = null;
+  }
+
+  function val(id) {
+    var el = document.getElementById(id);
+    return el ? el.value : '';
+  }
+
+  function pushDom(update) {
+    if (sitePreview.contentWindow) {
+      sitePreview.contentWindow.postMessage({ type: 'cms-update-dom', updates: [update] }, '*');
+    }
+  }
+
+  function applyCurrentEdit() {
+    if (!currentEdit) return;
+    var updates = [];
+
+    if (currentEdit.editType === 'text' || currentEdit.editType === 'html') {
+      var v = val('editVal');
+      setNested(content, currentEdit.key, v);
+      updates.push({ key: currentEdit.key, value: v, editType: currentEdit.editType });
+    } else if (currentEdit.editType === 'hero') {
+      if (!content.home) content.home = {};
+      content.home.heroTitleBefore = val('heroBefore');
+      content.home.heroTitleHighlight = val('heroHighlight');
+      content.home.heroTitleAfter = val('heroAfter');
+      content.home.pageTitle = content.home.heroTitleBefore + content.home.heroTitleHighlight + content.home.heroTitleAfter;
+      updates.push({
+        editType: 'hero',
+        fields: { before: content.home.heroTitleBefore, highlight: content.home.heroTitleHighlight, after: content.home.heroTitleAfter }
+      });
+    } else if (currentEdit.editType === 'pageTitle') {
+      var section = currentEdit.section;
+      if (!content[section]) content[section] = {};
+      content[section].pageTitleBefore = val('ptBefore');
+      content[section].pageTitleHighlight = val('ptHighlight');
+      content[section].pageTitleAfter = val('ptAfter');
+      content[section].pageTitle = content[section].pageTitleBefore + content[section].pageTitleHighlight + content[section].pageTitleAfter;
+      updates.push({
+        editType: 'pageTitle',
+        section: section,
+        fields: { before: content[section].pageTitleBefore, highlight: content[section].pageTitleHighlight, after: content[section].pageTitleAfter }
+      });
+    } else if (currentEdit.editType === 'service') {
+      if (!content.services_list) content.services_list = [];
+      if (!content.services_list[currentEdit.index]) content.services_list[currentEdit.index] = {};
+      content.services_list[currentEdit.index].title = val('svcTitle');
+      content.services_list[currentEdit.index].description = val('svcDesc');
+      updates.push({ editType: 'service', index: currentEdit.index, item: content.services_list[currentEdit.index] });
+    } else if (currentEdit.editType === 'testimonial') {
+      if (!content.testimonials) content.testimonials = [];
+      if (!content.testimonials[currentEdit.index]) content.testimonials[currentEdit.index] = {};
+      content.testimonials[currentEdit.index].text = val('tText');
+      content.testimonials[currentEdit.index].name = val('tName');
+      content.testimonials[currentEdit.index].role = val('tRole');
+      content.testimonials[currentEdit.index].initials = val('tInit');
+      updates.push({ editType: 'testimonial', index: currentEdit.index, item: content.testimonials[currentEdit.index] });
+    } else if (currentEdit.editType === 'faq') {
+      if (!content.faq) content.faq = [];
+      if (!content.faq[currentEdit.index]) content.faq[currentEdit.index] = {};
+      content.faq[currentEdit.index].question = val('fQ');
+      content.faq[currentEdit.index].answer = val('fA');
+      updates.push({ editType: 'faq', index: currentEdit.index, item: content.faq[currentEdit.index] });
+    } else if (currentEdit.editType === 'product') {
+      if (!content.products_list) content.products_list = [];
+      if (!content.products_list[currentEdit.index]) content.products_list[currentEdit.index] = {};
+      content.products_list[currentEdit.index].title = val('prodTitle');
+      content.products_list[currentEdit.index].badge = val('prodBadge');
+      content.products_list[currentEdit.index].description = val('prodDesc');
+      updates.push({ editType: 'product', index: currentEdit.index, item: content.products_list[currentEdit.index] });
+    } else if (currentEdit.editType === 'cta') {
+      if (!content.header) content.header = {};
+      content.header.ctaButton = val('ctaText');
+      content.header.ctaLink = val('ctaLink');
+      updates.push({ editType: 'cta', fields: { text: content.header.ctaButton, link: content.header.ctaLink } });
+    }
+
+    if (sitePreview.contentWindow) {
+      sitePreview.contentWindow.postMessage({ type: 'cms-update-dom', updates: updates }, '*');
+    }
+    setDirty(true);
+    closeDrawer();
+    showToast('Updated — click Save All to publish');
   }
 
   async function saveContent() {
-    collectFormData();
     saveBtn.disabled = true;
     try {
       await api('/api/content', { method: 'PUT', body: JSON.stringify(content) });
-      showToast('Saved! Switch to your website tab or refresh to see changes.');
+      setDirty(false);
+      showToast('Published to live site!');
     } catch (err) {
       if (err.message === 'Unauthorized') {
         showLogin();
@@ -453,10 +354,105 @@
     saveBtn.disabled = false;
   }
 
-  loginForm.addEventListener('submit', async (e) => {
+  var MEDIA_FIELDS = [
+    { key: 'logo', label: 'Site Logo URL' },
+    { key: 'logoIcon', label: 'Logo Icon URL' },
+    { key: 'heroImage', label: 'Hero Image URL' },
+    { key: 'heroVideo', label: 'Hero Video URL' },
+    { key: 'aboutImage', label: 'About Image URL' },
+    { key: 'favicon', label: 'Favicon URL' }
+  ];
+
+  async function openMediaModal() {
+    mediaModal.classList.remove('is-hidden');
+    mediaModalBody.innerHTML = '<p>Loading…</p>';
+    if (!content.media) content.media = {};
+
+    var uploaded = [];
+    try { uploaded = await api('/api/media'); } catch (e) {}
+
+    var html = '<div class="upload-zone" id="uploadZone">' +
+      '<i class="fa-solid fa-cloud-arrow-up"></i><strong>Click or drag to upload</strong>' +
+      '<input type="file" id="fileInput" accept="image/*,video/*" multiple hidden></div>';
+
+    if (uploaded.length) {
+      html += '<div class="media-grid">';
+      uploaded.forEach(function (f) {
+        var preview = f.type === 'video' ? '<video src="' + f.url + '" muted></video>' : '<img src="' + f.url + '" alt="">';
+        html += '<div class="media-thumb" data-url="' + f.url + '">' + preview + '<div class="media-name">' + f.name + '</div></div>';
+      });
+      html += '</div>';
+    }
+
+    html += '<div class="editor-grid" style="margin-top:20px">';
+    MEDIA_FIELDS.forEach(function (field) {
+      var v = (content.media[field.key] || '').replace(/"/g, '&quot;');
+      html += '<div class="form-field full"><label>' + field.label + '</label>' +
+        '<input type="text" data-media-key="media.' + field.key + '" value="' + v + '"></div>';
+    });
+    html += '</div><button type="button" class="btn-save" id="saveMediaBtn" style="margin-top:16px;width:100%">Save Media Settings</button>';
+
+    mediaModalBody.innerHTML = html;
+
+    var uploadZone = document.getElementById('uploadZone');
+    var fileInput = document.getElementById('fileInput');
+    uploadZone.addEventListener('click', function () { fileInput.click(); });
+    uploadZone.addEventListener('dragover', function (e) { e.preventDefault(); uploadZone.classList.add('dragover'); });
+    uploadZone.addEventListener('dragleave', function () { uploadZone.classList.remove('dragover'); });
+    uploadZone.addEventListener('drop', function (e) {
+      e.preventDefault();
+      uploadZone.classList.remove('dragover');
+      uploadFiles(e.dataTransfer.files);
+    });
+    fileInput.addEventListener('change', function () { uploadFiles(fileInput.files); });
+
+    mediaModalBody.querySelectorAll('.media-thumb').forEach(function (thumb) {
+      thumb.addEventListener('click', function () {
+        navigator.clipboard.writeText(thumb.dataset.url);
+        showToast('URL copied to clipboard');
+      });
+    });
+
+    document.getElementById('saveMediaBtn').addEventListener('click', function () {
+      mediaModalBody.querySelectorAll('[data-media-key]').forEach(function (input) {
+        setNested(content, input.dataset.mediaKey, input.value);
+        pushDom({ key: input.dataset.mediaKey, value: input.value });
+      });
+      setDirty(true);
+      showToast('Media updated — click Save All to publish');
+    });
+  }
+
+  async function uploadFiles(files) {
+    for (var i = 0; i < files.length; i++) {
+      var form = new FormData();
+      form.append('file', files[i]);
+      try {
+        var res = await fetch('/api/upload', { method: 'POST', body: form, credentials: 'same-origin' });
+        var data = await res.json();
+        if (!res.ok) throw new Error(data.error);
+      } catch (err) {
+        alert('Upload failed: ' + err.message);
+      }
+    }
+    showToast('Upload complete');
+    openMediaModal();
+  }
+
+  async function checkAuth() {
+    try {
+      var data = await api('/api/auth/check');
+      if (data.logged_in) showDashboard();
+      else showLogin();
+    } catch (e) {
+      showLogin();
+    }
+  }
+
+  loginForm.addEventListener('submit', async function (e) {
     e.preventDefault();
     loginError.hidden = true;
-    const btn = loginForm.querySelector('button[type="submit"]');
+    var btn = loginForm.querySelector('button[type="submit"]');
     btn.disabled = true;
     try {
       await api('/api/login', {
@@ -468,7 +464,7 @@
       });
       loginForm.reset();
       showDashboard();
-    } catch {
+    } catch (e) {
       loginError.textContent = 'Invalid username or password';
       loginError.hidden = false;
     }
@@ -476,19 +472,17 @@
   });
 
   saveBtn.addEventListener('click', saveContent);
-
-  logoutBtn.addEventListener('click', async () => {
+  logoutBtn.addEventListener('click', async function () {
     await api('/api/logout', { method: 'POST' });
     showLogin();
     loginForm.reset();
   });
-
-  document.querySelectorAll('.nav-item').forEach(btn => {
-    btn.addEventListener('click', () => {
-      collectFormData();
-      renderSection(btn.dataset.section);
-    });
-  });
+  document.getElementById('closeDrawer').addEventListener('click', closeDrawer);
+  document.getElementById('cancelEdit').addEventListener('click', closeDrawer);
+  document.getElementById('applyEdit').addEventListener('click', applyCurrentEdit);
+  mediaBtn.addEventListener('click', openMediaModal);
+  document.getElementById('closeMediaModal').addEventListener('click', function () { mediaModal.classList.add('is-hidden'); });
+  document.getElementById('mediaModalBackdrop').addEventListener('click', function () { mediaModal.classList.add('is-hidden'); });
 
   showLogin();
   checkAuth();

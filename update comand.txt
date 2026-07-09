@@ -1,0 +1,1 @@
+cd E:\Website; git add .; git commit -m "Update website"; git push

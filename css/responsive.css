@@ -16,6 +16,23 @@
   }
 }
 
+@media (max-width: 575.98px) {
+  .navbar-brand-imt .brand-mark {
+    height: calc(var(--navbar-height) - 12px);
+    max-width: 105px;
+  }
+
+  .navbar-brand-imt .brand-logo {
+    height: calc(var(--navbar-height) - 12px);
+    max-width: 160px;
+  }
+
+  .navbar-brand-imt .brand-logo-sm {
+    height: calc(var(--navbar-height) - 16px);
+    max-width: 140px;
+  }
+}
+
 @media (max-width: 991.98px) {
   .nav-links-imt,
   .nav-actions-imt .btn-imt-primary {

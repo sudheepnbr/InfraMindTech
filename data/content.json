@@ -83,7 +83,8 @@
     "cookieLink": "#"
   },
   "media": {
-    "logo": "",
+    "logo": "images/logo-nobg-icon.png?v=2",
+    "logoIcon": "images/logo-nobg-icon.png?v=2",
     "heroImage": "",
     "heroVideo": "",
     "aboutImage": "",

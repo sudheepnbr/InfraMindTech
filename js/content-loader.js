@@ -128,6 +128,11 @@
       const f = content.footer;
       const footerDesc = document.querySelector('[data-cms="footer.description"]');
       if (footerDesc && f.description) footerDesc.textContent = f.description;
+      document.querySelectorAll('[data-cms-href]').forEach(a => {
+        const key = a.getAttribute('data-cms-href');
+        const val = getNestedValue(content, key);
+        if (val) a.href = val;
+      });
       const socialMap = { linkedin: '.footer-social a[aria-label="LinkedIn"]', twitter: '.footer-social a[aria-label="Twitter"]', facebook: '.footer-social a[aria-label="Facebook"]', youtube: '.footer-social a[aria-label="YouTube"]' };
       Object.entries(socialMap).forEach(([key, sel]) => {
         document.querySelectorAll(sel).forEach(a => { if (f[key]) a.href = f[key]; });
@@ -142,7 +147,17 @@
         link.href = m.favicon;
       }
       if (m.logo) {
-        document.querySelectorAll('[data-cms-logo]').forEach(img => { img.src = m.logo; img.style.display = 'block'; });
+        document.querySelectorAll('[data-cms-logo]').forEach(img => {
+          img.src = m.logo;
+          img.style.display = 'block';
+        });
+        document.querySelectorAll('.brand-icon').forEach(el => { el.style.display = 'none'; });
+      }
+      if (m.logoIcon) {
+        document.querySelectorAll('[data-cms-logo-icon]').forEach(img => {
+          img.src = m.logoIcon;
+          img.style.display = 'block';
+        });
       }
       if (m.heroImage) {
         document.querySelectorAll('[data-cms-hero-image]').forEach(img => { img.src = m.heroImage; img.style.display = 'block'; });
@@ -153,13 +168,25 @@
     }
   }
 
-  fetch('/api/content')
-    .then(r => r.json())
-    .then(applyContent)
-    .catch(() => {
-      fetch('data/content.json')
-        .then(r => r.json())
-        .then(applyContent)
-        .catch(() => {});
-    });
+  function loadContent() {
+    fetch('/api/content')
+      .then(r => r.json())
+      .then(applyContent)
+      .catch(() => {
+        fetch('data/content.json')
+          .then(r => r.json())
+          .then(applyContent)
+          .catch(() => {});
+      });
+  }
+
+  function bootContent() {
+    if (document.getElementById('site-header')) {
+      document.addEventListener('includesLoaded', loadContent, { once: true });
+    } else {
+      loadContent();
+    }
+  }
+
+  bootContent();
 })();

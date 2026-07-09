@@ -1,11 +1,11 @@
 /**
  * InfraMindTech — Main Application Script
- * Intelligent Infrastructure. Secure Future.
  */
 
 (function () {
   'use strict';
 
+  function initApp() {
   /* ---- Theme (Dark Mode) ---- */
   const THEME_KEY = 'imt-theme';
   const themeToggle = document.getElementById('themeToggle');
@@ -151,14 +151,7 @@
     }, 3000);
   });
 
-  /* ---- Active Nav Link ---- */
-  const currentPage = window.location.pathname.split('/').pop() || 'index.html';
-  document.querySelectorAll('.nav-links-imt a, .mobile-nav-links a').forEach(link => {
-    const href = link.getAttribute('href');
-    if (href === currentPage || (currentPage === '' && href === 'index.html')) {
-      link.classList.add('active');
-    }
-  });
+  /* ---- Active Nav handled by includes.js ---- */
 
   /* ---- AOS Init ---- */
   if (typeof AOS !== 'undefined') {
@@ -229,5 +222,21 @@
       }
     });
   });
+
+  } /* end initApp */
+
+  function boot() {
+    if (document.getElementById('site-header')) {
+      document.addEventListener('includesLoaded', initApp, { once: true });
+    } else {
+      initApp();
+    }
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', boot);
+  } else {
+    boot();
+  }
 
 })();

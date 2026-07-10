@@ -6,7 +6,7 @@
   <title>Visual Editor — InfraMindTech CMS</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
-  <link href="admin.css?v=5" rel="stylesheet">
+  <link href="admin.css?v=6" rel="stylesheet">
 </head>
 <body class="admin-login">
 
@@ -31,6 +31,7 @@
   </div>
 
   <div id="dashboard" class="dashboard visual-dashboard is-hidden">
+    <div id="storageBanner" class="storage-banner is-hidden" role="alert"></div>
     <aside class="sidebar visual-sidebar">
       <div class="sidebar-brand">
         <i class="fa-solid fa-wand-magic-sparkles"></i>
@@ -48,6 +49,7 @@
       <div class="sidebar-footer">
         <button type="button" id="manageServicesBtn" class="btn-preview"><i class="fa-solid fa-list"></i> All Services</button>
         <button type="button" id="manageProductsBtn" class="btn-preview"><i class="fa-solid fa-cubes"></i> All Products</button>
+        <button type="button" id="exportBackupBtn" class="btn-preview"><i class="fa-solid fa-download"></i> Download Backup</button>
         <button type="button" id="mediaBtn" class="btn-preview"><i class="fa-solid fa-photo-film"></i> Media Library</button>
         <a href="/" target="_blank" class="btn-preview"><i class="fa-solid fa-external-link"></i> View Live Site</a>
         <button id="logoutBtn" class="btn-logout"><i class="fa-solid fa-right-from-bracket"></i> Logout</button>
@@ -114,6 +116,6 @@
 
   <div id="saveToast" class="toast is-hidden"></div>
 
-  <script src="admin.js?v=12"></script>
+  <script src="admin.js?v=13"></script>
 </body>
 </html>

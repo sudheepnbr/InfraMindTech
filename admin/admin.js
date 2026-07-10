@@ -158,10 +158,42 @@
     dashboard.classList.remove('is-hidden');
     document.body.classList.add('admin-logged-in');
     document.body.classList.remove('admin-login');
+    checkStorageHealth();
     loadContent().then(function () {
       buildPageNav();
       loadPreviewPage(currentPage);
     });
+  }
+
+  async function checkStorageHealth() {
+    var banner = document.getElementById('storageBanner');
+    if (!banner) return;
+    try {
+      var health = await api('/api/health');
+      if (health.persistent) {
+        banner.className = 'storage-banner storage-ok';
+        banner.innerHTML = '<i class="fa-solid fa-database"></i> Content storage: <strong>PostgreSQL</strong> — saves are permanent.';
+        banner.classList.remove('is-hidden');
+      } else {
+        banner.className = 'storage-banner storage-warn';
+        banner.innerHTML = '<i class="fa-solid fa-triangle-exclamation"></i> <strong>Temporary storage (SQLite)</strong> — your Save All edits will be <u>erased on every code deploy</u>. ' +
+          'Create a free PostgreSQL database on Render and set <code>DATABASE_URL</code>, then re-save your content. ' +
+          '<a href="https://dashboard.render.com/" target="_blank" rel="noopener">Open Render Dashboard</a>';
+        banner.classList.remove('is-hidden');
+      }
+    } catch (e) {
+      banner.classList.add('is-hidden');
+    }
+  }
+
+  function downloadBackup() {
+    var blob = new Blob([JSON.stringify(content, null, 2)], { type: 'application/json' });
+    var a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = 'inframindtech-content-backup-' + new Date().toISOString().slice(0, 10) + '.json';
+    a.click();
+    URL.revokeObjectURL(a.href);
+    showToast('Backup downloaded — keep this file safe');
   }
 
   function setDirty(val) {
@@ -871,6 +903,7 @@
   document.getElementById('topAddProductBtn').addEventListener('click', function () { addListItem('products_list'); });
   document.getElementById('topManageStatsBtn').addEventListener('click', function () { openListManager('stats_band'); });
   mediaBtn.addEventListener('click', openMediaModal);
+  document.getElementById('exportBackupBtn').addEventListener('click', downloadBackup);
   document.getElementById('closeListModal').addEventListener('click', function () { listModal.classList.add('is-hidden'); currentListKey = null; });
   document.getElementById('listModalBackdrop').addEventListener('click', function () { listModal.classList.add('is-hidden'); currentListKey = null; });
   document.getElementById('closeMediaModal').addEventListener('click', function () { mediaModal.classList.add('is-hidden'); });

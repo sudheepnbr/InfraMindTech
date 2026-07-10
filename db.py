@@ -156,9 +156,11 @@ def write_content(data):
         finally:
             conn.close()
 
-    # Keep file in sync for GitHub Pages fallback
-    try:
-        with open(DEFAULT_CONTENT_FILE, "w", encoding="utf-8") as f:
-            json.dump(data, f, indent=2, ensure_ascii=False)
-    except OSError:
-        pass
+    # Keep local JSON in sync only for local SQLite / GitHub Pages seed.
+    # On Postgres (production), do not overwrite the repo seed file.
+    if backend != "postgres":
+        try:
+            with open(DEFAULT_CONTENT_FILE, "w", encoding="utf-8") as f:
+                json.dump(data, f, indent=2, ensure_ascii=False)
+        except OSError:
+            pass

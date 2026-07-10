@@ -138,9 +138,15 @@ def static_files(filepath):
 
 @app.route("/api/health", methods=["GET"])
 def health():
+    backend = db.get_backend()
     return jsonify({
         "ok": True,
-        "storage": db.get_backend(),
+        "storage": backend,
+        "persistent": backend == "postgres",
+        "warning": None if backend == "postgres" else (
+            "Using temporary SQLite storage. Admin saves will be LOST on every Render redeploy. "
+            "Add a PostgreSQL database and set DATABASE_URL to keep content permanently."
+        ),
     })
 
 

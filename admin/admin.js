@@ -704,7 +704,8 @@
     var uploaded = [];
     try { uploaded = await api('/api/media'); } catch (e) {}
 
-    var html = '<div class="upload-zone" id="uploadZone">' +
+    var html = '<p class="list-modal-tip"><strong>Upload alone does not change the website.</strong> Click <em>Site Logo</em> on your image, then <strong>Save Media &amp; Publish</strong>.</p>';
+    html += '<div class="upload-zone" id="uploadZone">' +
       '<i class="fa-solid fa-cloud-arrow-up"></i><strong>Click or drag to upload</strong>' +
       '<input type="file" id="fileInput" accept="image/*,video/*" multiple hidden></div>';
 
@@ -712,7 +713,17 @@
       html += '<div class="media-grid">';
       uploaded.forEach(function (f) {
         var preview = f.type === 'video' ? '<video src="' + f.url + '" muted></video>' : '<img src="' + f.url + '" alt="">';
-        html += '<div class="media-thumb" data-url="' + f.url + '">' + preview + '<div class="media-name">' + f.name + '</div></div>';
+        html += '<div class="media-thumb" data-url="' + f.url + '" data-type="' + f.type + '">' + preview +
+          '<div class="media-name">' + f.name + '</div><div class="media-use-actions">';
+        if (f.type === 'video') {
+          html += '<button type="button" class="btn-use-media" data-use="heroVideo">Use as Hero Video</button>';
+        } else {
+          html += '<button type="button" class="btn-use-media" data-use="logo">Site Logo</button>';
+          html += '<button type="button" class="btn-use-media" data-use="logoIcon">Logo Icon</button>';
+          html += '<button type="button" class="btn-use-media" data-use="heroImage">Hero Image</button>';
+          html += '<button type="button" class="btn-use-media" data-use="aboutImage">About Image</button>';
+        }
+        html += '</div></div>';
       });
       html += '</div>';
     }
@@ -723,7 +734,7 @@
       html += '<div class="form-field full"><label>' + field.label + '</label>' +
         '<input type="text" data-media-key="media.' + field.key + '" value="' + v + '"></div>';
     });
-    html += '</div><button type="button" class="btn-save" id="saveMediaBtn" style="margin-top:16px;width:100%">Save Media Settings</button>';
+    html += '</div><button type="button" class="btn-save" id="saveMediaBtn" style="margin-top:16px;width:100%">Save Media &amp; Publish</button>';
 
     mediaModalBody.innerHTML = html;
 
@@ -739,39 +750,48 @@
     });
     fileInput.addEventListener('change', function () { uploadFiles(fileInput.files); });
 
-    mediaModalBody.querySelectorAll('.media-thumb').forEach(function (thumb) {
-      thumb.addEventListener('click', function () {
-        var url = thumb.dataset.url;
-        var isVideo = !!thumb.querySelector('video');
-        if (isVideo) {
-          var heroInput = mediaModalBody.querySelector('[data-media-key="media.heroVideo"]');
-          if (heroInput) {
-            heroInput.value = url;
-            showToast('Set as Hero Video — click Save Media Settings');
-            return;
-          }
+    mediaModalBody.querySelectorAll('.btn-use-media').forEach(function (btn) {
+      btn.addEventListener('click', function (e) {
+        e.stopPropagation();
+        var thumb = btn.closest('.media-thumb');
+        var url = thumb && thumb.dataset.url;
+        var use = btn.dataset.use;
+        if (!url || !use) return;
+        var input = mediaModalBody.querySelector('[data-media-key="media.' + use + '"]');
+        if (input) input.value = url;
+        if (use === 'logo') {
+          var iconInput = mediaModalBody.querySelector('[data-media-key="media.logoIcon"]');
+          if (iconInput) iconInput.value = url;
         }
-        navigator.clipboard.writeText(url);
-        showToast('URL copied to clipboard');
+        showToast('Assigned — click Save Media & Publish');
       });
     });
 
-    document.getElementById('saveMediaBtn').addEventListener('click', function () {
+    document.getElementById('saveMediaBtn').addEventListener('click', async function () {
       mediaModalBody.querySelectorAll('[data-media-key]').forEach(function (input) {
         setNested(content, input.dataset.mediaKey, input.value);
         var key = input.dataset.mediaKey;
         if (key === 'media.heroVideo') {
           pushDom({ editType: 'heroVideo', value: input.value });
         } else {
-          pushDom({ key: key, value: input.value });
+          pushDom({ key: key, value: input.value, editType: 'image' });
         }
       });
       setDirty(true);
-      showToast('Media updated — click Save All to publish');
+      reloadPreviewContent();
+      try {
+        await api('/api/content', { method: 'PUT', body: JSON.stringify(content) });
+        setDirty(false);
+        showToast('Media published to live site!');
+        mediaModal.classList.add('is-hidden');
+      } catch (err) {
+        alert('Could not publish yet: ' + err.message + '\nClick Save All in the top bar.');
+      }
     });
   }
 
   async function uploadFiles(files) {
+    var lastUrl = '';
     for (var i = 0; i < files.length; i++) {
       var form = new FormData();
       form.append('file', files[i]);
@@ -779,12 +799,24 @@
         var res = await fetch('/api/upload', { method: 'POST', body: form, credentials: 'same-origin' });
         var data = await res.json();
         if (!res.ok) throw new Error(data.error);
+        lastUrl = data.url || lastUrl;
       } catch (err) {
         alert('Upload failed: ' + err.message);
       }
     }
-    showToast('Upload complete');
+    showToast('Upload complete — click Site Logo on the image');
     openMediaModal();
+    if (lastUrl && /\.(png|jpe?g|gif|webp|svg)$/i.test(lastUrl)) {
+      setTimeout(function () {
+        var logoInput = document.querySelector('[data-media-key="media.logo"]');
+        var iconInput = document.querySelector('[data-media-key="media.logoIcon"]');
+        if (logoInput && confirm('Use the uploaded image as Site Logo now?')) {
+          logoInput.value = lastUrl;
+          if (iconInput) iconInput.value = lastUrl;
+          showToast('Logo fields updated — click Save Media & Publish');
+        }
+      }, 300);
+    }
   }
 
   async function checkAuth() {

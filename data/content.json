@@ -186,66 +186,159 @@
   "services_list": [
     {
       "title": "Cloud Infrastructure",
-      "description": "Scalable, resilient cloud architectures on Azure, AWS, and hybrid environments tailored to your workload demands."
+      "description": "Scalable, resilient cloud architectures on Azure, AWS, and hybrid environments tailored to your workload demands.",
+      "icon": "fa-solid fa-cloud",
+      "features": [
+        "Cloud architecture design",
+        "Multi-cloud management",
+        "Cost optimization",
+        "Auto-scaling & load balancing"
+      ]
     },
     {
       "title": "Microsoft 365",
-      "description": "Complete M365 deployment, migration, and management with security hardening and user adoption programs."
+      "description": "Complete M365 deployment, migration, and management with security hardening and user adoption programs.",
+      "icon": "fa-brands fa-microsoft",
+      "features": [
+        "Tenant setup & migration",
+        "Teams & SharePoint config",
+        "Security & compliance",
+        "User training programs"
+      ]
     },
     {
       "title": "Azure",
-      "description": "Expert Azure consulting, migration, and managed services with cost optimization and governance frameworks."
+      "description": "Expert Azure consulting, migration, and managed services with cost optimization and governance frameworks.",
+      "icon": "fa-solid fa-cloud-arrow-up",
+      "features": [
+        "Azure migration services",
+        "AKS & container services",
+        "Azure AD & identity",
+        "FinOps & cost management"
+      ]
     },
     {
       "title": "AWS",
-      "description": "Full-lifecycle AWS solutions from architecture design to DevOps automation and 24/7 cloud operations."
+      "description": "Full-lifecycle AWS solutions from architecture design to DevOps automation and 24/7 cloud operations.",
+      "icon": "fa-brands fa-aws",
+      "features": [
+        "AWS architecture review",
+        "EC2, S3, RDS management",
+        "CI/CD pipeline setup",
+        "24/7 cloud monitoring"
+      ]
     },
     {
       "title": "Cyber Security",
-      "description": "Advanced threat detection, SOC services, compliance management, and zero-trust security architectures."
+      "description": "Advanced threat detection, SOC services, compliance management, and zero-trust security architectures.",
+      "icon": "fa-solid fa-shield-halved",
+      "features": [
+        "SOC & threat monitoring",
+        "Penetration testing",
+        "Zero-trust architecture",
+        "Compliance (ISO, SOC 2)"
+      ]
     },
     {
       "title": "Networking",
-      "description": "Enterprise-grade network design, SD-WAN, firewall management, and performance monitoring solutions."
+      "description": "Enterprise-grade network design, SD-WAN, firewall management, and performance monitoring solutions.",
+      "icon": "fa-solid fa-network-wired",
+      "features": [
+        "SD-WAN deployment",
+        "Firewall management",
+        "VPN & remote access",
+        "Network performance monitoring"
+      ]
     },
     {
       "title": "Virtualization",
-      "description": "VMware, Hyper-V, and container orchestration to maximize resource efficiency and reduce hardware costs."
+      "description": "VMware, Hyper-V, and container orchestration to maximize resource efficiency and reduce hardware costs.",
+      "icon": "fa-solid fa-server",
+      "features": [
+        "VMware vSphere management",
+        "Hyper-V deployment",
+        "Docker & Kubernetes",
+        "VDI solutions"
+      ]
     },
     {
       "title": "Managed IT Services",
-      "description": "Proactive monitoring, helpdesk support, and strategic IT planning to keep your business running smoothly."
+      "description": "Proactive monitoring, helpdesk support, and strategic IT planning to keep your business running smoothly.",
+      "icon": "fa-solid fa-headset",
+      "features": [
+        "24/7 helpdesk support",
+        "Proactive monitoring",
+        "Patch management",
+        "Strategic IT planning"
+      ]
     },
     {
       "title": "Backup & Disaster Recovery",
-      "description": "Automated backup solutions and business continuity planning to protect your critical data and operations."
+      "description": "Automated backup solutions and business continuity planning to protect your critical data and operations.",
+      "icon": "fa-solid fa-database",
+      "features": [
+        "Automated cloud backups",
+        "Disaster recovery planning",
+        "RTO/RPO optimization",
+        "Regular recovery testing"
+      ]
     }
   ],
   "products_list": [
     {
       "title": "InfraMind EAMS",
       "badge": "Asset Management",
-      "description": "Enterprise Asset Management System for complete lifecycle tracking."
+      "description": "Enterprise Asset Management System for complete lifecycle tracking.",
+      "features": [
+        "Asset lifecycle tracking",
+        "Maintenance scheduling",
+        "Inventory management",
+        "Audit-ready reports"
+      ]
     },
     {
       "title": "InfraMind TMS",
       "badge": "Transport",
-      "description": "Transport Management System for logistics optimization."
+      "description": "Transport Management System for logistics optimization.",
+      "features": [
+        "Route optimization",
+        "Fleet tracking",
+        "Delivery scheduling",
+        "Cost analytics"
+      ]
     },
     {
       "title": "InfraMind ServiceDesk",
       "badge": "Support",
-      "description": "IT service management platform for helpdesk operations."
+      "description": "IT service management platform for helpdesk operations.",
+      "features": [
+        "Ticket management",
+        "SLA tracking",
+        "Knowledge base",
+        "Self-service portal"
+      ]
     },
     {
       "title": "InfraMind PACS",
       "badge": "Healthcare",
-      "description": "Picture Archiving and Communication System for medical imaging."
+      "description": "Picture Archiving and Communication System for medical imaging.",
+      "features": [
+        "DICOM imaging",
+        "Secure storage",
+        "Clinical workflow",
+        "HL7 integration"
+      ]
     },
     {
       "title": "InfraMind ERP",
       "badge": "Enterprise",
-      "description": "Comprehensive ERP solution for finance, HR, supply chain, and operations."
+      "description": "Comprehensive ERP solution for finance, HR, supply chain, and operations.",
+      "features": [
+        "Finance & accounting",
+        "HR & payroll",
+        "Supply chain",
+        "Business intelligence"
+      ]
     }
   ],
   "testimonials": [

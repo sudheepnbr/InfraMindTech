@@ -62,6 +62,16 @@
   }
 
   function applyContent(content) {
+    if (!content.stats_band && content.home) {
+      var legacy = [];
+      for (var i = 1; i <= 4; i++) {
+        var value = content.home['statsBand' + i + 'Value'];
+        var label = content.home['statsBand' + i + 'Label'];
+        if (value || label) legacy.push({ value: value || '', label: label || '' });
+      }
+      if (legacy.length) content.stats_band = legacy;
+    }
+
     applyPageTitles(content);
 
     document.querySelectorAll('[data-cms]').forEach(el => {
@@ -142,6 +152,15 @@
       if (badge) badge.textContent = p.badge;
       if (title) title.textContent = p.title;
       if (desc) desc.textContent = p.description;
+    });
+
+    document.querySelectorAll('[data-cms-stat]').forEach((card, i) => {
+      const st = content.stats_band?.[i];
+      if (!st) return;
+      const valEl = card.querySelector('[data-cms-stat-value]');
+      const lblEl = card.querySelector('[data-cms-stat-label]');
+      if (valEl) valEl.textContent = st.value;
+      if (lblEl) lblEl.textContent = st.label;
     });
 
     document.querySelectorAll('[data-cms-testimonial]').forEach((card, i) => {

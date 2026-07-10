@@ -147,6 +147,11 @@
       return { el: stat, payload: { editType: 'stat', index: stidx, label: 'Stat ' + (stidx + 1) } };
     }
 
+    var heroVideoSlot = el.closest('[data-cms-hero-video-slot]');
+    if (heroVideoSlot) {
+      return { el: heroVideoSlot, payload: { editType: 'heroVideo', label: 'Hero Video' } };
+    }
+
     var cta = el.closest('.nav-actions-imt .btn-imt-primary, .mobile-nav-cta .btn-imt-primary');
     if (cta) return { el: cta, payload: { editType: 'cta', label: 'Header CTA Button' } };
 
@@ -168,6 +173,7 @@
       '[data-cms-page-title]', '[data-nav]', '[data-cms-service]', '[data-cms-service-title]',
       '[data-cms-service-desc]', '[data-cms-testimonial]', '[data-cms-faq]', '[data-cms-product]',
       '[data-cms-stat]', '[data-cms-stat-value]', '[data-cms-stat-label]',
+      '[data-cms-hero-video-slot]', '[data-cms-hero-video]',
       '.stats-section .stat-number', '.stats-section .stat-label',
       'img[data-cms-logo-icon]', 'img[data-cms-logo]', 'img[data-cms-hero-image]',
       '.nav-actions-imt .btn-imt-primary', '.mobile-nav-cta .btn-imt-primary'
@@ -209,7 +215,7 @@
         'body.cms-edit-mode { cursor: default; }',
         'body.cms-edit-mode .hero-bg-shapes, body.cms-edit-mode .hero-grid, body.cms-edit-mode .hero-shape { pointer-events: none !important; }',
         'body.cms-edit-mode .hero-content, body.cms-edit-mode .hero-visual, body.cms-edit-mode .hero-main-card, body.cms-edit-mode .hero-float-card { pointer-events: auto !important; position: relative; z-index: 5; }',
-        'body.cms-edit-mode .cms-editable, body.cms-edit-mode [data-cms], body.cms-edit-mode [data-cms-hero-title], body.cms-edit-mode img[data-cms-logo-icon] { cursor: pointer !important; }',
+        'body.cms-edit-mode .cms-editable, body.cms-edit-mode [data-cms], body.cms-edit-mode [data-cms-hero-title], body.cms-edit-mode img[data-cms-logo-icon], body.cms-edit-mode [data-cms-hero-video-slot] { cursor: pointer !important; }',
         '.cms-editable.cms-edit-highlight, [data-cms].cms-edit-highlight, img.cms-edit-highlight { outline: 2px dashed #2563EB !important; outline-offset: 3px !important; cursor: pointer !important; }',
         '.cms-editable.cms-edit-active, [data-cms].cms-edit-active, img.cms-edit-active { outline: 2px solid #2563EB !important; outline-offset: 3px !important; box-shadow: 0 0 0 4px rgba(37,99,235,0.15) !important; }',
         'body.cms-edit-mode img[data-cms-logo-icon]::after { content: "Click to change image"; }'
@@ -347,6 +353,14 @@
           if (sval) sval.textContent = u.item.value || '';
           if (slbl) slbl.textContent = u.item.label || '';
         }
+      }
+      if (u.editType === 'heroVideo' && u.value) {
+        document.querySelectorAll('[data-cms-hero-video]').forEach(function (v) {
+          v.src = u.value;
+          v.load();
+          var slot = v.closest('[data-cms-hero-video-slot]');
+          if (slot) slot.classList.add('has-video');
+        });
       }
       if (u.editType === 'cta' && u.fields) {
         document.querySelectorAll('.nav-actions-imt .btn-imt-primary, .mobile-nav-cta .btn-imt-primary').forEach(function (btn) {

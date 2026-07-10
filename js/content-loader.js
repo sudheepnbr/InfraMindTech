@@ -257,7 +257,12 @@
         document.querySelectorAll('[data-cms-hero-image]').forEach(img => { img.src = m.heroImage; img.style.display = 'block'; });
       }
       if (m.heroVideo) {
-        document.querySelectorAll('[data-cms-hero-video]').forEach(v => { v.src = m.heroVideo; v.style.display = 'block'; });
+        document.querySelectorAll('[data-cms-hero-video]').forEach(v => {
+          v.src = m.heroVideo;
+          v.load();
+          const slot = v.closest('[data-cms-hero-video-slot]');
+          if (slot) slot.classList.add('has-video');
+        });
       }
     }
 

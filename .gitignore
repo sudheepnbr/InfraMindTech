@@ -1,6 +1,9 @@
 .env
 data/cms.db
 *.db
+InfraMindTech-Azure.zip
+*.zip
+_zipcheck/
 __pycache__/
 *.pyc
 *.pyo

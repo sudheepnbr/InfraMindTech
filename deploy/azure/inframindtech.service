@@ -1,0 +1,17 @@
+[Unit]
+Description=InfraMindTech CMS Website
+After=network.target
+
+[Service]
+Type=simple
+User=__APP_USER__
+Group=__APP_USER__
+WorkingDirectory=__APP_DIR__
+EnvironmentFile=__APP_DIR__/.env
+Environment=PORT=8080
+ExecStart=__APP_DIR__/venv/bin/gunicorn server:app --bind 127.0.0.1:8080 --workers 2 --timeout 120
+Restart=always
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target

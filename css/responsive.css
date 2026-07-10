@@ -63,6 +63,10 @@
     margin-top: 48px;
   }
 
+  .hero-video-slot {
+    max-width: 100%;
+  }
+
   .hero-float-card {
     display: none;
   }

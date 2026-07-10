@@ -199,7 +199,7 @@
       if (doc.getElementById('cms-edit-inject')) return;
       var script = doc.createElement('script');
       script.id = 'cms-edit-inject';
-      script.src = '/admin/edit-inject.js?v=7';
+      script.src = '/admin/edit-inject.js?v=8';
       doc.body.appendChild(script);
     } catch (err) {
       console.warn('Cannot inject edit script:', err);
@@ -289,6 +289,13 @@
       var st = (content.stats_band || [])[data.index] || {};
       html = fieldHtml('statVal', 'Number', st.value || '', 1) +
         fieldHtml('statLabel', 'Label', st.label || '', 1);
+    } else if (data.editType === 'heroVideo') {
+      var hv = (content.media || {}).heroVideo || '';
+      html = fieldHtml('heroVidUrl', 'Video URL', hv, 1);
+      html += '<video id="heroVidPreview" class="media-preview" controls muted playsinline style="max-width:100%;margin-top:12px' + (hv ? '' : ';display:none') + '"></video>';
+      html += '<button type="button" class="btn-secondary" id="uploadHeroVidBtn" style="width:100%;margin-top:12px"><i class="fa-solid fa-upload"></i> Upload video (MP4)</button>';
+      html += '<input type="file" id="heroVidFile" accept="video/mp4,video/webm,video/*" hidden>';
+      html += '<p class="section-hint" style="margin-top:12px">Tip: 10-second loop, 16:9 ratio works best.</p>';
     } else if (data.editType === 'cta') {
       var hdr = content.header || {};
       html = fieldHtml('ctaText', 'Button text', hdr.ctaButton || '', 1) +
@@ -300,6 +307,47 @@
 
     var canDelete = data.editType === 'service' || data.editType === 'product' || data.editType === 'testimonial' || data.editType === 'faq' || data.editType === 'stat';
     deleteEditBtn.classList.toggle('is-hidden', !canDelete || data.index === undefined);
+
+    if (data.editType === 'heroVideo') {
+      var previewVid = document.getElementById('heroVidPreview');
+      var urlInput = document.getElementById('heroVidUrl');
+      var fileInput = document.getElementById('heroVidFile');
+      var uploadBtn = document.getElementById('uploadHeroVidBtn');
+      if (previewVid && urlInput) {
+        if (urlInput.value) previewVid.src = urlInput.value;
+        urlInput.addEventListener('input', function () {
+          if (urlInput.value) {
+            previewVid.src = urlInput.value;
+            previewVid.style.display = 'block';
+          }
+        });
+      }
+      if (uploadBtn && fileInput) {
+        uploadBtn.addEventListener('click', function () { fileInput.click(); });
+        fileInput.addEventListener('change', async function () {
+          if (!fileInput.files || !fileInput.files[0]) return;
+          var form = new FormData();
+          form.append('file', fileInput.files[0]);
+          uploadBtn.disabled = true;
+          uploadBtn.textContent = 'Uploading…';
+          try {
+            var res = await fetch('/api/upload', { method: 'POST', body: form, credentials: 'same-origin' });
+            var data = await res.json();
+            if (!res.ok) throw new Error(data.error);
+            urlInput.value = data.url;
+            if (previewVid) {
+              previewVid.src = data.url;
+              previewVid.style.display = 'block';
+            }
+            showToast('Video uploaded — click Apply then Save All');
+          } catch (err) {
+            alert('Upload failed: ' + err.message);
+          }
+          uploadBtn.disabled = false;
+          uploadBtn.innerHTML = '<i class="fa-solid fa-upload"></i> Upload video (MP4)';
+        });
+      }
+    }
 
     if (data.editType === 'image') {
       var urlInput = document.getElementById('editVal');
@@ -412,6 +460,10 @@
       content.stats_band[currentEdit.index].value = val('statVal');
       content.stats_band[currentEdit.index].label = val('statLabel');
       updates.push({ editType: 'stat', index: currentEdit.index, item: content.stats_band[currentEdit.index] });
+    } else if (currentEdit.editType === 'heroVideo') {
+      if (!content.media) content.media = {};
+      content.media.heroVideo = val('heroVidUrl');
+      updates.push({ editType: 'heroVideo', value: content.media.heroVideo });
     } else if (currentEdit.editType === 'cta') {
       if (!content.header) content.header = {};
       content.header.ctaButton = val('ctaText');
@@ -574,7 +626,7 @@
     { key: 'logo', label: 'Site Logo URL' },
     { key: 'logoIcon', label: 'Logo Icon URL' },
     { key: 'heroImage', label: 'Hero Image URL' },
-    { key: 'heroVideo', label: 'Hero Video URL' },
+    { key: 'heroVideo', label: 'Hero Video URL (homepage right panel)' },
     { key: 'aboutImage', label: 'About Image URL' },
     { key: 'favicon', label: 'Favicon URL' }
   ];
@@ -624,7 +676,17 @@
 
     mediaModalBody.querySelectorAll('.media-thumb').forEach(function (thumb) {
       thumb.addEventListener('click', function () {
-        navigator.clipboard.writeText(thumb.dataset.url);
+        var url = thumb.dataset.url;
+        var isVideo = !!thumb.querySelector('video');
+        if (isVideo) {
+          var heroInput = mediaModalBody.querySelector('[data-media-key="media.heroVideo"]');
+          if (heroInput) {
+            heroInput.value = url;
+            showToast('Set as Hero Video — click Save Media Settings');
+            return;
+          }
+        }
+        navigator.clipboard.writeText(url);
         showToast('URL copied to clipboard');
       });
     });
@@ -632,7 +694,12 @@
     document.getElementById('saveMediaBtn').addEventListener('click', function () {
       mediaModalBody.querySelectorAll('[data-media-key]').forEach(function (input) {
         setNested(content, input.dataset.mediaKey, input.value);
-        pushDom({ key: input.dataset.mediaKey, value: input.value });
+        var key = input.dataset.mediaKey;
+        if (key === 'media.heroVideo') {
+          pushDom({ editType: 'heroVideo', value: input.value });
+        } else {
+          pushDom({ key: key, value: input.value });
+        }
       });
       setDirty(true);
       showToast('Media updated — click Save All to publish');

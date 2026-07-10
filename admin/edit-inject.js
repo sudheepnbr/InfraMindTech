@@ -39,6 +39,18 @@
     if (el) el.classList.add('cms-editable');
   }
 
+  function visibleCards(selector) {
+    return Array.prototype.filter.call(document.querySelectorAll(selector), function (el) {
+      return !el.hasAttribute('data-cms-template') && !el.closest('[data-cms-template]');
+    });
+  }
+
+  function cardIndex(card, selector) {
+    if (!card) return 0;
+    if (card.getAttribute('data-cms-index') != null) return parseInt(card.getAttribute('data-cms-index'), 10) || 0;
+    return visibleCards(selector).indexOf(card);
+  }
+
   function resolveTarget(el) {
     if (!el || el.closest('#cms-edit-styles')) return null;
 
@@ -92,20 +104,20 @@
     var svcTitle = el.closest('[data-cms-service-title]');
     if (svcTitle) {
       var card = svcTitle.closest('[data-cms-service]');
-      var si = card ? Array.prototype.indexOf.call(document.querySelectorAll('[data-cms-service]'), card) : 0;
+      var si = cardIndex(card, '[data-cms-service]');
       return { el: svcTitle, payload: { editType: 'service', index: si, label: 'Service title' } };
     }
 
     var svcDesc = el.closest('[data-cms-service-desc]');
     if (svcDesc) {
       var card2 = svcDesc.closest('[data-cms-service]');
-      var si2 = card2 ? Array.prototype.indexOf.call(document.querySelectorAll('[data-cms-service]'), card2) : 0;
+      var si2 = cardIndex(card2, '[data-cms-service]');
       return { el: svcDesc, payload: { editType: 'service', index: si2, label: 'Service description' } };
     }
 
     var service = el.closest('[data-cms-service]');
-    if (service) {
-      var sidx = Array.prototype.indexOf.call(document.querySelectorAll('[data-cms-service]'), service);
+    if (service && !service.hasAttribute('data-cms-template')) {
+      var sidx = cardIndex(service, '[data-cms-service]');
       return { el: service, payload: { editType: 'service', index: sidx, label: 'Service card ' + (sidx + 1) } };
     }
 
@@ -122,28 +134,28 @@
     }
 
     var product = el.closest('[data-cms-product]');
-    if (product) {
-      var pi = Array.prototype.indexOf.call(document.querySelectorAll('[data-cms-product]'), product);
+    if (product && !product.hasAttribute('data-cms-template')) {
+      var pi = cardIndex(product, '[data-cms-product]');
       return { el: product, payload: { editType: 'product', index: pi, label: 'Product ' + (pi + 1) } };
     }
 
     var statVal = el.closest('[data-cms-stat-value]');
     if (statVal) {
       var statCard = statVal.closest('[data-cms-stat]');
-      var sti = statCard ? Array.prototype.indexOf.call(document.querySelectorAll('[data-cms-stat]'), statCard) : 0;
+      var sti = cardIndex(statCard, '[data-cms-stat]');
       return { el: statVal, payload: { editType: 'stat', index: sti, label: 'Stat value' } };
     }
 
     var statLabel = el.closest('[data-cms-stat-label]');
     if (statLabel) {
       var statCard2 = statLabel.closest('[data-cms-stat]');
-      var sti2 = statCard2 ? Array.prototype.indexOf.call(document.querySelectorAll('[data-cms-stat]'), statCard2) : 0;
+      var sti2 = cardIndex(statCard2, '[data-cms-stat]');
       return { el: statLabel, payload: { editType: 'stat', index: sti2, label: 'Stat label' } };
     }
 
     var stat = el.closest('[data-cms-stat]');
-    if (stat) {
-      var stidx = Array.prototype.indexOf.call(document.querySelectorAll('[data-cms-stat]'), stat);
+    if (stat && !stat.hasAttribute('data-cms-template')) {
+      var stidx = cardIndex(stat, '[data-cms-stat]');
       return { el: stat, payload: { editType: 'stat', index: stidx, label: 'Stat ' + (stidx + 1) } };
     }
 
@@ -304,7 +316,7 @@
         }
       }
       if (u.editType === 'service' && u.item) {
-        var card = document.querySelectorAll('[data-cms-service]')[u.index];
+        var card = visibleCards('[data-cms-service]')[u.index];
         if (card) {
           var t = card.querySelector('[data-cms-service-title]');
           var d = card.querySelector('[data-cms-service-desc]');
@@ -335,7 +347,7 @@
         }
       }
       if (u.editType === 'product' && u.item) {
-        var pc = document.querySelectorAll('[data-cms-product]')[u.index];
+        var pc = visibleCards('[data-cms-product]')[u.index];
         if (pc) {
           var badge = pc.querySelector('[data-cms-product-badge]');
           var title = pc.querySelector('[data-cms-product-title]');
@@ -346,7 +358,7 @@
         }
       }
       if (u.editType === 'stat' && u.item) {
-        var sc = document.querySelectorAll('[data-cms-stat]')[u.index];
+        var sc = visibleCards('[data-cms-stat]')[u.index];
         if (sc) {
           var sval = sc.querySelector('[data-cms-stat-value]');
           var slbl = sc.querySelector('[data-cms-stat-label]');

@@ -727,7 +727,14 @@ body.page-inner .navbar-imt {
   margin: 0 auto;
 }
 
-/* ---- Feature / Service Cards ---- */
+[data-cms-template] {
+  display: none !important;
+}
+
+.cms-list-item {
+  opacity: 1 !important;
+  transform: none;
+}
 .card-imt {
   background: var(--card);
   border: 1px solid var(--border);
@@ -737,6 +744,32 @@ body.page-inner .navbar-imt {
   transition: all var(--transition);
   position: relative;
   overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.card-imt h3 {
+  font-size: 1.25rem;
+  margin-bottom: 10px;
+  min-height: 2.4em;
+}
+
+.card-imt p {
+  color: var(--muted);
+  font-size: 0.9375rem;
+  line-height: 1.6;
+  flex: 1;
+  margin-bottom: 16px;
+}
+
+.card-imt .product-features {
+  margin-bottom: 20px;
+}
+
+.card-imt .btn-imt,
+.card-imt .card-link {
+  margin-top: auto;
+  align-self: flex-start;
 }
 
 .card-imt::before {
@@ -773,17 +806,6 @@ body.page-inner .navbar-imt {
   margin-bottom: 20px;
   background: rgba(37, 99, 235, 0.1);
   color: var(--primary);
-}
-
-.card-imt h3 {
-  font-size: 1.25rem;
-  margin-bottom: 12px;
-}
-
-.card-imt p {
-  color: var(--muted);
-  font-size: 0.9375rem;
-  margin-bottom: 20px;
 }
 
 .card-link {
@@ -846,6 +868,8 @@ body.page-inner .navbar-imt {
   overflow: hidden;
   transition: all var(--transition);
   height: 100%;
+  display: flex;
+  flex-direction: column;
 }
 
 .product-card:hover {
@@ -857,6 +881,7 @@ body.page-inner .navbar-imt {
   padding: 32px 32px 24px;
   background: linear-gradient(135deg, rgba(37, 99, 235, 0.06) 0%, rgba(6, 182, 212, 0.04) 100%);
   border-bottom: 1px solid var(--border);
+  flex: 1;
 }
 
 .product-card-header .product-badge {
@@ -875,15 +900,19 @@ body.page-inner .navbar-imt {
 .product-card-header h3 {
   font-size: 1.375rem;
   margin-bottom: 8px;
+  min-height: 2.2em;
 }
 
 .product-card-header p {
   color: var(--muted);
-  font-size: 0.875rem;
+  font-size: 0.9375rem;
+  line-height: 1.6;
+  margin-bottom: 0;
 }
 
 .product-card-body {
   padding: 24px 32px 32px;
+  margin-top: auto;
 }
 
 .product-features {

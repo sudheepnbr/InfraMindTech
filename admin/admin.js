@@ -72,9 +72,11 @@
       previewPage: 'services',
       fields: [
         { key: 'title', label: 'Title' },
-        { key: 'description', label: 'Description', textarea: true }
+        { key: 'description', label: 'Description', textarea: true },
+        { key: 'icon', label: 'Icon class (e.g. fa-solid fa-cloud)' },
+        { key: 'features', label: 'Features (one per line)', textarea: true, list: true }
       ],
-      defaultItem: { title: 'New Service', description: 'Service description here.' }
+      defaultItem: { title: 'New Service', description: 'Service description here.', icon: 'fa-solid fa-cloud', features: ['Feature one', 'Feature two', 'Feature three'] }
     },
     products_list: {
       label: 'Products',
@@ -83,9 +85,10 @@
       fields: [
         { key: 'title', label: 'Product Name' },
         { key: 'badge', label: 'Badge' },
-        { key: 'description', label: 'Description', textarea: true }
+        { key: 'description', label: 'Description', textarea: true },
+        { key: 'features', label: 'Features (one per line)', textarea: true, list: true }
       ],
-      defaultItem: { title: 'New Product', badge: 'Category', description: 'Product description here.' }
+      defaultItem: { title: 'New Product', badge: 'Category', description: 'Product description here.', features: ['Feature one', 'Feature two', 'Feature three'] }
     },
     stats_band: {
       label: 'Stats',
@@ -199,7 +202,7 @@
       if (doc.getElementById('cms-edit-inject')) return;
       var script = doc.createElement('script');
       script.id = 'cms-edit-inject';
-      script.src = '/admin/edit-inject.js?v=8';
+      script.src = '/admin/edit-inject.js?v=9';
       doc.body.appendChild(script);
     } catch (err) {
       console.warn('Cannot inject edit script:', err);
@@ -538,11 +541,13 @@
       html += '<button type="button" class="btn-icon-delete" data-delete-index="' + i + '" title="Delete"><i class="fa-solid fa-trash"></i></button>';
       html += '</div></div>';
       cfg.fields.forEach(function (field) {
-        var val = (item[field.key] || '').replace(/"/g, '&quot;');
-        if (field.textarea) {
-          html += '<div class="form-field"><label>' + field.label + '</label><textarea data-field="' + field.key + '" rows="2">' + (item[field.key] || '') + '</textarea></div>';
+        var raw = item[field.key];
+        var display = field.list && Array.isArray(raw) ? raw.join('\n') : (raw == null ? '' : String(raw));
+        var safe = display.replace(/"/g, '&quot;');
+        if (field.textarea || field.list) {
+          html += '<div class="form-field"><label>' + field.label + '</label><textarea data-field="' + field.key + '"' + (field.list ? ' data-list="1"' : '') + ' rows="' + (field.list ? '4' : '2') + '">' + display.replace(/</g, '&lt;') + '</textarea></div>';
         } else {
-          html += '<div class="form-field"><label>' + field.label + '</label><input type="text" data-field="' + field.key + '" value="' + val + '"></div>';
+          html += '<div class="form-field"><label>' + field.label + '</label><input type="text" data-field="' + field.key + '" value="' + safe + '"></div>';
         }
       });
       html += '</div>';
@@ -600,7 +605,12 @@
       var idx = parseInt(card.dataset.listIndex, 10);
       if (!content[listKey][idx]) content[listKey][idx] = JSON.parse(JSON.stringify(cfg.defaultItem));
       card.querySelectorAll('[data-field]').forEach(function (input) {
-        content[listKey][idx][input.dataset.field] = input.value;
+        var key = input.dataset.field;
+        if (input.getAttribute('data-list') === '1') {
+          content[listKey][idx][key] = input.value.split(/\r?\n/).map(function (s) { return s.trim(); }).filter(Boolean);
+        } else {
+          content[listKey][idx][key] = input.value;
+        }
       });
     });
   }

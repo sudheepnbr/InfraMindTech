@@ -114,11 +114,25 @@
 
       const tpl = template.cloneNode(true);
       tpl.removeAttribute('data-cms-template');
+      tpl.removeAttribute('style');
       tpl.style.display = '';
+      tpl.classList.add('cms-list-item');
       container.querySelectorAll(':scope > *:not([data-cms-template])').forEach(n => n.remove());
 
       items.forEach((item, i) => {
         const node = tpl.cloneNode(true);
+        node.setAttribute('data-cms-index', String(i));
+        node.removeAttribute('data-aos');
+        node.classList.remove('aos-init', 'aos-animate');
+        node.style.opacity = '1';
+        node.style.transform = 'none';
+        node.style.display = '';
+
+        if (item.icon) {
+          const iconEl = node.querySelector('.card-icon i, .product-card-header i');
+          if (iconEl) iconEl.className = item.icon;
+        }
+
         node.querySelectorAll('[data-cms-item]').forEach(field => {
           const fieldKey = field.getAttribute('data-cms-item');
           if (item[fieldKey] !== undefined) {
@@ -130,11 +144,31 @@
           const fieldKey = field.getAttribute('data-cms-item-html');
           if (item[fieldKey] !== undefined) field.innerHTML = item[fieldKey];
         });
+
+        const features = item.features;
+        const featureList = node.querySelector('[data-cms-features], .product-features');
+        if (featureList) {
+          if (Array.isArray(features) && features.length) {
+            featureList.innerHTML = features.map(function (f) {
+              return '<li><i class="fa-solid fa-check"></i> ' + String(f) + '</li>';
+            }).join('');
+            featureList.style.display = '';
+          } else {
+            featureList.style.display = 'none';
+          }
+        }
+
         container.appendChild(node);
       });
     });
 
-    document.querySelectorAll('[data-cms-service]').forEach((card, i) => {
+    function visibleCmsCards(selector) {
+      return Array.from(document.querySelectorAll(selector)).filter(function (card) {
+        return !card.hasAttribute('data-cms-template') && !card.closest('[data-cms-template]');
+      });
+    }
+
+    visibleCmsCards('[data-cms-service]').forEach((card, i) => {
       const svc = content.services_list?.[i];
       if (!svc) return;
       const title = card.querySelector('[data-cms-service-title]');
@@ -143,7 +177,7 @@
       if (desc) desc.textContent = svc.description;
     });
 
-    document.querySelectorAll('[data-cms-product]').forEach((card, i) => {
+    visibleCmsCards('[data-cms-product]').forEach((card, i) => {
       const p = content.products_list?.[i];
       if (!p) return;
       const badge = card.querySelector('[data-cms-product-badge]');
@@ -154,7 +188,7 @@
       if (desc) desc.textContent = p.description;
     });
 
-    document.querySelectorAll('[data-cms-stat]').forEach((card, i) => {
+    visibleCmsCards('[data-cms-stat]').forEach((card, i) => {
       const st = content.stats_band?.[i];
       if (!st) return;
       const valEl = card.querySelector('[data-cms-stat-value]');
@@ -268,6 +302,11 @@
 
     if (window.fixSiteLinks) window.fixSiteLinks();
     document.dispatchEvent(new CustomEvent('cmsContentApplied'));
+    if (typeof AOS !== 'undefined' && typeof AOS.refreshHard === 'function') {
+      try { AOS.refreshHard(); } catch (e) {}
+    } else if (typeof AOS !== 'undefined' && typeof AOS.refresh === 'function') {
+      try { AOS.refresh(); } catch (e2) {}
+    }
   }
 
   function getContentApiUrl() {

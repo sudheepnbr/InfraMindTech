@@ -412,6 +412,8 @@ body.admin-login {
 }
 .visual-topbar-left { display: flex; align-items: center; gap: 12px; }
 .visual-topbar-left h2 { font-size: 1.1rem; margin: 0; }
+.visual-topbar-actions { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+.visual-topbar .btn-save { width: auto; padding: 10px 20px; }
 .storage-banner {
   position: fixed;
   top: 0;

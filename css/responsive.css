@@ -56,7 +56,21 @@
 
   .hero {
     min-height: auto;
-    padding-bottom: 60px;
+    padding-bottom: 32px;
+  }
+
+  .hero-slider {
+    aspect-ratio: 16 / 9;
+    min-height: 220px;
+  }
+
+  .hero-slider-btn {
+    width: 38px;
+    height: 38px;
+  }
+
+  .marquee-card {
+    flex-basis: 240px;
   }
 
   .hero-visual {

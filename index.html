@@ -17,69 +17,87 @@
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" rel="stylesheet">
-  <link href="css/style.css?v=7" rel="stylesheet">
-  <link href="css/responsive.css?v=7" rel="stylesheet">
+  <link href="css/style.css?v=8" rel="stylesheet">
+  <link href="css/responsive.css?v=8" rel="stylesheet">
 </head>
 <body data-page="home">
 
   <div id="site-header"></div>
 
   <!-- Hero -->
-  <section class="hero" id="home">
+  <section class="hero hero-stacked" id="home">
     <div class="hero-bg-shapes">
       <div class="hero-shape hero-shape-1"></div>
       <div class="hero-shape hero-shape-2"></div>
       <div class="hero-grid"></div>
     </div>
     <div class="container-imt hero-container">
-      <div class="row align-items-center g-5">
-        <div class="col-lg-6">
-          <div class="hero-content">
-            <h1 class="hero-title" data-cms-hero-title>
-              Building <span class="gradient-text">Intelligent IT Infrastructure</span> for the Future
-            </h1>
-            <p class="hero-subtitle" data-cms="home.heroSubtitle">Cloud &bull; AI &bull; Cyber Security &bull; Networking &bull; Enterprise Solutions</p>
-            <div class="hero-tags">
-              <span class="hero-tag"><i class="fa-solid fa-cloud"></i> Cloud</span>
-              <span class="hero-tag"><i class="fa-solid fa-robot"></i> AI</span>
-              <span class="hero-tag"><i class="fa-solid fa-shield-halved"></i> Security</span>
-              <span class="hero-tag"><i class="fa-solid fa-network-wired"></i> Networking</span>
-            </div>
-            <div class="hero-cta">
-              <a href="contact/" class="btn-imt btn-imt-primary">Get Started <i class="fa-solid fa-arrow-right"></i></a>
-              <a href="contact/" class="btn-imt btn-imt-outline">Request Demo</a>
-              <a href="services/" class="btn-imt btn-imt-ghost">Explore Services</a>
-            </div>
-            <div class="hero-stats">
-              <div class="hero-stat">
-                <strong data-cms="home.stat1Value">15+</strong>
-                <span data-cms="home.stat1Label">Years Experience</span>
-              </div>
-              <div class="hero-stat">
-                <strong data-cms="home.stat2Value">500+</strong>
-                <span data-cms="home.stat2Label">Clients Served</span>
-              </div>
-              <div class="hero-stat">
-                <strong data-cms="home.stat3Value">99.9%</strong>
-                <span data-cms="home.stat3Label">Uptime SLA</span>
-              </div>
+      <div class="hero-content hero-content-top">
+        <h1 class="hero-title" data-cms-hero-title>
+          Building <span class="gradient-text">Intelligent IT Infrastructure</span> for the Future
+        </h1>
+        <p class="hero-subtitle" data-cms="home.heroSubtitle">Cloud &bull; AI &bull; Cyber Security &bull; Networking &bull; Enterprise Solutions</p>
+        <div class="hero-tags">
+          <span class="hero-tag"><i class="fa-solid fa-cloud"></i> Cloud</span>
+          <span class="hero-tag"><i class="fa-solid fa-robot"></i> AI</span>
+          <span class="hero-tag"><i class="fa-solid fa-shield-halved"></i> Security</span>
+          <span class="hero-tag"><i class="fa-solid fa-network-wired"></i> Networking</span>
+        </div>
+        <div class="hero-cta">
+          <a href="contact/" class="btn-imt btn-imt-primary">Get Started <i class="fa-solid fa-arrow-right"></i></a>
+          <a href="contact/" class="btn-imt btn-imt-outline">Request Demo</a>
+          <a href="services/" class="btn-imt btn-imt-ghost">Explore Services</a>
+        </div>
+        <div class="hero-stats">
+          <div class="hero-stat">
+            <strong data-cms="home.stat1Value">15+</strong>
+            <span data-cms="home.stat1Label">Years Experience</span>
+          </div>
+          <div class="hero-stat">
+            <strong data-cms="home.stat2Value">500+</strong>
+            <span data-cms="home.stat2Label">Clients Served</span>
+          </div>
+          <div class="hero-stat">
+            <strong data-cms="home.stat3Value">99.9%</strong>
+            <span data-cms="home.stat3Label">Uptime SLA</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="hero-slider" data-cms-hero-slider aria-label="Infrastructure gallery">
+        <div class="hero-slider-track" data-cms-list="hero_slides">
+          <div class="hero-slide" data-cms-template style="display:none">
+            <img data-cms-item="image" src="images/hero-datacenter-poster.jpg" alt="">
+            <div class="hero-slide-caption">
+              <strong data-cms-item="title">Datacenter</strong>
+              <span data-cms-item="caption">Intelligent infrastructure</span>
             </div>
           </div>
         </div>
-        <div class="col-lg-6">
-          <div class="hero-visual">
-            <div class="hero-video-slot" data-cms-hero-video-slot data-cms-label="Hero Video — click to upload">
-              <video class="hero-video-player" data-cms-hero-video autoplay muted loop playsinline preload="metadata" poster="images/hero-datacenter-poster.jpg"></video>
-              <iframe class="hero-video-embed" data-cms-hero-video-embed title="Hero video" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen loading="lazy"></iframe>
-              <div class="hero-video-placeholder">
-                <div class="hero-video-placeholder-icon"><i class="fa-solid fa-circle-play"></i></div>
-                <strong>Hero Video</strong>
-                <p>Paste a YouTube link or upload an MP4 in admin</p>
-                <span class="hero-video-hint">Admin → click here → paste URL or Upload</span>
-              </div>
-            </div>
+        <button type="button" class="hero-slider-btn prev" aria-label="Previous slide"><i class="fa-solid fa-chevron-left"></i></button>
+        <button type="button" class="hero-slider-btn next" aria-label="Next slide"><i class="fa-solid fa-chevron-right"></i></button>
+        <div class="hero-slider-dots" aria-hidden="true"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Reference videos marquee -->
+  <section class="hero-video-marquee" aria-label="Reference videos">
+    <div class="container-imt">
+      <p class="marquee-label"><i class="fa-solid fa-circle-play"></i> Reference Videos</p>
+    </div>
+    <div class="marquee-viewport">
+      <div class="marquee-track" data-cms-list="hero_videos">
+        <a class="marquee-card" data-cms-template style="display:none" data-cms-item-href="url" href="#" target="_blank" rel="noopener">
+          <div class="marquee-thumb">
+            <img data-cms-item="thumb" src="images/hero-datacenter-poster.jpg" alt="">
+            <span class="marquee-play"><i class="fa-solid fa-play"></i></span>
           </div>
-        </div>
+          <div class="marquee-meta">
+            <strong data-cms-item="title">Video title</strong>
+            <span data-cms-item="label">Watch</span>
+          </div>
+        </a>
       </div>
     </div>
   </section>
@@ -426,8 +444,8 @@
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
-  <script src="js/includes.js"></script>
-  <script src="js/content-loader.js"></script>
-  <script src="js/app.js"></script>
+  <script src="js/includes.js?v=8"></script>
+  <script src="js/content-loader.js?v=8"></script>
+  <script src="js/app.js?v=8"></script>
 </body>
 </html>

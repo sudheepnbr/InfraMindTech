@@ -144,6 +144,17 @@
           const fieldKey = field.getAttribute('data-cms-item-html');
           if (item[fieldKey] !== undefined) field.innerHTML = item[fieldKey];
         });
+        if (item.url && (node.matches('a') || node.tagName === 'A')) {
+          node.href = item.url;
+        }
+        node.querySelectorAll('[data-cms-item-href]').forEach(field => {
+          const fieldKey = field.getAttribute('data-cms-item-href');
+          if (item[fieldKey]) field.setAttribute('href', item[fieldKey]);
+        });
+        if (node.hasAttribute('data-cms-item-href')) {
+          const hrefKey = node.getAttribute('data-cms-item-href');
+          if (item[hrefKey]) node.setAttribute('href', item[hrefKey]);
+        }
 
         const features = item.features;
         const featureList = node.querySelector('[data-cms-features], .product-features');
@@ -297,6 +308,8 @@
 
     if (window.fixSiteLinks) window.fixSiteLinks();
     document.dispatchEvent(new CustomEvent('cmsContentApplied'));
+    if (typeof window.initHeroSlider === 'function') window.initHeroSlider();
+    if (typeof window.initVideoMarquee === 'function') window.initVideoMarquee();
     if (typeof AOS !== 'undefined' && typeof AOS.refreshHard === 'function') {
       try { AOS.refreshHard(); } catch (e) {}
     } else if (typeof AOS !== 'undefined' && typeof AOS.refresh === 'function') {

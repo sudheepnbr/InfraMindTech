@@ -118,10 +118,53 @@
     "logo": "images/logo-nobg-icon.png?v=2",
     "logoIcon": "images/logo-nobg-icon.png?v=2",
     "heroImage": "",
-    "heroVideo": "",
+    "heroVideo": "https://www.youtube.com/watch?v=cNI4N3-FcEI",
     "aboutImage": "",
     "favicon": ""
   },
+  "hero_slides": [
+    {
+      "image": "images/hero-datacenter-poster.jpg",
+      "title": "Enterprise Datacenter",
+      "caption": "Servers, core switches & intelligent infrastructure"
+    },
+    {
+      "image": "images/hero-datacenter-poster.jpg",
+      "title": "Cloud Ready",
+      "caption": "Azure, AWS & hybrid architectures"
+    },
+    {
+      "image": "images/hero-datacenter-poster.jpg",
+      "title": "Secure by Design",
+      "caption": "Firewalls, zero-trust & continuous monitoring"
+    }
+  ],
+  "hero_videos": [
+    {
+      "title": "Datacenter Overview",
+      "label": "Reference",
+      "url": "https://www.youtube.com/watch?v=cNI4N3-FcEI",
+      "thumb": "https://img.youtube.com/vi/cNI4N3-FcEI/hqdefault.jpg"
+    },
+    {
+      "title": "Infrastructure Tour",
+      "label": "Reference",
+      "url": "https://www.youtube.com/watch?v=cNI4N3-FcEI",
+      "thumb": "https://img.youtube.com/vi/cNI4N3-FcEI/hqdefault.jpg"
+    },
+    {
+      "title": "Network Core",
+      "label": "Reference",
+      "url": "https://www.youtube.com/watch?v=cNI4N3-FcEI",
+      "thumb": "https://img.youtube.com/vi/cNI4N3-FcEI/hqdefault.jpg"
+    },
+    {
+      "title": "Security Operations",
+      "label": "Reference",
+      "url": "https://www.youtube.com/watch?v=cNI4N3-FcEI",
+      "thumb": "https://img.youtube.com/vi/cNI4N3-FcEI/hqdefault.jpg"
+    }
+  ],
   "pricing": [
     {
       "name": "Essential",

@@ -367,12 +367,14 @@
         }
       }
       if (u.editType === 'heroVideo' && u.value) {
-        document.querySelectorAll('[data-cms-hero-video]').forEach(function (v) {
-          v.src = u.value;
-          v.load();
-          var slot = v.closest('[data-cms-hero-video-slot]');
-          if (slot) slot.classList.add('has-video');
-        });
+        if (window.applyHeroVideo) window.applyHeroVideo(u.value);
+        else {
+          document.querySelectorAll('[data-cms-hero-video-slot]').forEach(function (slot) {
+            slot.classList.add('has-video', 'video-type-file');
+            var v = slot.querySelector('[data-cms-hero-video]');
+            if (v) { v.src = u.value; v.load(); }
+          });
+        }
       }
       if (u.editType === 'cta' && u.fields) {
         document.querySelectorAll('.nav-actions-imt .btn-imt-primary, .mobile-nav-cta .btn-imt-primary').forEach(function (btn) {

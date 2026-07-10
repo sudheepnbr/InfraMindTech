@@ -291,12 +291,7 @@
         document.querySelectorAll('[data-cms-hero-image]').forEach(img => { img.src = m.heroImage; img.style.display = 'block'; });
       }
       if (m.heroVideo) {
-        document.querySelectorAll('[data-cms-hero-video]').forEach(v => {
-          v.src = m.heroVideo;
-          v.load();
-          const slot = v.closest('[data-cms-hero-video-slot]');
-          if (slot) slot.classList.add('has-video');
-        });
+        applyHeroVideo(m.heroVideo);
       }
     }
 
@@ -308,6 +303,56 @@
       try { AOS.refresh(); } catch (e2) {}
     }
   }
+
+  function parseHeroVideoUrl(url) {
+    if (!url) return null;
+    var raw = String(url).trim();
+    var yt = raw.match(/(?:youtube\.com\/(?:watch\?v=|embed\/|shorts\/)|youtu\.be\/)([A-Za-z0-9_-]{6,})/i);
+    if (yt) {
+      return {
+        type: 'embed',
+        src: 'https://www.youtube.com/embed/' + yt[1] + '?autoplay=1&mute=1&loop=1&playlist=' + yt[1] + '&controls=1&rel=0&modestbranding=1'
+      };
+    }
+    var vimeo = raw.match(/vimeo\.com\/(?:video\/)?(\d+)/i);
+    if (vimeo) {
+      return {
+        type: 'embed',
+        src: 'https://player.vimeo.com/video/' + vimeo[1] + '?autoplay=1&muted=1&loop=1&background=0'
+      };
+    }
+    return { type: 'file', src: raw };
+  }
+
+  function applyHeroVideo(url) {
+    var parsed = parseHeroVideoUrl(url);
+    document.querySelectorAll('[data-cms-hero-video-slot]').forEach(function (slot) {
+      var video = slot.querySelector('[data-cms-hero-video]');
+      var embed = slot.querySelector('[data-cms-hero-video-embed]');
+      slot.classList.remove('has-video', 'video-type-file', 'video-type-embed');
+      if (!parsed) {
+        if (video) { video.removeAttribute('src'); video.load && video.load(); }
+        if (embed) { embed.removeAttribute('src'); }
+        return;
+      }
+      slot.classList.add('has-video');
+      if (parsed.type === 'embed') {
+        slot.classList.add('video-type-embed');
+        if (video) { video.removeAttribute('src'); video.load && video.load(); }
+        if (embed) embed.src = parsed.src;
+      } else {
+        slot.classList.add('video-type-file');
+        if (embed) embed.removeAttribute('src');
+        if (video) {
+          video.src = parsed.src;
+          video.load();
+        }
+      }
+    });
+  }
+
+  window.applyHeroVideo = applyHeroVideo;
+  window.parseHeroVideoUrl = parseHeroVideoUrl;
 
   function getContentApiUrl() {
     var host = window.location.hostname;

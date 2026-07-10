@@ -202,7 +202,7 @@
       if (doc.getElementById('cms-edit-inject')) return;
       var script = doc.createElement('script');
       script.id = 'cms-edit-inject';
-      script.src = '/admin/edit-inject.js?v=9';
+      script.src = '/admin/edit-inject.js?v=10';
       doc.body.appendChild(script);
     } catch (err) {
       console.warn('Cannot inject edit script:', err);
@@ -294,11 +294,17 @@
         fieldHtml('statLabel', 'Label', st.label || '', 1);
     } else if (data.editType === 'heroVideo') {
       var hv = (content.media || {}).heroVideo || '';
-      html = fieldHtml('heroVidUrl', 'Video URL', hv, 1);
-      html += '<video id="heroVidPreview" class="media-preview" controls muted playsinline style="max-width:100%;margin-top:12px' + (hv ? '' : ';display:none') + '"></video>';
+      html = fieldHtml('heroVidUrl', 'Video URL (YouTube link or MP4 file URL)', hv, 1);
+      html += '<div id="heroVidPreviewWrap" style="margin-top:12px">';
+      if (/youtu\.?be|youtube\.com|vimeo\.com/i.test(hv)) {
+        html += '<iframe id="heroVidPreviewEmbed" class="media-preview" style="width:100%;aspect-ratio:16/9;border:0;border-radius:8px" allow="autoplay; encrypted-media" allowfullscreen></iframe>';
+      } else {
+        html += '<video id="heroVidPreview" class="media-preview" controls muted playsinline style="max-width:100%' + (hv ? '' : ';display:none') + '"></video>';
+      }
+      html += '</div>';
       html += '<button type="button" class="btn-secondary" id="uploadHeroVidBtn" style="width:100%;margin-top:12px"><i class="fa-solid fa-upload"></i> Upload video (MP4)</button>';
       html += '<input type="file" id="heroVidFile" accept="video/mp4,video/webm,video/*" hidden>';
-      html += '<p class="section-hint" style="margin-top:12px">Tip: 10-second loop, 16:9 ratio works best.</p>';
+      html += '<p class="section-hint" style="margin-top:12px">Works with YouTube links (e.g. youtube.com/watch?v=...) or uploaded MP4 files. Tip: 10-second loop, 16:9 ratio.</p>';
     } else if (data.editType === 'cta') {
       var hdr = content.header || {};
       html = fieldHtml('ctaText', 'Button text', hdr.ctaButton || '', 1) +
@@ -313,17 +319,43 @@
 
     if (data.editType === 'heroVideo') {
       var previewVid = document.getElementById('heroVidPreview');
+      var previewEmbed = document.getElementById('heroVidPreviewEmbed');
+      var previewWrap = document.getElementById('heroVidPreviewWrap');
       var urlInput = document.getElementById('heroVidUrl');
       var fileInput = document.getElementById('heroVidFile');
       var uploadBtn = document.getElementById('uploadHeroVidBtn');
-      if (previewVid && urlInput) {
-        if (urlInput.value) previewVid.src = urlInput.value;
-        urlInput.addEventListener('input', function () {
-          if (urlInput.value) {
-            previewVid.src = urlInput.value;
-            previewVid.style.display = 'block';
-          }
-        });
+
+      function youtubeEmbed(url) {
+        var m = String(url || '').match(/(?:youtube\.com\/(?:watch\?v=|embed\/|shorts\/)|youtu\.be\/)([A-Za-z0-9_-]{6,})/i);
+        return m ? ('https://www.youtube.com/embed/' + m[1] + '?rel=0') : null;
+      }
+      function vimeoEmbed(url) {
+        var m = String(url || '').match(/vimeo\.com\/(?:video\/)?(\d+)/i);
+        return m ? ('https://player.vimeo.com/video/' + m[1]) : null;
+      }
+      function refreshHeroPreview() {
+        if (!urlInput || !previewWrap) return;
+        var url = urlInput.value.trim();
+        var yt = youtubeEmbed(url);
+        var vim = vimeoEmbed(url);
+        if (yt || vim) {
+          previewWrap.innerHTML = '<iframe id="heroVidPreviewEmbed" class="media-preview" src="' + (yt || vim) + '" style="width:100%;aspect-ratio:16/9;border:0;border-radius:8px" allow="autoplay; encrypted-media" allowfullscreen></iframe>';
+        } else if (url) {
+          previewWrap.innerHTML = '<video id="heroVidPreview" class="media-preview" controls muted playsinline style="max-width:100%" src="' + url.replace(/"/g, '&quot;') + '"></video>';
+        } else {
+          previewWrap.innerHTML = '<video id="heroVidPreview" class="media-preview" controls muted playsinline style="max-width:100%;display:none"></video>';
+        }
+      }
+
+      if (urlInput) {
+        if (previewEmbed) {
+          var emb = youtubeEmbed(urlInput.value) || vimeoEmbed(urlInput.value);
+          if (emb) previewEmbed.src = emb;
+        } else if (previewVid && urlInput.value) {
+          previewVid.src = urlInput.value;
+        }
+        urlInput.addEventListener('input', refreshHeroPreview);
+        urlInput.addEventListener('change', refreshHeroPreview);
       }
       if (uploadBtn && fileInput) {
         uploadBtn.addEventListener('click', function () { fileInput.click(); });
@@ -338,10 +370,7 @@
             var data = await res.json();
             if (!res.ok) throw new Error(data.error);
             urlInput.value = data.url;
-            if (previewVid) {
-              previewVid.src = data.url;
-              previewVid.style.display = 'block';
-            }
+            refreshHeroPreview();
             showToast('Video uploaded — click Apply then Save All');
           } catch (err) {
             alert('Upload failed: ' + err.message);

@@ -6,6 +6,8 @@
   'use strict';
 
   function initApp() {
+  const cmsPreview = window.self !== window.top || window.CMS_EDIT_MODE || /[?&]cms-edit=1/.test(window.location.search);
+
   /* ---- Theme (Dark Mode) ---- */
   const THEME_KEY = 'imt-theme';
   const themeToggle = document.getElementById('themeToggle');
@@ -153,8 +155,19 @@
 
   /* ---- Active Nav handled by includes.js ---- */
 
+  if (cmsPreview) {
+    document.querySelectorAll('[data-aos]').forEach(el => {
+      el.removeAttribute('data-aos');
+      el.style.opacity = '1';
+      el.style.transform = 'none';
+    });
+    if (typeof gsap !== 'undefined') {
+      gsap.set('.hero-title, .hero-subtitle, .hero-main-card, .hero-float-card, .hero-tags .hero-tag, .hero-cta .btn-imt, .hero-stats .hero-stat', { opacity: 1, x: 0, y: 0, scale: 1, clearProps: 'all' });
+    }
+  }
+
   /* ---- AOS Init ---- */
-  if (typeof AOS !== 'undefined') {
+  if (!cmsPreview && typeof AOS !== 'undefined') {
     AOS.init({
       duration: 700,
       easing: 'ease-out-cubic',
@@ -176,7 +189,7 @@
     );
   }
 
-  if (heroSection && typeof gsap !== 'undefined' && !prefersReducedMotion) {
+  if (!cmsPreview && heroSection && typeof gsap !== 'undefined' && !prefersReducedMotion) {
     const heroTl = gsap.timeline({
       defaults: { ease: 'power3.out', duration: 0.6 },
       onComplete: revealHeroContent

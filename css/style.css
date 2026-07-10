@@ -422,6 +422,7 @@ body.page-inner .navbar-imt {
 }
 
 .hero-bg-shapes {
+  z-index: 1;
   position: absolute;
   inset: 0;
   pointer-events: none;
@@ -463,7 +464,7 @@ body.page-inner .navbar-imt {
 
 .hero-content {
   position: relative;
-  z-index: 2;
+  z-index: 3;
 }
 
 .hero-badge {
@@ -559,8 +560,94 @@ body.page-inner .navbar-imt {
   color: var(--muted);
 }
 
+.hero-container {
+  position: relative;
+  z-index: 3;
+}
+
 .hero-visual {
   position: relative;
+  z-index: 3;
+}
+
+.hero-video-slot {
+  position: relative;
+  width: 100%;
+  max-width: 520px;
+  margin: 0 auto;
+  aspect-ratio: 16 / 10;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  background: linear-gradient(135deg, rgba(37, 99, 235, 0.06), rgba(6, 182, 212, 0.08));
+  border: 2px dashed rgba(37, 99, 235, 0.25);
+  box-shadow: var(--shadow-lg);
+}
+
+.hero-video-player {
+  display: none;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  background: #0F172A;
+}
+
+.hero-video-slot.has-video {
+  border-style: solid;
+  border-color: var(--border);
+}
+
+.hero-video-slot.has-video .hero-video-player {
+  display: block;
+}
+
+.hero-video-slot.has-video .hero-video-placeholder {
+  display: none;
+}
+
+.hero-video-placeholder {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 32px;
+  color: var(--muted);
+}
+
+.hero-video-placeholder-icon {
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  background: rgba(37, 99, 235, 0.12);
+  color: var(--primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2rem;
+  margin-bottom: 16px;
+}
+
+.hero-video-placeholder strong {
+  display: block;
+  font-size: 1.125rem;
+  color: var(--text);
+  margin-bottom: 8px;
+}
+
+.hero-video-placeholder p {
+  margin: 0 0 12px;
+  font-size: 0.9rem;
+}
+
+.hero-video-hint {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--primary);
+  background: rgba(37, 99, 235, 0.1);
+  padding: 6px 12px;
+  border-radius: 999px;
 }
 
 .hero-card-stack {

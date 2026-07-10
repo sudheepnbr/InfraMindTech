@@ -221,13 +221,16 @@
       if (avatar) avatar.textContent = t.initials;
     });
 
-    document.querySelectorAll('[data-cms-faq]').forEach((item, i) => {
+    visibleCmsCards('[data-cms-faq]').forEach((item, i) => {
       const f = content.faq?.[i];
-      if (!f) return;
+      if (!f) {
+        item.remove();
+        return;
+      }
       const q = item.querySelector('[data-cms-faq-q]');
       const a = item.querySelector('[data-cms-faq-a]');
-      if (q) q.childNodes[0].textContent = f.question + ' ';
-      if (a) a.textContent = f.answer;
+      if (q) q.textContent = f.question || '';
+      if (a) a.textContent = f.answer || '';
     });
 
     if (content.site) {

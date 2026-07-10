@@ -99,6 +99,16 @@
         { key: 'label', label: 'Label' }
       ],
       defaultItem: { value: '100+', label: 'New Stat' }
+    },
+    faq: {
+      label: 'FAQs',
+      editType: 'faq',
+      previewPage: 'resources',
+      fields: [
+        { key: 'question', label: 'Question', textarea: true },
+        { key: 'answer', label: 'Answer', textarea: true }
+      ],
+      defaultItem: { question: 'New question?', answer: 'Answer here.' }
     }
   };
 
@@ -202,7 +212,7 @@
       if (doc.getElementById('cms-edit-inject')) return;
       var script = doc.createElement('script');
       script.id = 'cms-edit-inject';
-      script.src = '/admin/edit-inject.js?v=10';
+      script.src = '/admin/edit-inject.js?v=11';
       doc.body.appendChild(script);
     } catch (err) {
       console.warn('Cannot inject edit script:', err);
@@ -512,18 +522,34 @@
   }
 
   function deleteCurrentEdit() {
-    if (!currentEdit || currentEdit.index === undefined) return;
+    if (!currentEdit) return;
+    var idx = currentEdit.index;
+    if (idx === undefined || idx === null || idx === '') {
+      alert('This item cannot be deleted from here. Use Manage FAQs / Services / Products.');
+      return;
+    }
+    idx = parseInt(idx, 10);
+    if (isNaN(idx) || idx < 0) return;
+
     var keyMap = { service: 'services_list', product: 'products_list', testimonial: 'testimonials', faq: 'faq', stat: 'stats_band' };
     var listKey = keyMap[currentEdit.editType];
-    if (!listKey || !content[listKey]) return;
-    var item = content[listKey][currentEdit.index] || {};
-    var name = item.title || item.value || item.question || 'this item';
-    if (!confirm('Delete "' + name + '"? This cannot be undone until you Save All.')) return;
-    content[listKey].splice(currentEdit.index, 1);
+    if (!listKey) return;
+    if (!Array.isArray(content[listKey])) content[listKey] = [];
+    if (idx >= content[listKey].length) {
+      alert('Item not found. Refresh the page and try again.');
+      return;
+    }
+
+    var item = content[listKey][idx] || {};
+    var name = item.title || item.value || item.question || ('Item ' + (idx + 1));
+    if (!name || !String(name).trim()) name = 'this empty item';
+    if (!confirm('Delete "' + name + '"?\n\nClick Save All after this to publish.')) return;
+
+    content[listKey].splice(idx, 1);
     setDirty(true);
     closeDrawer();
-    reloadPreviewContent();
     showToast('Deleted — click Save All to publish');
+    reloadPreviewContent();
     if (currentListKey === listKey) openListManager(listKey);
   }
 
@@ -808,6 +834,7 @@
   document.getElementById('addServiceBtn').addEventListener('click', function () { addListItem('services_list'); });
   document.getElementById('addProductBtn').addEventListener('click', function () { addListItem('products_list'); });
   document.getElementById('manageStatsBtn').addEventListener('click', function () { openListManager('stats_band'); });
+  document.getElementById('manageFaqsBtn').addEventListener('click', function () { openListManager('faq'); });
   document.getElementById('topAddServiceBtn').addEventListener('click', function () { addListItem('services_list'); });
   document.getElementById('topAddProductBtn').addEventListener('click', function () { addListItem('products_list'); });
   document.getElementById('topManageStatsBtn').addEventListener('click', function () { openListManager('stats_band'); });

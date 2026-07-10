@@ -128,8 +128,8 @@
     }
 
     var faq = el.closest('[data-cms-faq]');
-    if (faq) {
-      var fi = Array.prototype.indexOf.call(document.querySelectorAll('[data-cms-faq]'), faq);
+    if (faq && !faq.hasAttribute('data-cms-template')) {
+      var fi = cardIndex(faq, '[data-cms-faq]');
       return { el: faq, payload: { editType: 'faq', index: fi, label: 'FAQ ' + (fi + 1) } };
     }
 
@@ -338,11 +338,11 @@
         }
       }
       if (u.editType === 'faq' && u.item) {
-        var faq = document.querySelectorAll('[data-cms-faq]')[u.index];
+        var faq = visibleCards('[data-cms-faq]')[u.index];
         if (faq) {
           var q = faq.querySelector('[data-cms-faq-q]');
           var a = faq.querySelector('[data-cms-faq-a]');
-          if (q && q.childNodes[0]) q.childNodes[0].textContent = (u.item.question || '') + ' ';
+          if (q) q.textContent = u.item.question || '';
           if (a) a.textContent = u.item.answer || '';
         }
       }

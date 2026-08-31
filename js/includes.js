@@ -4,14 +4,13 @@
 (function () {
   'use strict';
 
-  const PAGE_NAMES = ['about', 'services', 'products', 'contact', 'industries', 'resources'];
+  const PAGE_NAMES = ['about', 'services', 'products', 'contact', 'industries'];
 
   const NAV_ROUTES = {
     home: '',
     services: 'services/',
     products: 'products/',
     industries: 'industries/',
-    resources: 'resources/',
     about: 'about/',
     contact: 'contact/'
   };
@@ -59,7 +58,7 @@
         link.href = getSiteRoot();
         return;
       }
-      if (/^(services|products|industries|resources|about|contact)\/?$/.test(href)) {
+      if (/^(services|products|industries|about|contact)\/?$/.test(href)) {
         link.href = resolveSiteUrl(href.endsWith('/') ? href : href + '/');
       }
     });
@@ -103,9 +102,17 @@
   }
 
   async function loadPartial(url) {
-    const res = await fetch(getSiteRoot() + url + '?v=9', { cache: 'no-store' });
+    const res = await fetch(getSiteRoot() + url + '?v=12', { cache: 'no-store' });
     if (!res.ok) throw new Error('Failed to load ' + url);
     return res.text();
+  }
+
+  function removeRetiredNav() {
+    document.querySelectorAll(
+      '[data-nav="solutions"], [data-nav="resources"], a[href*="solutions/"], a[href*="resources/"]'
+    ).forEach(function (el) {
+      if (el.closest('.nav-links-imt, .mobile-nav-links')) el.remove();
+    });
   }
 
   async function loadIncludes() {
@@ -120,6 +127,7 @@
       ]);
       headerEl.innerHTML = header;
       footerEl.innerHTML = footer;
+      removeRetiredNav();
       fixSiteLinks();
       setActiveNav();
       initNavbarState();

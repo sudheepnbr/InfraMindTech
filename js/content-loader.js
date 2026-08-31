@@ -364,71 +364,12 @@
   window.applyHeroVideo = applyHeroVideo;
   window.parseHeroVideoUrl = parseHeroVideoUrl;
 
-  function getContentApiUrl() {
-    var host = window.location.hostname;
-    if (
-      host === 'localhost' ||
-      host === '127.0.0.1' ||
-      host === 'inframindtech.onrender.com'
-    ) {
-      return '/api/content';
-    }
-    // Static site (GitHub Pages / custom domain): use repo content.json only
-    return null;
-  }
-
-  function isRemoteApi() {
-    var url = getContentApiUrl();
-    return !!url && url.indexOf('http') === 0;
-  }
-
   function fetchContent() {
-    var apiUrl = getContentApiUrl();
-
-    function fetchStatic() {
-      return fetch('data/content.json?v=' + Date.now(), { cache: 'no-store' })
-        .then(function (r) {
-          if (!r.ok) throw new Error('Static content unavailable');
-          return r.json();
-        });
-    }
-
-    if (!apiUrl) {
-      return fetchStatic();
-    }
-
-    var url = apiUrl + '?v=' + Date.now();
-    var attempts = 0;
-    var maxAttempts = isRemoteApi() ? 5 : 2;
-
-    function tryApi() {
-      attempts += 1;
-      var controller = new AbortController();
-      var timeout = setTimeout(function () { controller.abort(); }, isRemoteApi() ? 45000 : 20000);
-      var opts = { cache: 'no-store', signal: controller.signal };
-      if (isRemoteApi()) opts.mode = 'cors';
-
-      return fetch(url, opts)
-        .then(function (r) {
-          clearTimeout(timeout);
-          if (!r.ok) throw new Error('API ' + r.status);
-          return r.json();
-        })
-        .catch(function () {
-          clearTimeout(timeout);
-          if (attempts < maxAttempts) {
-            return new Promise(function (resolve) {
-              setTimeout(resolve, 3000);
-            }).then(tryApi);
-          }
-          throw new Error('API unavailable');
-        });
-    }
-
-    return tryApi().catch(function () {
-      console.warn('CMS API unavailable — showing local content.json');
-      return fetchStatic();
-    });
+    return fetch('data/content.json?v=' + Date.now(), { cache: 'no-store' })
+      .then(function (r) {
+        if (!r.ok) throw new Error('Static content unavailable');
+        return r.json();
+      });
   }
 
   function loadContent() {

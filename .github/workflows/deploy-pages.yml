@@ -20,6 +20,7 @@ jobs:
           cp about.html services.html products.html contact.html solutions.html industries.html resources.html _site/
           cp -r about services products contact solutions industries resources css js data partials images _site/
           if [ -d assets ]; then cp -r assets _site/; fi
+          cp CNAME _site/
           touch _site/.nojekyll
 
       - name: Publish to GitHub Pages branch
@@ -28,3 +29,4 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./_site
           publish_branch: gh-pages
+          cname: www.inframindtech.com

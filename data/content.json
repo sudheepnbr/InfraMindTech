@@ -101,7 +101,7 @@
   "services_list": [
     {
       "title": "Cloud Infrastructure",
-      "description": "Scalable cloud architectures on Azure, AWS, and hybrid environments tailored to your workload demands.",
+      "description": "Scalable cloud architectures and hybrid environments tailored to your workload demands.",
       "icon": "fa-solid fa-cloud",
       "features": [
         "Cloud architecture design",

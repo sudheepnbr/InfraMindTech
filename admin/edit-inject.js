@@ -8,7 +8,6 @@
 
   var NAV_KEYS = {
     home: 'header.navHome',
-    solutions: 'header.navSolutions',
     services: 'header.navServices',
     products: 'header.navProducts',
     industries: 'header.navIndustries',

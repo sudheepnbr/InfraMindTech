@@ -14,7 +14,6 @@
     { id: 'about', label: 'About', url: '/about/', icon: 'fa-building' },
     { id: 'services', label: 'Services', url: '/services/', icon: 'fa-cloud' },
     { id: 'products', label: 'Products', url: '/products/', icon: 'fa-box' },
-    { id: 'solutions', label: 'Solutions', url: '/solutions/', icon: 'fa-lightbulb' },
     { id: 'industries', label: 'Industries', url: '/industries/', icon: 'fa-industry' },
     { id: 'resources', label: 'Resources', url: '/resources/', icon: 'fa-book' },
     { id: 'contact', label: 'Contact', url: '/contact/', icon: 'fa-envelope' }

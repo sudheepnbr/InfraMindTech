@@ -4,11 +4,10 @@
 (function () {
   'use strict';
 
-  const PAGE_NAMES = ['about', 'services', 'products', 'contact', 'solutions', 'industries', 'resources'];
+  const PAGE_NAMES = ['about', 'services', 'products', 'contact', 'industries', 'resources'];
 
   const NAV_ROUTES = {
     home: '',
-    solutions: 'solutions/',
     services: 'services/',
     products: 'products/',
     industries: 'industries/',
@@ -60,7 +59,7 @@
         link.href = getSiteRoot();
         return;
       }
-      if (/^(solutions|services|products|industries|resources|about|contact)\/?$/.test(href)) {
+      if (/^(services|products|industries|resources|about|contact)\/?$/.test(href)) {
         link.href = resolveSiteUrl(href.endsWith('/') ? href : href + '/');
       }
     });

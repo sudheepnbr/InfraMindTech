@@ -116,23 +116,6 @@
     "aboutImage": "",
     "favicon": ""
   },
-  "hero_slides": [
-    {
-      "image": "images/hero-datacenter-poster.jpg",
-      "title": "Enterprise Datacenter",
-      "caption": "Servers, core switches & intelligent infrastructure"
-    },
-    {
-      "image": "images/hero-datacenter-poster.jpg",
-      "title": "Cloud Ready",
-      "caption": "Azure, AWS & hybrid architectures"
-    },
-    {
-      "image": "images/hero-datacenter-poster.jpg",
-      "title": "Secure by Design",
-      "caption": "Firewalls, zero-trust & continuous monitoring"
-    }
-  ],
   "pricing": [
     {
       "name": "Essential",

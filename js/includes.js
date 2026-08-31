@@ -103,7 +103,7 @@
   }
 
   async function loadPartial(url) {
-    const res = await fetch(getSiteRoot() + url);
+    const res = await fetch(getSiteRoot() + url + '?v=9', { cache: 'no-store' });
     if (!res.ok) throw new Error('Failed to load ' + url);
     return res.text();
   }

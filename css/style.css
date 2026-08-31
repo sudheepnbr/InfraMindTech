@@ -913,66 +913,6 @@ body.page-inner .navbar-imt {
   font-size: 0.75rem;
 }
 
-/* ---- Testimonials ---- */
-.testimonial-card {
-  background: var(--card);
-  border: 1px solid var(--border);
-  border-radius: var(--radius-lg);
-  padding: 36px;
-  height: 100%;
-  position: relative;
-}
-
-.testimonial-card .quote-icon {
-  font-size: 2rem;
-  color: var(--primary);
-  opacity: 0.2;
-  margin-bottom: 16px;
-}
-
-.testimonial-text {
-  font-size: 1.0625rem;
-  line-height: 1.7;
-  color: var(--text);
-  margin-bottom: 24px;
-  font-style: italic;
-}
-
-.testimonial-author {
-  display: flex;
-  align-items: center;
-  gap: 14px;
-}
-
-.testimonial-avatar {
-  width: 48px;
-  height: 48px;
-  border-radius: 50%;
-  background: var(--gradient-primary);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: #fff;
-  font-weight: 700;
-  font-size: 1rem;
-}
-
-.testimonial-info strong {
-  display: block;
-  font-size: 0.9375rem;
-}
-
-.testimonial-info span {
-  font-size: 0.8125rem;
-  color: var(--muted);
-}
-
-.testimonial-stars {
-  color: #FBBF24;
-  font-size: 0.875rem;
-  margin-bottom: 16px;
-}
-
 /* ---- CTA Banner ---- */
 .cta-banner {
   background: var(--gradient-primary);

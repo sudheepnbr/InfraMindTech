@@ -375,15 +375,31 @@
     ) {
       return '/api/content';
     }
-    return 'https://inframindtech.onrender.com/api/content';
+    // Static site (GitHub Pages / custom domain): use repo content.json only
+    return null;
   }
 
   function isRemoteApi() {
-    return getContentApiUrl().indexOf('http') === 0;
+    var url = getContentApiUrl();
+    return !!url && url.indexOf('http') === 0;
   }
 
   function fetchContent() {
-    var url = getContentApiUrl() + '?v=' + Date.now();
+    var apiUrl = getContentApiUrl();
+
+    function fetchStatic() {
+      return fetch('data/content.json?v=' + Date.now(), { cache: 'no-store' })
+        .then(function (r) {
+          if (!r.ok) throw new Error('Static content unavailable');
+          return r.json();
+        });
+    }
+
+    if (!apiUrl) {
+      return fetchStatic();
+    }
+
+    var url = apiUrl + '?v=' + Date.now();
     var attempts = 0;
     var maxAttempts = isRemoteApi() ? 5 : 2;
 
@@ -412,14 +428,8 @@
     }
 
     return tryApi().catch(function () {
-      if (isRemoteApi()) {
-        console.warn('CMS API unavailable — showing cached site content. Refresh again in a moment.');
-      }
-      return fetch('data/content.json?v=' + Date.now(), { cache: 'no-store' })
-        .then(function (r) {
-          if (!r.ok) throw new Error('Static content unavailable');
-          return r.json();
-        });
+      console.warn('CMS API unavailable — showing local content.json');
+      return fetchStatic();
     });
   }
 

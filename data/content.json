@@ -153,46 +153,13 @@
   "services_list": [
     {
       "title": "Cloud Infrastructure",
-      "description": "Scalable, resilient cloud architectures on Azure, AWS, and hybrid environments tailored to your workload demands.",
+      "description": "Scalable cloud architectures on Azure, AWS, and hybrid environments tailored to your workload demands.",
       "icon": "fa-solid fa-cloud",
       "features": [
         "Cloud architecture design",
         "Multi-cloud management",
         "Cost optimization",
         "Auto-scaling & load balancing"
-      ]
-    },
-    {
-      "title": "Microsoft 365",
-      "description": "Complete M365 deployment, migration, and management with security hardening and user adoption programs.",
-      "icon": "fa-brands fa-microsoft",
-      "features": [
-        "Tenant setup & migration",
-        "Teams & SharePoint config",
-        "Security & compliance",
-        "User training programs"
-      ]
-    },
-    {
-      "title": "Azure",
-      "description": "Expert Azure consulting, migration, and managed services with cost optimization and governance frameworks.",
-      "icon": "fa-solid fa-cloud-arrow-up",
-      "features": [
-        "Azure migration services",
-        "AKS & container services",
-        "Azure AD & identity",
-        "FinOps & cost management"
-      ]
-    },
-    {
-      "title": "AWS",
-      "description": "Full-lifecycle AWS solutions from architecture design to DevOps automation and 24/7 cloud operations.",
-      "icon": "fa-brands fa-aws",
-      "features": [
-        "AWS architecture review",
-        "EC2, S3, RDS management",
-        "CI/CD pipeline setup",
-        "24/7 cloud monitoring"
       ]
     },
     {
@@ -207,29 +174,7 @@
       ]
     },
     {
-      "title": "Networking",
-      "description": "Enterprise-grade network design, SD-WAN, firewall management, and performance monitoring solutions.",
-      "icon": "fa-solid fa-network-wired",
-      "features": [
-        "SD-WAN deployment",
-        "Firewall management",
-        "VPN & remote access",
-        "Network performance monitoring"
-      ]
-    },
-    {
-      "title": "Virtualization",
-      "description": "VMware, Hyper-V, and container orchestration to maximize resource efficiency and reduce hardware costs.",
-      "icon": "fa-solid fa-server",
-      "features": [
-        "VMware vSphere management",
-        "Hyper-V deployment",
-        "Docker & Kubernetes",
-        "VDI solutions"
-      ]
-    },
-    {
-      "title": "Managed IT Services",
+      "title": "Managed IT",
       "description": "Proactive monitoring, helpdesk support, and strategic IT planning to keep your business running smoothly.",
       "icon": "fa-solid fa-headset",
       "features": [
@@ -240,14 +185,25 @@
       ]
     },
     {
-      "title": "Backup & Disaster Recovery",
-      "description": "Automated backup solutions and business continuity planning to protect your critical data and operations.",
-      "icon": "fa-solid fa-database",
+      "title": "AI Solutions",
+      "description": "Practical AI and machine learning to automate workflows, gain predictive insights, and accelerate innovation.",
+      "icon": "fa-solid fa-robot",
       "features": [
-        "Automated cloud backups",
-        "Disaster recovery planning",
-        "RTO/RPO optimization",
-        "Regular recovery testing"
+        "Intelligent process automation",
+        "Predictive analytics",
+        "AI-powered security monitoring",
+        "Custom ML model development"
+      ]
+    },
+    {
+      "title": "Networking",
+      "description": "Enterprise network design, SD-WAN, firewall management, and performance monitoring solutions.",
+      "icon": "fa-solid fa-network-wired",
+      "features": [
+        "SD-WAN deployment",
+        "Firewall management",
+        "VPN & remote access",
+        "Network performance monitoring"
       ]
     }
   ],

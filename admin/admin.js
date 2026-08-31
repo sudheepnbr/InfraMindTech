@@ -15,7 +15,6 @@
     { id: 'services', label: 'Services', url: '/services/', icon: 'fa-cloud' },
     { id: 'products', label: 'Products', url: '/products/', icon: 'fa-box' },
     { id: 'industries', label: 'Industries', url: '/industries/', icon: 'fa-industry' },
-    { id: 'resources', label: 'Resources', url: '/resources/', icon: 'fa-book' },
     { id: 'contact', label: 'Contact', url: '/contact/', icon: 'fa-envelope' }
   ];
 
@@ -102,7 +101,7 @@
     faq: {
       label: 'FAQs',
       editType: 'faq',
-      previewPage: 'resources',
+      previewPage: 'home',
       fields: [
         { key: 'question', label: 'Question', textarea: true },
         { key: 'answer', label: 'Answer', textarea: true }

@@ -18,7 +18,6 @@
     services: 'Our ',
     products: 'InfraMind ',
     industries: 'Serving Diverse ',
-    resources: 'Help & ',
     contact: 'Get in '
   };
 
@@ -42,7 +41,7 @@
   }
 
   function applyPageTitles(content) {
-    ['about', 'services', 'products', 'industries', 'resources', 'contact'].forEach(section => {
+    ['about', 'services', 'products', 'industries', 'contact'].forEach(section => {
       const data = content[section];
       if (!data) return;
 
@@ -245,7 +244,6 @@
         services: 'navServices',
         products: 'navProducts',
         industries: 'navIndustries',
-        resources: 'navResources',
         about: 'navAbout',
         contact: 'navContact'
       };

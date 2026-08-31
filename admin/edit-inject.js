@@ -11,7 +11,6 @@
     services: 'header.navServices',
     products: 'header.navProducts',
     industries: 'header.navIndustries',
-    resources: 'header.navResources',
     about: 'header.navAbout',
     contact: 'header.navContact'
   };

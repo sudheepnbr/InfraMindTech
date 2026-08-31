@@ -71,12 +71,6 @@
     "pageSubtitle": "Ready to transform your IT infrastructure? Reach out and our team will respond within 24 hours.",
     "formTitle": "Send Us a Message"
   },
-  "resources": {
-    "pageTitleBefore": "Help & ",
-    "pageTitleHighlight": "Resources",
-    "pageTitle": "Help & Resources",
-    "pageSubtitle": "Find answers to common questions about our services, products, and engagement process."
-  },
   "header": {
     "logoIcon": "fa-brain",
     "ctaButton": "Request Quote",
@@ -85,7 +79,6 @@
     "navServices": "Services",
     "navProducts": "Products",
     "navIndustries": "Industries",
-    "navResources": "Resources",
     "navAbout": "About",
     "navContact": "Contact"
   },

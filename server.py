@@ -91,7 +91,7 @@ def login_required(f):
     return decorated
 
 
-PAGE_DIRS = {"about", "services", "products", "contact", "industries", "resources"}
+PAGE_DIRS = {"about", "services", "products", "contact", "industries"}
 
 
 def _page_view(page_name):

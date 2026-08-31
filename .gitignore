@@ -1,25 +1,16 @@
-.env
-data/cms.db
-*.db
-InfraMindTech-Azure.zip
-*.zip
-_zipcheck/
-__pycache__/
-*.pyc
-*.pyo
-.Python
-images/uploads/*
-!images/uploads/.gitkeep
 .DS_Store
 Thumbs.db
 *.log
-update comand.txt
-Capture.PNG
-
-# Local-only backup copy (not needed in repo)
+*.zip
+_zipcheck/
 backend-local/
+__pycache__/
+*.pyc
+.env
+Capture.PNG
+update comand.txt
 
-# Duplicate / unused logo assets (site uses images/logo-nobg-icon.png)
+# Unused local logo copies (site uses images/logo-nobg-icon.png)
 logo.png
 logo-nobg.png
 images/logo.png
@@ -27,3 +18,7 @@ images/logo-nobg.png
 images/logo-cropped.png
 images/logo-full.png
 images/logo-header.png
+
+*.db
+data/cms.db
+

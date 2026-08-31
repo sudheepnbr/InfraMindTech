@@ -28,8 +28,6 @@
     "servicesSubtitle": "End-to-end technology services designed to power your digital transformation and secure your enterprise future.",
     "productsTitle": "InfraMind Platform Suite",
     "productsSubtitle": "Purpose-built enterprise software designed to streamline operations and accelerate growth.",
-    "testimonialsTitle": "What Our Clients Say",
-    "testimonialsSubtitle": "Hear from organizations that have transformed their IT infrastructure with InfraMindTech.",
     "ctaTitle": "Ready to Transform Your IT Infrastructure?",
     "ctaText": "Partner with InfraMindTech to build intelligent, secure, and scalable technology solutions for your enterprise."
   },
@@ -212,26 +210,6 @@
         "Supply chain",
         "Business intelligence"
       ]
-    }
-  ],
-  "testimonials": [
-    {
-      "text": "InfraMindTech transformed our cloud infrastructure, reducing costs by 40% while improving performance. Their team's expertise is unmatched.",
-      "name": "Rajesh Kumar",
-      "role": "CTO, Apex Financial Services",
-      "initials": "RK"
-    },
-    {
-      "text": "Their cyber security solutions gave us complete peace of mind. We achieved ISO 27001 compliance within 6 months of engagement.",
-      "name": "Sarah Al-Mansouri",
-      "role": "CISO, Gulf Healthcare Group",
-      "initials": "SA"
-    },
-    {
-      "text": "The InfraMind ERP implementation streamlined our entire operation. ROI was realized within the first year of deployment.",
-      "name": "Michael Torres",
-      "role": "COO, Pacific Logistics Corp",
-      "initials": "MT"
     }
   ]
 }

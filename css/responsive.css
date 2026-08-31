@@ -120,14 +120,6 @@
     width: 100%;
   }
 
-  .hero-stats {
-    gap: 20px;
-  }
-
-  .hero-stat strong {
-    font-size: 1.5rem;
-  }
-
   .card-imt {
     padding: 24px;
   }

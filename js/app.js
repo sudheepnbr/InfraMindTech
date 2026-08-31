@@ -248,72 +248,12 @@
 
   } /* end initApp */
 
-  function initHeroSlider() {
-    var slider = document.querySelector('[data-cms-hero-slider]');
-    if (!slider) return;
-    var track = slider.querySelector('.hero-slider-track');
-    if (!track) return;
-    var slides = Array.prototype.filter.call(track.children, function (el) {
-      return !el.hasAttribute('data-cms-template');
-    });
-    if (!slides.length) return;
-
-    var index = 0;
-    var dotsWrap = slider.querySelector('.hero-slider-dots');
-    var prevBtn = slider.querySelector('.hero-slider-btn.prev');
-    var nextBtn = slider.querySelector('.hero-slider-btn.next');
-    var timer = null;
-
-    function goTo(i) {
-      index = (i + slides.length) % slides.length;
-      track.style.transform = 'translateX(' + (-index * 100) + '%)';
-      if (dotsWrap) {
-        dotsWrap.querySelectorAll('button').forEach(function (btn, bi) {
-          btn.classList.toggle('active', bi === index);
-        });
-      }
-    }
-
-    if (dotsWrap) {
-      dotsWrap.innerHTML = '';
-      slides.forEach(function (_, i) {
-        var btn = document.createElement('button');
-        btn.type = 'button';
-        btn.setAttribute('aria-label', 'Go to slide ' + (i + 1));
-        if (i === 0) btn.classList.add('active');
-        btn.addEventListener('click', function () {
-          goTo(i);
-          restart();
-        });
-        dotsWrap.appendChild(btn);
-      });
-    }
-
-    if (prevBtn) prevBtn.onclick = function () { goTo(index - 1); restart(); };
-    if (nextBtn) nextBtn.onclick = function () { goTo(index + 1); restart(); };
-
-    function restart() {
-      clearInterval(timer);
-      if (slides.length > 1) {
-        timer = setInterval(function () { goTo(index + 1); }, 5000);
-      }
-    }
-
-    goTo(0);
-    restart();
-  }
-
-  window.initHeroSlider = initHeroSlider;
-
   function boot() {
     if (document.getElementById('site-header')) {
       document.addEventListener('includesLoaded', initApp, { once: true });
     } else {
       initApp();
     }
-    document.addEventListener('cmsContentApplied', function () {
-      initHeroSlider();
-    });
   }
 
   if (document.readyState === 'loading') {

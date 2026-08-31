@@ -46,12 +46,6 @@
     "mission": "To deliver intelligent, secure, and scalable IT infrastructure that enables organizations to innovate fearlessly and operate with confidence.",
     "vision": "To be the most trusted technology partner for enterprises seeking to harness the full potential of cloud, AI, and cybersecurity."
   },
-  "solutions": {
-    "pageTitleBefore": "Tailored ",
-    "pageTitleHighlight": "Solutions",
-    "pageTitle": "Tailored Solutions",
-    "pageSubtitle": "Industry-specific solutions that address your unique challenges with proven technology frameworks."
-  },
   "services": {
     "pageTitleBefore": "Our ",
     "pageTitleHighlight": "Services",
@@ -90,7 +84,6 @@
     "ctaButton": "Request Quote",
     "ctaLink": "contact/",
     "navHome": "Home",
-    "navSolutions": "Solutions",
     "navServices": "Services",
     "navProducts": "Products",
     "navIndustries": "Industries",

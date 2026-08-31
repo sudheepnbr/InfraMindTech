@@ -17,7 +17,6 @@
     about: 'About ',
     services: 'Our ',
     products: 'InfraMind ',
-    solutions: 'Tailored ',
     industries: 'Serving Diverse ',
     resources: 'Help & ',
     contact: 'Get in '
@@ -43,7 +42,7 @@
   }
 
   function applyPageTitles(content) {
-    ['about', 'services', 'products', 'solutions', 'industries', 'resources', 'contact'].forEach(section => {
+    ['about', 'services', 'products', 'industries', 'resources', 'contact'].forEach(section => {
       const data = content[section];
       if (!data) return;
 
@@ -243,7 +242,6 @@
       const h = content.header;
       const navLabelMap = {
         home: 'navHome',
-        solutions: 'navSolutions',
         services: 'navServices',
         products: 'navProducts',
         industries: 'navIndustries',

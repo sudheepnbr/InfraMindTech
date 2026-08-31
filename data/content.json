@@ -139,32 +139,6 @@
       "caption": "Firewalls, zero-trust & continuous monitoring"
     }
   ],
-  "hero_videos": [
-    {
-      "title": "Datacenter Overview",
-      "label": "Reference",
-      "url": "https://www.youtube.com/watch?v=cNI4N3-FcEI",
-      "thumb": "https://img.youtube.com/vi/cNI4N3-FcEI/hqdefault.jpg"
-    },
-    {
-      "title": "Infrastructure Tour",
-      "label": "Reference",
-      "url": "https://www.youtube.com/watch?v=cNI4N3-FcEI",
-      "thumb": "https://img.youtube.com/vi/cNI4N3-FcEI/hqdefault.jpg"
-    },
-    {
-      "title": "Network Core",
-      "label": "Reference",
-      "url": "https://www.youtube.com/watch?v=cNI4N3-FcEI",
-      "thumb": "https://img.youtube.com/vi/cNI4N3-FcEI/hqdefault.jpg"
-    },
-    {
-      "title": "Security Operations",
-      "label": "Reference",
-      "url": "https://www.youtube.com/watch?v=cNI4N3-FcEI",
-      "thumb": "https://img.youtube.com/vi/cNI4N3-FcEI/hqdefault.jpg"
-    }
-  ],
   "pricing": [
     {
       "name": "Essential",

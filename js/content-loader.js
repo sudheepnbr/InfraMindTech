@@ -312,7 +312,6 @@
     if (window.fixSiteLinks) window.fixSiteLinks();
     document.dispatchEvent(new CustomEvent('cmsContentApplied'));
     if (typeof window.initHeroSlider === 'function') window.initHeroSlider();
-    if (typeof window.initVideoMarquee === 'function') window.initVideoMarquee();
     if (typeof AOS !== 'undefined' && typeof AOS.refreshHard === 'function') {
       try { AOS.refreshHard(); } catch (e) {}
     } else if (typeof AOS !== 'undefined' && typeof AOS.refresh === 'function') {

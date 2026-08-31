@@ -167,7 +167,7 @@
       el.style.transform = 'none';
     });
     if (typeof gsap !== 'undefined') {
-      gsap.set('.hero-title, .hero-subtitle, .hero-main-card, .hero-float-card, .hero-tags .hero-tag, .hero-cta .btn-imt, .hero-stats .hero-stat', { opacity: 1, x: 0, y: 0, scale: 1, clearProps: 'all' });
+      gsap.set('.hero-title, .hero-subtitle, .hero-main-card, .hero-float-card, .hero-tags .hero-tag, .hero-cta .btn-imt', { opacity: 1, x: 0, y: 0, scale: 1, clearProps: 'all' });
     }
   }
 
@@ -189,7 +189,7 @@
   function revealHeroContent() {
     if (!heroSection) return;
     gsap.set(
-      '.hero-title, .hero-subtitle, .hero-tags .hero-tag, .hero-cta .btn-imt, .hero-stats .hero-stat, .hero-main-card, .hero-float-card',
+      '.hero-title, .hero-subtitle, .hero-tags .hero-tag, .hero-cta .btn-imt, .hero-main-card, .hero-float-card',
       { clearProps: 'all' }
     );
   }
@@ -207,8 +207,7 @@
       .fromTo('.hero-title', { opacity: 0, y: 30 }, { ...fadeIn, duration: 0.7 })
       .fromTo('.hero-subtitle', fadeUp, fadeIn, '-=0.45')
       .fromTo('.hero-tags .hero-tag', fadeUp, fadeIn, { stagger: 0.08, duration: 0.45 }, '-=0.35')
-      .fromTo('.hero-cta .btn-imt', fadeUp, fadeIn, { stagger: 0.1, duration: 0.45 }, '-=0.25')
-      .fromTo('.hero-stats .hero-stat', fadeUp, fadeIn, { stagger: 0.1, duration: 0.45 }, '-=0.25');
+      .fromTo('.hero-cta .btn-imt', fadeUp, fadeIn, { stagger: 0.1, duration: 0.45 }, '-=0.25');
 
     if (document.querySelector('.hero-main-card')) {
       heroTl

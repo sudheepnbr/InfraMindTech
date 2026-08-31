@@ -206,7 +206,7 @@
       el.style.pointerEvents = 'auto';
     });
     if (typeof gsap !== 'undefined') {
-      gsap.set('.hero-title, .hero-subtitle, .hero-main-card, .hero-float-card, .hero-tags .hero-tag, .hero-cta .btn-imt, .hero-stats .hero-stat', {
+      gsap.set('.hero-title, .hero-subtitle, .hero-main-card, .hero-float-card, .hero-tags .hero-tag, .hero-cta .btn-imt', {
         opacity: 1, x: 0, y: 0, scale: 1, clearProps: 'all'
       });
     }

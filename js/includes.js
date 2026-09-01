@@ -36,9 +36,9 @@
       link.href = getSiteRoot();
     });
 
-    document.querySelectorAll('.footer-links a').forEach(link => {
+    document.querySelectorAll('.footer-links a, .footer-bottom-links a').forEach(link => {
       const href = link.getAttribute('href');
-      if (href === 'services/' || href === 'products/') {
+      if (href === 'services/' || href === 'products/' || href === 'privacy/' || href === 'terms/' || href === 'cookies/') {
         link.href = resolveSiteUrl(href);
       }
     });
@@ -58,7 +58,7 @@
         link.href = getSiteRoot();
         return;
       }
-      if (/^(services|products|industries|about|contact)\/?$/.test(href)) {
+      if (/^(services|products|industries|about|contact|privacy|terms|cookies)\/?$/.test(href)) {
         link.href = resolveSiteUrl(href.endsWith('/') ? href : href + '/');
       }
     });
@@ -102,7 +102,7 @@
   }
 
   async function loadPartial(url) {
-    const res = await fetch(getSiteRoot() + url + '?v=12', { cache: 'no-store' });
+    const res = await fetch(getSiteRoot() + url + '?v=15', { cache: 'no-store' });
     if (!res.ok) throw new Error('Failed to load ' + url);
     return res.text();
   }

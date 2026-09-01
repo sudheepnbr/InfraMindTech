@@ -86,9 +86,9 @@
     "twitter": "#",
     "facebook": "#",
     "youtube": "#",
-    "privacyLink": "#",
-    "termsLink": "#",
-    "cookieLink": "#"
+    "privacyLink": "privacy/",
+    "termsLink": "terms/",
+    "cookieLink": "cookies/"
   },
   "media": {
     "logo": "images/logo-nobg-icon.png?v=2",
